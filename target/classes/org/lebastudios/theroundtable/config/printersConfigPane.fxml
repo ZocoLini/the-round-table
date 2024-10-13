@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:id="root"
+      xmlns="http://javafx.com/javafx" spacing="15"
+      fx:controller="org.lebastudios.theroundtable.config.PrintersConfigPaneController"
+      prefHeight="400.0" prefWidth="600.0">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%phrase.defaultprinter"/>
+        <ChoiceBox maxWidth="250" fx:id="defaultPrinter" prefWidth="200" prefHeight="30"/>
+
+    </HBox>
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%phrase.hideEstablishmentLogo"/>
+        <CheckBox maxWidth="250" fx:id="hideEstablishmentLogo" prefWidth="200" prefHeight="30"/>
+
+    </HBox>
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%phrase.hideReceiptData"/>
+        <CheckBox maxWidth="250" fx:id="hideReceiptData" prefWidth="200" prefHeight="30"/>
+
+    </HBox>
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%phrase.hideTaxesIncludedMsg"/>
+        <CheckBox maxWidth="250" fx:id="hideTaxesIncludedMsg" prefWidth="200" prefHeight="30"/>
+
+    </HBox>
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%phrase.hideTaxesDesglose"/>
+        <CheckBox maxWidth="250" fx:id="hideTaxesDesglose" prefWidth="200" prefHeight="30"/>
+
+    </HBox>
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%phrase.hidePaymentInfo"/>
+        <CheckBox maxWidth="250" fx:id="hidePaymentInfo" prefWidth="200" prefHeight="30"/>
+    </HBox>
+</VBox>

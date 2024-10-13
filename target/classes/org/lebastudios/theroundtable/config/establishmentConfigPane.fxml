@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:id="root"
+      xmlns="http://javafx.com/javafx"
+      fx:controller="org.lebastudios.theroundtable.config.EstablishmentConfigPaneController"
+      spacing="15">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+    
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%word.name"/>
+        <TextField maxWidth="250" fx:id="establishmentName" prefWidth="200" prefHeight="30"/>
+    </HBox>
+
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%phrase.establishmentid"/>
+        <TextField maxWidth="250" fx:id="establishmentId" prefWidth="200" prefHeight="30"/>
+    </HBox>
+
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%word.phone"/>
+        <TextField maxWidth="250" fx:id="establishmentPhone" prefWidth="200" prefHeight="30"/>
+    </HBox>
+
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%word.address"/>
+        <TextField prefWidth="200" prefHeight="30" fx:id="establishmentAddress"/>
+    </HBox>
+
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%word.city"/>
+        <TextField prefWidth="200" prefHeight="30" fx:id="establishmentCity"/>
+    </HBox>
+
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%word.zipcode"/>
+        <TextField prefWidth="200" prefHeight="30" fx:id="establishmentZipCode"/>
+    </HBox>
+
+    <VBox spacing="15" alignment="TOP_CENTER">
+        <Label HBox.hgrow="ALWAYS" text="%word.establishmentlogo"/>
+        <ImageView fitWidth="216" preserveRatio="true" fx:id="establishmentLogo"/>
+    </VBox>
+</VBox>

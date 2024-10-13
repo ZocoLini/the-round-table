@@ -1,0 +1,8 @@
+VERSION 2.0.0
+
+-> Improve the scene loading making use of threads for the loading of the views
+-> First loggin and setup of the app screen
+-> Find a faster database for the app and compatible with rust sqlx crate if posible (SurrealDB would be nice)
+-> Build an account system for the app
+
+-> Refactor the code to a better scability

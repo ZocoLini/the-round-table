@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=The Round Table
+Exec=/opt/theroundtable/start
+Terminal=false
+Type=Application
+Icon=/opt/theroundtable/images/icon.png
+Categories=Application;Java;

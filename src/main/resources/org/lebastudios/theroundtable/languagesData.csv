@@ -1,0 +1,44 @@
+textKey,en_EN,es_ES
+button.tasks,Running Tasks,Ejecutando Tareas
+textblock.confupdate,There is a new version of the application available. Do you want to update it?,Hay una nueva versión de la aplicacion disponible. ¿Quiere actualizar?
+title.confirmdialog,Confirm Dialog,Cuadro de Confirmación
+title.infodialog,Information Dialog,Cuadro de Información
+tiltle.separateorderdialog,Separate Order,Separar Orden
+word.establishment,Establishment,Establecimiento
+word.preferences,Preferences,Preferencias
+word.general,General,General
+word.database,Database,Base de Datos
+word.about,About,Información
+title.settingsstage,Ajustes,Ajustes
+ticket.footerbye,We expect you comming back,Esperamos que vuelvas pronto
+word.product,Product,Producto
+word.price,Price,Precio
+word.import,Import,Importe
+word.date,Date,Fecha
+word.time,Time,Hora
+phrase.tablename,Table,Mesa
+phrase.simplifiedreceipt,Simplified Receipt,Recibo simplificado
+word.client,Client,Cliente
+phrase.generalpublicclient,General Public,Publico general
+phrase.attendedby,Attended by: ,Atendido por 
+phrase.taxesincluded,Taxes Included,Impuestos incluidos
+phrase.paymentmethod,Payment Method: ,Metodo de pago: 
+word.cange,Change,Cambio
+phrase.paymentamount,Paymente Amount,Cantidad pagada
+word.iva,Taxes,IVA
+word.quote,QUOTE,CUOTA
+textblock.confrestart,Need to restart the application to apply some changues. Do you want to do it now??,Es necesario reiniciar para aplicar los cambios. ¿Desea hacerlo ahora?
+textblock.infrestartneeded,Changues will be applied after restart the application.,Los cambios se aplicaran tras reiniciar la aplicación.
+word.restart,Restart Now,Reiniciar ahora
+title.imagechooser,Select and image,Selecciona una imagen
+word.printers,Printers,Impresoras
+phrase.unknownproduct,Others,Otros
+textblock.needtoclosethecashregister,You need to close the cash register before quit.,Necesitas cerrar caja antes de poder salir de la aplicación.
+word.account,Account,Cuenta
+textblock.closingsetup,If you close this window it will open the next time you start the application. Continue?,Si cierras esta ventana esta se abrirá la próxima vez que inicies la aplicación. ¿Contonuar?
+word.users,Users,Usuarios
+enum.accounttype.root,Root,Root
+enum.accounttype.admin,Administrator,Administrador
+enum.accounttype.manager,Manager,Manager
+enum.accounttype.cashier,Cashier,Cajero
+enum.accounttype.accountant,Accountant,Contable

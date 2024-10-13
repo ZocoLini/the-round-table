@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import org.lebastudios.theroundtable.ui.IconButton?>
+<HBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea">
+    <VBox HBox.hgrow="ALWAYS" spacing="15" alignment="CENTER">
+        <IconButton iconSize="128" iconName="the-round-table-logo.png"/>
+        <Label alignment="CENTER" contentDisplay="CENTER" text="The Round Table" textAlignment="CENTER"/>
+    </VBox>
+</HBox>

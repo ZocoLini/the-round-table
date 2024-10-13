@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:id="root"
+      xmlns="http://javafx.com/javafx"
+      fx:controller="org.lebastudios.theroundtable.config.PreferencesConfigPaneController"
+      minHeight="400.0" minWidth="600.0" spacing="15">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%word.theme"/>
+        <ChoiceBox maxWidth="250" fx:id="themeChoiceBox" prefWidth="200" prefHeight="30"/>
+    </HBox>
+
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%word.language"/>
+        <ChoiceBox maxWidth="150" fx:id="languageChoiceBox" prefWidth="200" prefHeight="30"/>
+    </HBox>
+</VBox>

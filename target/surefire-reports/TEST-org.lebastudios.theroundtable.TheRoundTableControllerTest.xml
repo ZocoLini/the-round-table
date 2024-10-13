@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="org.lebastudios.theroundtable.TheRoundTableControllerTest" time="0.181" tests="1" errors="1" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="22"/>
+    <property name="javafx.runtime.version" value="24-ea+5"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/borja/projects/the-round-table/desktop-app/target/test-classes:/home/borja/projects/the-round-table/desktop-app/target/classes:/home/borja/.m2/repository/org/openjfx/javafx-controls/24-ea+5/javafx-controls-24-ea+5.jar:/home/borja/.m2/repository/org/openjfx/javafx-controls/24-ea+5/javafx-controls-24-ea+5-linux.jar:/home/borja/.m2/repository/org/openjfx/javafx-graphics/24-ea+5/javafx-graphics-24-ea+5.jar:/home/borja/.m2/repository/org/openjfx/javafx-graphics/24-ea+5/javafx-graphics-24-ea+5-linux.jar:/home/borja/.m2/repository/org/openjfx/javafx-base/24-ea+5/javafx-base-24-ea+5.jar:/home/borja/.m2/repository/org/openjfx/javafx-base/24-ea+5/javafx-base-24-ea+5-linux.jar:/home/borja/.m2/repository/org/openjfx/javafx-fxml/24-ea+5/javafx-fxml-24-ea+5.jar:/home/borja/.m2/repository/org/openjfx/javafx-fxml/24-ea+5/javafx-fxml-24-ea+5-linux.jar:/home/borja/.m2/repository/com/h2database/h2/2.3.232/h2-2.3.232.jar:/home/borja/.m2/repository/org/hibernate/orm/hibernate-core/6.5.2.Final/hibernate-core-6.5.2.Final.jar:/home/borja/.m2/repository/jakarta/transaction/jakarta.transaction-api/2.0.1/jakarta.transaction-api-2.0.1.jar:/home/borja/.m2/repository/org/jboss/logging/jboss-logging/3.5.0.Final/jboss-logging-3.5.0.Final.jar:/home/borja/.m2/repository/org/hibernate/common/hibernate-commons-annotations/6.0.6.Final/hibernate-commons-annotations-6.0.6.Final.jar:/home/borja/.m2/repository/io/smallrye/jandex/3.1.2/jandex-3.1.2.jar:/home/borja/.m2/repository/com/fasterxml/classmate/1.5.1/classmate-1.5.1.jar:/home/borja/.m2/repository/net/bytebuddy/byte-buddy/1.14.15/byte-buddy-1.14.15.jar:/home/borja/.m2/repository/jakarta/xml/bind/jakarta.xml.bind-api/4.0.0/jakarta.xml.bind-api-4.0.0.jar:/home/borja/.m2/repository/jakarta/activation/jakarta.activation-api/2.1.0/jakarta.activation-api-2.1.0.jar:/home/borja/.m2/repository/org/glassfish/jaxb/jaxb-runtime/4.0.2/jaxb-runtime-4.0.2.jar:/home/borja/.m2/repository/org/glassfish/jaxb/jaxb-core/4.0.2/jaxb-core-4.0.2.jar:/home/borja/.m2/repository/org/eclipse/angus/angus-activation/2.0.0/angus-activation-2.0.0.jar:/home/borja/.m2/repository/org/glassfish/jaxb/txw2/4.0.2/txw2-4.0.2.jar:/home/borja/.m2/repository/com/sun/istack/istack-commons-runtime/4.1.1/istack-commons-runtime-4.1.1.jar:/home/borja/.m2/repository/jakarta/inject/jakarta.inject-api/2.0.1/jakarta.inject-api-2.0.1.jar:/home/borja/.m2/repository/org/antlr/antlr4-runtime/4.13.0/antlr4-runtime-4.13.0.jar:/home/borja/.m2/repository/org/hibernate/hibernate-hikaricp/5.6.15.Final/hibernate-hikaricp-5.6.15.Final.jar:/home/borja/.m2/repository/org/hibernate/hibernate-core/5.6.15.Final/hibernate-core-5.6.15.Final.jar:/home/borja/.m2/repository/javax/persistence/javax.persistence-api/2.2/javax.persistence-api-2.2.jar:/home/borja/.m2/repository/antlr/antlr/2.7.7/antlr-2.7.7.jar:/home/borja/.m2/repository/org/jboss/spec/javax/transaction/jboss-transaction-api_1.2_spec/1.1.1.Final/jboss-transaction-api_1.2_spec-1.1.1.Final.jar:/home/borja/.m2/repository/org/jboss/jandex/2.4.2.Final/jandex-2.4.2.Final.jar:/home/borja/.m2/repository/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.jar:/home/borja/.m2/repository/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1.jar:/home/borja/.m2/repository/com/zaxxer/HikariCP/3.2.0/HikariCP-3.2.0.jar:/home/borja/.m2/repository/ch/qos/logback/logback-classic/1.5.6/logback-classic-1.5.6.jar:/home/borja/.m2/repository/ch/qos/logback/logback-core/1.5.6/logback-core-1.5.6.jar:/home/borja/.m2/repository/org/slf4j/slf4j-api/2.0.13/slf4j-api-2.0.13.jar:/home/borja/.m2/repository/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar:/home/borja/.m2/repository/jakarta/persistence/jakarta.persistence-api/3.2.0/jakarta.persistence-api-3.2.0.jar:/home/borja/.m2/repository/com/github/anastaciocintra/escpos-coffee/4.1.0/escpos-coffee-4.1.0.jar:/home/borja/.m2/repository/com/google/code/gson/gson/2.11.0/gson-2.11.0.jar:/home/borja/.m2/repository/com/google/errorprone/error_prone_annotations/2.27.0/error_prone_annotations-2.27.0.jar:/home/borja/.m2/repository/org/controlsfx/controlsfx/11.2.1/controlsfx-11.2.1.jar:/home/borja/.m2/repository/at/favre/lib/bcrypt/0.10.2/bcrypt-0.10.2.jar:/home/borja/.m2/repository/at/favre/lib/bytes/1.5.0/bytes-1.5.0.jar:/home/borja/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.2/junit-jupiter-api-5.11.2.jar:/home/borja/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/borja/.m2/repository/org/junit/platform/junit-platform-commons/1.11.2/junit-platform-commons-1.11.2.jar:/home/borja/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/borja/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.11.2/junit-jupiter-engine-5.11.2.jar:/home/borja/.m2/repository/org/junit/platform/junit-platform-engine/1.11.2/junit-platform-engine-1.11.2.jar:"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="user.timezone" value="Europe/Madrid"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="22"/>
+    <property name="javafx.version" value="24-ea"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="/home/borja/.jdks/openjdk-22.0.2_linux-x64_bin/lib"/>
+    <property name="sun.java.command" value="/home/borja/projects/the-round-table/desktop-app/target/surefire/surefirebooter-20241011104353468_3.jar /home/borja/projects/the-round-table/desktop-app/target/surefire 2024-10-11T10-43-53_362-jvmRun1 surefire-20241011104353468_1tmp surefire_0-20241011104353468_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/borja/projects/the-round-table/desktop-app/target/test-classes:/home/borja/projects/the-round-table/desktop-app/target/classes:/home/borja/.m2/repository/org/openjfx/javafx-controls/24-ea+5/javafx-controls-24-ea+5.jar:/home/borja/.m2/repository/org/openjfx/javafx-controls/24-ea+5/javafx-controls-24-ea+5-linux.jar:/home/borja/.m2/repository/org/openjfx/javafx-graphics/24-ea+5/javafx-graphics-24-ea+5.jar:/home/borja/.m2/repository/org/openjfx/javafx-graphics/24-ea+5/javafx-graphics-24-ea+5-linux.jar:/home/borja/.m2/repository/org/openjfx/javafx-base/24-ea+5/javafx-base-24-ea+5.jar:/home/borja/.m2/repository/org/openjfx/javafx-base/24-ea+5/javafx-base-24-ea+5-linux.jar:/home/borja/.m2/repository/org/openjfx/javafx-fxml/24-ea+5/javafx-fxml-24-ea+5.jar:/home/borja/.m2/repository/org/openjfx/javafx-fxml/24-ea+5/javafx-fxml-24-ea+5-linux.jar:/home/borja/.m2/repository/com/h2database/h2/2.3.232/h2-2.3.232.jar:/home/borja/.m2/repository/org/hibernate/orm/hibernate-core/6.5.2.Final/hibernate-core-6.5.2.Final.jar:/home/borja/.m2/repository/jakarta/transaction/jakarta.transaction-api/2.0.1/jakarta.transaction-api-2.0.1.jar:/home/borja/.m2/repository/org/jboss/logging/jboss-logging/3.5.0.Final/jboss-logging-3.5.0.Final.jar:/home/borja/.m2/repository/org/hibernate/common/hibernate-commons-annotations/6.0.6.Final/hibernate-commons-annotations-6.0.6.Final.jar:/home/borja/.m2/repository/io/smallrye/jandex/3.1.2/jandex-3.1.2.jar:/home/borja/.m2/repository/com/fasterxml/classmate/1.5.1/classmate-1.5.1.jar:/home/borja/.m2/repository/net/bytebuddy/byte-buddy/1.14.15/byte-buddy-1.14.15.jar:/home/borja/.m2/repository/jakarta/xml/bind/jakarta.xml.bind-api/4.0.0/jakarta.xml.bind-api-4.0.0.jar:/home/borja/.m2/repository/jakarta/activation/jakarta.activation-api/2.1.0/jakarta.activation-api-2.1.0.jar:/home/borja/.m2/repository/org/glassfish/jaxb/jaxb-runtime/4.0.2/jaxb-runtime-4.0.2.jar:/home/borja/.m2/repository/org/glassfish/jaxb/jaxb-core/4.0.2/jaxb-core-4.0.2.jar:/home/borja/.m2/repository/org/eclipse/angus/angus-activation/2.0.0/angus-activation-2.0.0.jar:/home/borja/.m2/repository/org/glassfish/jaxb/txw2/4.0.2/txw2-4.0.2.jar:/home/borja/.m2/repository/com/sun/istack/istack-commons-runtime/4.1.1/istack-commons-runtime-4.1.1.jar:/home/borja/.m2/repository/jakarta/inject/jakarta.inject-api/2.0.1/jakarta.inject-api-2.0.1.jar:/home/borja/.m2/repository/org/antlr/antlr4-runtime/4.13.0/antlr4-runtime-4.13.0.jar:/home/borja/.m2/repository/org/hibernate/hibernate-hikaricp/5.6.15.Final/hibernate-hikaricp-5.6.15.Final.jar:/home/borja/.m2/repository/org/hibernate/hibernate-core/5.6.15.Final/hibernate-core-5.6.15.Final.jar:/home/borja/.m2/repository/javax/persistence/javax.persistence-api/2.2/javax.persistence-api-2.2.jar:/home/borja/.m2/repository/antlr/antlr/2.7.7/antlr-2.7.7.jar:/home/borja/.m2/repository/org/jboss/spec/javax/transaction/jboss-transaction-api_1.2_spec/1.1.1.Final/jboss-transaction-api_1.2_spec-1.1.1.Final.jar:/home/borja/.m2/repository/org/jboss/jandex/2.4.2.Final/jandex-2.4.2.Final.jar:/home/borja/.m2/repository/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.jar:/home/borja/.m2/repository/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1.jar:/home/borja/.m2/repository/com/zaxxer/HikariCP/3.2.0/HikariCP-3.2.0.jar:/home/borja/.m2/repository/ch/qos/logback/logback-classic/1.5.6/logback-classic-1.5.6.jar:/home/borja/.m2/repository/ch/qos/logback/logback-core/1.5.6/logback-core-1.5.6.jar:/home/borja/.m2/repository/org/slf4j/slf4j-api/2.0.13/slf4j-api-2.0.13.jar:/home/borja/.m2/repository/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar:/home/borja/.m2/repository/jakarta/persistence/jakarta.persistence-api/3.2.0/jakarta.persistence-api-3.2.0.jar:/home/borja/.m2/repository/com/github/anastaciocintra/escpos-coffee/4.1.0/escpos-coffee-4.1.0.jar:/home/borja/.m2/repository/com/google/code/gson/gson/2.11.0/gson-2.11.0.jar:/home/borja/.m2/repository/com/google/errorprone/error_prone_annotations/2.27.0/error_prone_annotations-2.27.0.jar:/home/borja/.m2/repository/org/controlsfx/controlsfx/11.2.1/controlsfx-11.2.1.jar:/home/borja/.m2/repository/at/favre/lib/bcrypt/0.10.2/bcrypt-0.10.2.jar:/home/borja/.m2/repository/at/favre/lib/bytes/1.5.0/bytes-1.5.0.jar:/home/borja/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.2/junit-jupiter-api-5.11.2.jar:/home/borja/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/borja/.m2/repository/org/junit/platform/junit-platform-commons/1.11.2/junit-platform-commons-1.11.2.jar:/home/borja/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/borja/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.11.2/junit-jupiter-engine-5.11.2.jar:/home/borja/.m2/repository/org/junit/platform/junit-platform-engine/1.11.2/junit-platform-engine-1.11.2.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/borja"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2024-07-16"/>
+    <property name="java.home" value="/home/borja/.jdks/openjdk-22.0.2_linux-x64_bin"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/borja/projects/the-round-table/desktop-app"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="/home/borja/projects/the-round-table/desktop-app/target/surefire/surefirebooter-20241011104353468_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="22.0.2+9-70"/>
+    <property name="user.name" value="borja"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.8.0-45-generic"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/home/borja/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="idea.version" value="2024.2.3"/>
+    <property name="com.zaxxer.hikari.pool_number" value="1"/>
+    <property name="java.version" value="22.0.2"/>
+    <property name="user.dir" value="/home/borja/projects/the-round-table/desktop-app"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="22.0.2+9-70"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="66.0"/>
+  </properties>
+  <testcase name="initializeUI" classname="org.lebastudios.theroundtable.TheRoundTableControllerTest" time="0.178">
+    <error type="java.lang.ExceptionInInitializerError"><![CDATA[java.lang.ExceptionInInitializerError
+	at java.base/jdk.internal.misc.Unsafe.ensureClassInitialized0(Native Method)
+	at java.base/jdk.internal.misc.Unsafe.ensureClassInitialized(Unsafe.java:1160)
+	at java.base/jdk.internal.reflect.MethodHandleAccessorFactory.ensureClassInitialized(MethodHandleAccessorFactory.java:340)
+	at java.base/jdk.internal.reflect.MethodHandleAccessorFactory.newConstructorAccessor(MethodHandleAccessorFactory.java:103)
+	at java.base/jdk.internal.reflect.ReflectionFactory.newConstructorAccessor(ReflectionFactory.java:173)
+	at java.base/java.lang.reflect.Constructor.acquireConstructorAccessor(Constructor.java:549)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at javafx.fxml.FXMLLoader$InstanceDeclarationElement.constructValue(FXMLLoader.java:1022)
+	at javafx.fxml.FXMLLoader$ValueElement.processStartElement(FXMLLoader.java:759)
+	at javafx.fxml.FXMLLoader.processStartElement(FXMLLoader.java:2858)
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2654)
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2568)
+	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:2536)
+	at org.lebastudios.theroundtable.TheRoundTableControllerTest.initializeUI(TheRoundTableControllerTest.java:18)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+Caused by: java.lang.IllegalStateException: Toolkit not initialized
+	at com.sun.javafx.application.PlatformImpl.runLater(PlatformImpl.java:436)
+	at com.sun.javafx.application.PlatformImpl.runLater(PlatformImpl.java:431)
+	at com.sun.javafx.application.PlatformImpl.setPlatformUserAgentStylesheet(PlatformImpl.java:724)
+	at com.sun.javafx.application.PlatformImpl.setDefaultPlatformUserAgentStylesheet(PlatformImpl.java:686)
+	at javafx.scene.control.Control.<clinit>(Control.java:98)
+	... 18 more
+]]></error>
+  </testcase>
+</testsuite>

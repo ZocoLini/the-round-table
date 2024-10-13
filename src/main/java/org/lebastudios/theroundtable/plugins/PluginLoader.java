@@ -1,0 +1,148 @@
+package org.lebastudios.theroundtable.plugins;
+
+import javafx.scene.control.Button;
+import org.lebastudios.theroundtable.TheRoundTableApplication;
+import org.lebastudios.theroundtable.config.data.JSONFile;
+import org.lebastudios.theroundtable.config.data.PluginsConfigData;
+import org.lebastudios.theroundtable.plugins.pluginData.PluginData;
+import org.lebastudios.theroundtable.ui.TreeIconItem;
+
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.*;
+
+public class PluginLoader
+{
+    private static final Map<String, IPlugin> pluginsLoaded = new HashMap<>();
+    private static final Map<String, IPlugin> pluginsInstalled = new HashMap<>();
+
+    public static void loadPlugins()
+    {
+        File[] jars = new File(new JSONFile<>(PluginsConfigData.class).get().pluginsFolder).listFiles((dir, name) -> name.endsWith(".jar"));
+        if (jars == null) return;
+
+        for (File jar : jars)
+        {
+            try
+            {
+                URL jarUrl = jar.toURI().toURL();
+                URLClassLoader classLoader = new URLClassLoader(new URL[]{jarUrl}, PluginLoader.class.getClassLoader());
+
+                ServiceLoader<IPlugin> serviceLoader = ServiceLoader.load(IPlugin.class, classLoader);
+
+                // Load all plugins that can be loaded
+                boolean keepTryingToLoad = true;
+
+                while (keepTryingToLoad)
+                {
+                    keepTryingToLoad = false;
+                    for (IPlugin plugin : serviceLoader)
+                    {
+                        var pluginData = plugin.getPluginData();
+
+                        pluginsInstalled.put(pluginData.pluginName, plugin);
+
+                        if (pluginsLoaded.containsKey(pluginData.pluginName)) continue;
+                        if (!canBePluginLoaded(plugin)) continue;
+
+                        pluginsLoaded.put(plugin.getPluginData().pluginName, plugin);
+                        keepTryingToLoad = true;
+                        plugin.initialize();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                System.err.println("Error loading plugin: " + jar.getName() + " " + e.getMessage());
+            }
+        }
+    }
+
+    public static boolean canBePluginLoaded(IPlugin plugin)
+    {
+        if (plugin.getPluginData().pluginRequiredCoreVersion
+                .compareTo(TheRoundTableApplication.getAppVersion()) > 0) {return false;}
+
+        if (plugin.getPluginData().pluginDependencies == null) return true;
+
+        for (var dependency : plugin.getPluginData().pluginDependencies)
+        {
+            if (!pluginsLoaded.containsKey(dependency.pluginName)) return false;
+            if (pluginsLoaded.get(dependency.pluginName).getPluginData().pluginVersion
+                    .compareTo(dependency.pluginVersion) < 0) {return false;}
+        }
+
+        return true;
+    }
+
+    public static List<Button> getLeftButtons()
+    {
+        List<Button> buttons = new ArrayList<>();
+        for (IPlugin plugin : pluginsLoaded.values())
+        {
+            buttons.addAll(plugin.getLeftButtons());
+        }
+        return buttons;
+    }
+
+    public static List<Button> getRightButtons()
+    {
+        List<Button> buttons = new ArrayList<>();
+        for (IPlugin plugin : pluginsLoaded.values())
+        {
+            buttons.addAll(plugin.getRightButtons());
+        }
+        return buttons;
+    }
+
+    public static List<TreeIconItem> getSettingsTreeViews()
+    {
+        List<TreeIconItem> items = new ArrayList<>();
+
+        for (IPlugin plugin : pluginsLoaded.values())
+        {
+            var rootTreeItem = plugin.getSettingsRootTreeItem();
+            if (rootTreeItem == null) continue;
+
+            items.add(rootTreeItem);
+        }
+
+        return items;
+    }
+
+    public static List<Object> getRessourcesObjects()
+    {
+        List<Object> classes = new ArrayList<>();
+
+        classes.add(new TheRoundTableApplication());
+        classes.addAll(getLoadedPlugins());
+
+        return classes;
+    }
+
+    public static Collection<IPlugin> getLoadedPlugins()
+    {
+        return pluginsLoaded.values();
+    }
+
+    public static Collection<IPlugin> getInstalledPlugins()
+    {
+        return pluginsInstalled.values();
+    }
+
+    public static void removePlugin(PluginData pluginData)
+    {
+        pluginsInstalled.remove(pluginData.pluginName);
+    }
+
+    public static boolean isPluginInstalled(PluginData pluginData)
+    {
+        return pluginsInstalled.containsKey(pluginData.pluginName);
+    }
+
+    public static boolean isPluginLoaded(PluginData pluginData)
+    {
+        return pluginsLoaded.containsKey(pluginData.pluginName);
+    }
+}
