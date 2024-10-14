@@ -99,7 +99,7 @@ public class UsersConfigPaneController extends SettingsPaneController
 
         });
         
-        IconView icon = new IconView("account.png");
+        IconView icon = new IconView(account.getIconName());
         root.getChildren().add(icon);
         
         VBox info = new VBox();

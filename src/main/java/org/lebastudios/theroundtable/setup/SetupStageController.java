@@ -26,10 +26,10 @@ public class SetupStageController
             new SettingsPaneWrapper("databaseConfigPane.fxml"),
     };
     private static final Node[] setupPaneTitles = {
-            new TitleBuilder(LangFileLoader.getTranslation("setup.title.adminconfig"), "").build(),
-            new TitleBuilder(LangFileLoader.getTranslation("setup.title.establishmentconfig"), "").build(),
-            new TitleBuilder(LangFileLoader.getTranslation("setup.title.printersconfig"), "").build(),
-            new TitleBuilder(LangFileLoader.getTranslation("setup.title.databaseconfig"), "").build(),
+            new TitleBuilder(LangFileLoader.getTranslation("setup.title.adminconfig"), "admin-user.png").build(),
+            new TitleBuilder(LangFileLoader.getTranslation("setup.title.establishmentconfig"), "establishment.png").build(),
+            new TitleBuilder(LangFileLoader.getTranslation("setup.title.printersconfig"), "printer.png").build(),
+            new TitleBuilder(LangFileLoader.getTranslation("setup.title.databaseconfig"), "database.png").build(),
     };
     private int currentPane = -1;
 

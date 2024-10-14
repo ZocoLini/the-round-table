@@ -26,7 +26,7 @@ public class AccountBoxController
     public void initialize()
     {
         accountName.setText(account.getName());
-        accountIcon.setIconName("account.png");
+        accountIcon.setIconName(account.getIconName());
     }
     
     public void setOnAction(BiConsumer<AccountBoxController, Node> action)

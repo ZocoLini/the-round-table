@@ -69,6 +69,7 @@ public class AccountSetupPaneController extends SetupPaneController
             return false;
         }
         
+        errorLabel.setText("");
         return true;
     }
 }

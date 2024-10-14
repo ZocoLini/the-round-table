@@ -54,6 +54,18 @@ public class Account
         return LangFileLoader.getTranslation("enum.accounttype." + type.name().toLowerCase());
     }
     
+    public String getIconName() {
+        return getIconName(type);
+    }
+    
+    public static String getIconName(AccountType type) {
+        return switch (type) 
+        {
+            case ROOT, ADMIN -> "admin-user.png";
+            default -> "user.png";
+        };
+    }
+    
     public enum AccountType
     {
         ROOT,

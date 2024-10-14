@@ -1,5 +1,6 @@
 package org.lebastudios.theroundtable.ui;
 
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 
@@ -7,8 +8,10 @@ public class TitleBuilder
 {
     private String iconName;
     private String text;
-    private String weight = "normal";
-    private int size = 23;
+    private String weight = "bold";
+    private int textSize = 18;
+    private int iconSize = 50;
+    private int iconGap = 10;
     
     public TitleBuilder(String text, String iconName)
     {
@@ -44,16 +47,33 @@ public class TitleBuilder
         return this;
     }
 
-    public TitleBuilder setSize(int size)
+    public TitleBuilder setTextSize(int textSize)
     {
-        this.size = size;
+        this.textSize = textSize;
         return this;
     }
-
+    
+    public TitleBuilder setIconSize(int iconSize)
+    {
+        this.iconSize = iconSize;
+        return this;
+    }
+    
+    public TitleBuilder setIconGap(int iconGap)
+    {
+        this.iconGap = iconGap;
+        return this;
+    }
+    
     public Node build()
     {
-        Label label = new Label(text, new IconView(iconName));
-        label.setStyle(String.format("-fx-font-weight: %s; -fx-font-size: %d", weight, size));
+        IconView icon = new IconView(iconName);
+        icon.setIconSize(iconSize);
+        
+        Label label = new Label(text, icon);
+        label.graphicTextGapProperty().set(iconGap);
+        label.setStyle(String.format("-fx-font-weight: %s; -fx-font-size: %d", weight, textSize));
+        label.setPadding(new Insets(10, 0, 10, 0));
         return label;
     }
 }

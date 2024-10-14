@@ -83,7 +83,7 @@ public class ConfigStageController
         {
             generalConfigSection.getChildren().add(
                     new TreeIconItem(LangFileLoader.getTranslation("word.account"),
-                            "account.png",
+                            "user.png",
                             () -> loadFXML("accountConfigPane.fxml"))
             );
             
