@@ -3,10 +3,11 @@ package org.lebastudios.theroundtable.setup;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
@@ -14,6 +15,7 @@ import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.SettingsData;
 import org.lebastudios.theroundtable.language.LangBundleLoader;
 import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.ui.TitleBuilder;
 
 public class SetupStageController
 {
@@ -23,15 +25,15 @@ public class SetupStageController
             new SettingsPaneWrapper("printersConfigPane.fxml"),
             new SettingsPaneWrapper("databaseConfigPane.fxml"),
     };
-    private static final String[] setupPaneTitles = {
-            LangFileLoader.getTranslation("setup.title.adminconfig"),
-            LangFileLoader.getTranslation("setup.title.establishmentconfig"),
-            LangFileLoader.getTranslation("setup.title.printersconfig"),
-            LangFileLoader.getTranslation("setup.title.databaseconfig"),
+    private static final Node[] setupPaneTitles = {
+            new TitleBuilder(LangFileLoader.getTranslation("setup.title.adminconfig"), "").build(),
+            new TitleBuilder(LangFileLoader.getTranslation("setup.title.establishmentconfig"), "").build(),
+            new TitleBuilder(LangFileLoader.getTranslation("setup.title.printersconfig"), "").build(),
+            new TitleBuilder(LangFileLoader.getTranslation("setup.title.databaseconfig"), "").build(),
     };
     private int currentPane = -1;
 
-    @FXML private Label titleLabel;
+    public BorderPane root;
     @FXML private Button backButton;
     @FXML private Button nextButton;
     @FXML private ScrollPane mainPane;
@@ -103,6 +105,6 @@ public class SetupStageController
         }
 
         mainPane.setContent(setupPanes[currentPane].getRoot());
-        titleLabel.setText(setupPaneTitles[currentPane]);
+        root.setTop(setupPaneTitles[currentPane]);
     }
 }
