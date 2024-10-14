@@ -15,8 +15,6 @@ import org.controlsfx.control.TaskProgressView;
 import org.controlsfx.control.action.Action;
 import org.lebastudios.theroundtable.accounts.AccountManager;
 import org.lebastudios.theroundtable.config.ConfigStageController;
-import org.lebastudios.theroundtable.config.data.JSONFile;
-import org.lebastudios.theroundtable.config.data.PreferencesConfigData;
 import org.lebastudios.theroundtable.language.LangBundleLoader;
 import org.lebastudios.theroundtable.language.LangFileLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
@@ -51,24 +49,12 @@ public class MainStageController
     @SneakyThrows
     public void initialize()
     {
-        Thread loadingPlugins = new Thread(PluginLoader::loadPlugins);
-        Thread loadLang = new Thread(() ->
-                LangFileLoader.loadLang(
-                        new JSONFile<>(PreferencesConfigData.class).get().langauge,
-                        System.getProperty("user.country")
-                )
-        );
-
-        loadingPlugins.start();
-        loadLang.start();
+        PluginLoader.loadPlugins();
         
         pluginsButton.setDisable(!AccountManager.getInstance().isAccountAdmin());
         
         leftButtons.getChildren().addAll(PluginLoader.getLeftButtons());
         rightButtons.getChildren().addAll(PluginLoader.getRightButtons());
-        
-        loadingPlugins.join();
-        loadLang.join();
     }
 
     @SneakyThrows

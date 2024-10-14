@@ -3,9 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="root" prefHeight="400.0" prefWidth="600.0" spacing="15" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lebastudios.theroundtable.setup.AccountSetupPaneController">
+<VBox fx:id="root" prefHeight="400.0" prefWidth="600.0" spacing="15" xmlns="http://javafx.com/javafx/17.0.12" 
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lebastudios.theroundtable.setup.AccountSetupPaneController">
     
-    <HBox>
+    <HBox alignment="CENTER_LEFT" spacing="15">
         <Label maxWidth="Infinity" text="Password:" HBox.hgrow="ALWAYS" />
         <PasswordField fx:id="passwordField" promptText="Password" />
     </HBox>

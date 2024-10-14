@@ -35,10 +35,14 @@ word.printers,Printers,Impresoras
 phrase.unknownproduct,Others,Otros
 textblock.needtoclosethecashregister,You need to close the cash register before quit.,Necesitas cerrar caja antes de poder salir de la aplicación.
 word.account,Account,Cuenta
-textblock.closingsetup,If you close this window it will open the next time you start the application. Continue?,Si cierras esta ventana esta se abrirá la próxima vez que inicies la aplicación. ¿Contonuar?
+textblock.closingsetup,If you close this window it will open the next time you start the application. Continue?,Si cierras esta ventana esta se abrirá la próxima vez que inicies la aplicación. ¿Continuar?
 word.users,Users,Usuarios
 enum.accounttype.root,Root,Root
 enum.accounttype.admin,Administrator,Administrador
 enum.accounttype.manager,Manager,Manager
 enum.accounttype.cashier,Cashier,Cajero
 enum.accounttype.accountant,Accountant,Contable
+setup.title.adminconfig,Main administrator,Administrador principal
+setup.title.establishmentconfig,Establishment,Establecimiento
+setup.title.printersconfig,Printers,Impresoras
+setup.title.databaseconfig,Database,Base de datos

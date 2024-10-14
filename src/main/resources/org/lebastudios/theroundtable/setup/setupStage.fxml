@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import org.lebastudios.theroundtable.ui.IconButton?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.ScrollPane?>
+<?import org.lebastudios.theroundtable.ui.IconButton?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.lebastudios.theroundtable.setup.SetupStageController"
-            prefHeight="400.0" prefWidth="700.0">
+            prefHeight="400.0" prefWidth="550.0">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10" />
     </padding>
+    
+    <top>
+        <Label fx:id="titleLabel" style="-fx-font-weight: bold; -fx-font-size: 23">
+            <BorderPane.margin>
+                <Insets left="30" />
+            </BorderPane.margin>
+        </Label>
+    </top>
     
     <center>
         <ScrollPane fitToHeight="true" fitToWidth="true" hvalue="Infinity"
@@ -29,7 +35,7 @@
     <bottom>
         <HBox alignment="CENTER_RIGHT" spacing="10">
             <Button prefWidth="100" fx:id="backButton" onAction="#backButtonAction" text="%word.pervious" />
-            <Button prefWidth="100" fx:id="nextButton" onAction="#nextButtonAction" text="%word.next" />
+            <Button defaultButton="true" prefWidth="100" fx:id="nextButton" onAction="#nextButtonAction" text="%word.next" />
         </HBox>
     </bottom>
 </BorderPane>

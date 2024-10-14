@@ -12,6 +12,7 @@ import org.lebastudios.theroundtable.apparience.ImageLoader;
 import org.lebastudios.theroundtable.apparience.ThemeLoader;
 import org.lebastudios.theroundtable.config.data.CashRegisterStateData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
+import org.lebastudios.theroundtable.config.data.PreferencesConfigData;
 import org.lebastudios.theroundtable.dialogs.ConfirmationTextDialogController;
 import org.lebastudios.theroundtable.dialogs.InformationTextDialogController;
 import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
@@ -70,6 +71,11 @@ public class TheRoundTableApplication extends Application
     @Override
     public void start(Stage stage)
     {
+        LangFileLoader.loadLang(
+                new JSONFile<>(PreferencesConfigData.class).get().langauge,
+                System.getProperty("user.country")
+        );
+        
         if (SetupStageController.checkIfStart())
         {
             showAndWaitInStage(SetupStageController.getParentNode(), "Setup", true, s ->
