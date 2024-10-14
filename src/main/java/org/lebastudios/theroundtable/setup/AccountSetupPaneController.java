@@ -12,6 +12,7 @@ import org.lebastudios.theroundtable.database.entities.Account;
 
 public class AccountSetupPaneController extends SetupPaneController
 {
+    @FXML private TextField usernameField;
     @FXML private Label errorLabel;
     @FXML private TextField passwordField;
     @FXML private TextField confirmPasswordField;
@@ -36,7 +37,7 @@ public class AccountSetupPaneController extends SetupPaneController
     @Override
     public void apply()
     {
-        Account account = new Account("Administrator", passwordField.getText(), Account.AccountType.ROOT);
+        Account account = new Account(usernameField.getText(), passwordField.getText(), Account.AccountType.ROOT);
 
         Database.getInstance().connectTransaction(session ->
         {
@@ -47,6 +48,13 @@ public class AccountSetupPaneController extends SetupPaneController
     @Override
     public boolean validateData()
     {
+        if (usernameField.getText().isBlank() || usernameField.getText().length() < 3) 
+        {
+            errorLabel.setText("Username must be at least 3 characters long.");
+            UIEffects.shakeNode(usernameField);
+            return false;
+        }
+        
         if (passwordField.getText().isBlank() || passwordField.getText().length() < 8) 
         {
             errorLabel.setText("Password must be at least 8 characters long.");

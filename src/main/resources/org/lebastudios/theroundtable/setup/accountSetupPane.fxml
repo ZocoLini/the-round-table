@@ -7,13 +7,18 @@
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lebastudios.theroundtable.setup.AccountSetupPaneController">
     
     <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label maxWidth="Infinity" text="Username:" HBox.hgrow="ALWAYS" />
+        <TextField fx:id="usernameField" />
+    </HBox>
+    
+    <HBox alignment="CENTER_LEFT" spacing="15">
         <Label maxWidth="Infinity" text="Password:" HBox.hgrow="ALWAYS" />
-        <PasswordField fx:id="passwordField" promptText="Password" />
+        <PasswordField fx:id="passwordField" />
     </HBox>
     
     <HBox alignment="CENTER_LEFT" spacing="15">
         <Label maxWidth="Infinity" text="Confirm Password:" HBox.hgrow="ALWAYS" />
-        <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password" />
+        <PasswordField fx:id="confirmPasswordField" />
     </HBox>
     
     <Label fx:id="errorLabel" style="-fx-text-fill: red; -fx-font-style: italic" wrapText="true" />
