@@ -111,7 +111,12 @@ public class TheRoundTableApplication extends Application
         
         TaskManager.getInstance().startNewTaskWithProgressBar(createCheckingForUpdateTask());
         
-        stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, this::checkIfTheCashReghisterIsClosed);
+        stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, (windowEvent ->
+        {
+            if (windowEvent.isConsumed()) return; 
+            
+            checkIfTheCashReghisterIsClosed(windowEvent);
+        }));
     }
 
     private AppTask createCheckingForUpdateTask()

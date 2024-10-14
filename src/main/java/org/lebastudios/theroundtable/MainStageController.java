@@ -15,6 +15,9 @@ import org.controlsfx.control.TaskProgressView;
 import org.controlsfx.control.action.Action;
 import org.lebastudios.theroundtable.accounts.AccountManager;
 import org.lebastudios.theroundtable.config.ConfigStageController;
+import org.lebastudios.theroundtable.config.data.DatabaseConfigData;
+import org.lebastudios.theroundtable.config.data.JSONFile;
+import org.lebastudios.theroundtable.database.BackupDB;
 import org.lebastudios.theroundtable.language.LangBundleLoader;
 import org.lebastudios.theroundtable.language.LangFileLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
@@ -50,6 +53,8 @@ public class MainStageController
     public void initialize()
     {
         PluginLoader.loadPlugins();
+        
+        if (new JSONFile<>(DatabaseConfigData.class).get().enableBackups) BackupDB.getInstance().initialize();
         
         pluginsButton.setDisable(!AccountManager.getInstance().isAccountAdmin());
         
