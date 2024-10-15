@@ -17,6 +17,7 @@ import org.lebastudios.theroundtable.dialogs.ConfirmationTextDialogController;
 import org.lebastudios.theroundtable.dialogs.InformationTextDialogController;
 import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.plugins.PluginLoader;
 import org.lebastudios.theroundtable.setup.SetupStageController;
 import org.lebastudios.theroundtable.ui.TaskManager;
 import org.lebastudios.theroundtable.updates.UpdateAppJar;
@@ -71,6 +72,7 @@ public class TheRoundTableApplication extends Application
     @Override
     public void start(Stage stage)
     {
+        PluginLoader.loadPlugins();
         LangFileLoader.loadLang(
                 new JSONFile<>(PreferencesConfigData.class).get().langauge,
                 System.getProperty("user.country")

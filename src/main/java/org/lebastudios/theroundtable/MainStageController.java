@@ -52,8 +52,6 @@ public class MainStageController
     @SneakyThrows
     public void initialize()
     {
-        PluginLoader.loadPlugins();
-        
         if (new JSONFile<>(DatabaseConfigData.class).get().enableBackups) BackupDB.getInstance().initialize();
         
         pluginsButton.setDisable(!AccountManager.getInstance().isAccountAdmin());
