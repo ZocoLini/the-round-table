@@ -10,22 +10,22 @@
     </padding>
     
     <HBox alignment="CENTER_LEFT" spacing="25">
-        <Label maxWidth="Infinity" text="Username:" HBox.hgrow="ALWAYS" />
+        <Label maxWidth="Infinity" text="%word.name" HBox.hgrow="ALWAYS" />
         <TextField fx:id="usernameField" />
     </HBox>
     
     <HBox alignment="CENTER_LEFT" spacing="25">
-        <Label maxWidth="Infinity" text="Password:" HBox.hgrow="ALWAYS" />
+        <Label maxWidth="Infinity" text="%word.password" HBox.hgrow="ALWAYS" />
         <PasswordField fx:id="passwordField" />
     </HBox>
     
     <HBox alignment="CENTER_LEFT" spacing="25">
-        <Label maxWidth="Infinity" text="Confirm Password:" HBox.hgrow="ALWAYS" />
+        <Label maxWidth="Infinity" text="%phrase.confirmpassword" HBox.hgrow="ALWAYS" />
         <PasswordField fx:id="confirmPasswordField" />
     </HBox>
     
     <HBox alignment="CENTER_LEFT" spacing="25">
-        <Label maxWidth="Infinity" text="Tipo de cuenta:" HBox.hgrow="ALWAYS" />
+        <Label maxWidth="Infinity" text="%phrase.accountype" HBox.hgrow="ALWAYS" />
         <ChoiceBox fx:id="accountTypeChoiceBox" prefWidth="170" />
     </HBox>
     

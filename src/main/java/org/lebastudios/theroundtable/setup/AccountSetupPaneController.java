@@ -6,9 +6,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import lombok.SneakyThrows;
+import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Account;
+import org.lebastudios.theroundtable.language.LangBundleLoader;
+import org.lebastudios.theroundtable.language.LangFileLoader;
 
 public class AccountSetupPaneController extends SetupPaneController
 {
@@ -21,6 +24,7 @@ public class AccountSetupPaneController extends SetupPaneController
     public static SetupPaneController loadAttachedNode()
     {
         FXMLLoader loader = new FXMLLoader(AccountSetupPaneController.class.getResource("accountSetupPane.fxml"));
+        LangBundleLoader.addLangBundle(loader, Launcher.class);
         Node node = loader.load();
         
         SetupPaneController controller = loader.getController();
@@ -50,21 +54,21 @@ public class AccountSetupPaneController extends SetupPaneController
     {
         if (usernameField.getText().isBlank() || usernameField.getText().length() < 3) 
         {
-            errorLabel.setText("Username must be at least 3 characters long.");
+            errorLabel.setText(LangFileLoader.getTranslation("setup.error.invalidname"));
             UIEffects.shakeNode(usernameField);
             return false;
         }
         
         if (passwordField.getText().isBlank() || passwordField.getText().length() < 8) 
         {
-            errorLabel.setText("Password must be at least 8 characters long.");
+            errorLabel.setText(LangFileLoader.getTranslation("setup.error.invalidpassword"));
             UIEffects.shakeNode(passwordField);
             return false;
         }
         
         if (!passwordField.getText().equals(confirmPasswordField.getText()))
         {
-            errorLabel.setText("Passwords do not match.");
+            errorLabel.setText(LangFileLoader.getTranslation("setup.error.passwordmatch"));
             UIEffects.shakeNode(confirmPasswordField);
             return false;
         }

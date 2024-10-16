@@ -56,8 +56,8 @@ public class TheRoundTableApplication extends Application
 
         String enviroment = System.getenv("ENVIRONMENT");
         if (enviroment != null 
-                && enviroment.equals("dev")) userDirectory = System.getProperty("user.home") + "/" + ".round-table-dev";
-        else userDirectory = System.getProperty("user.home") + "/.round-table";
+                && enviroment.equals("dev")) userDirectory = System.getProperty("user.home") + File.separator + ".round-table-dev";
+        else userDirectory = System.getProperty("user.home") + File.separator + ".round-table";
         
         return userDirectory;
     }
