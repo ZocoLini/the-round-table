@@ -43,9 +43,26 @@ public class Account
     @Enumerated(EnumType.STRING)
     private AccountType type = AccountType.CASHIER;
     
+    @Column(name = "CHANGE_PASSWORD_ON_NEXT_LOGIN", nullable = false)
+    private boolean changePasswordOnNextLogin = false;
+    
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE) @ToString.Exclude
     private Set<Receipt> receipts;
 
+    public boolean hasAuthorityOver(Account account)
+    {
+        if (this.id == account.id) return true;
+        
+        return switch (type) 
+        {
+            case ROOT -> true;
+            case ADMIN -> account.getType() != AccountType.ROOT && account.getType() != AccountType.ADMIN;
+            case MANAGER -> account.getType() != AccountType.ROOT 
+                    && account.getType() != AccountType.ADMIN && account.getType() != AccountType.MANAGER;
+            case CASHIER, ACCOUNTANT -> false;
+        };
+    }
+    
     public String getTypeString() {
         return getTypeString(type);
     }

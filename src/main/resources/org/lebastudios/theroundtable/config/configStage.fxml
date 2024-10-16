@@ -13,7 +13,7 @@
 
         <Separator orientation="VERTICAL"/>
 
-        <VBox VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" spacing="15">
+        <VBox VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
             <ScrollPane fitToWidth="true" fitToHeight="true" pannable="true" VBox.vgrow="ALWAYS"
                         minWidth="625" minHeight="400" fx:id="mainPane" />
 

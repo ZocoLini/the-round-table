@@ -11,6 +11,7 @@
     -color-base-7: rgb(58, 58, 60);
     -color-base-8: rgb(44, 44, 46);
     -color-base-9: rgb(28, 28, 30);
+    -color-base-9: rgb(28, 28, 30);
     -color-accent-0: #c2e0ff;
     -color-accent-1: #9dceff;
     -color-accent-2: #78bbff;
@@ -5420,4 +5421,12 @@ Add support for NO_HEADER tweak in tables .table-view.no-header > .column-header
     -fx-padding: 6px 12px 6px 12px;
     -fx-opacity: 0.85;
     -fx-effect: dropshadow(three-pass-box, -color-shadow-default, 8px, 0.6, 0, 2);
+}
+
+.border-round
+{
+    -fx-background-color: -color-border-default, -color-bg-default;
+    -fx-background-insets: 0, 1px;
+    -fx-background-radius: 6px, 5px;
+    -fx-graphic-text-gap: 6px;
 }

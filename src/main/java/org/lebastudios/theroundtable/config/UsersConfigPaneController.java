@@ -1,34 +1,54 @@
 package org.lebastudios.theroundtable.config;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.lebastudios.theroundtable.accounts.AccountCreatorController;
 import org.lebastudios.theroundtable.accounts.AccountManager;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Account;
 import org.lebastudios.theroundtable.dialogs.InformationTextDialogController;
+import org.lebastudios.theroundtable.ui.IconButton;
 import org.lebastudios.theroundtable.ui.IconView;
+
+import java.util.Arrays;
 
 public class UsersConfigPaneController extends SettingsPaneController
 {
-    public VBox usersContainer;
+    @FXML private IconButton deleteAccount;
+    @FXML private ComboBox<String> accountType;
+    @FXML private CheckBox changePasswordOnNextLogin;
+    @FXML private PasswordField passwordField;
+    @FXML private PasswordField confirmPasswordField;
+    @FXML private VBox usersContainer;
+    @FXML private IconView userIcon;
+    @FXML private Label userName;
+    @FXML private StackPane userView;
     
+    private Account selectedAccount;
+
     @Override
     public void apply()
     {
-        
     }
 
     @Override
     public void initialize()
     {
+        userIcon.setIconSize(100);
         usersContainer.getChildren().clear();
+        
+        accountType.getItems().clear();
+        var accountTypes = Account.AccountType.values();
+        for (int i = 1; i < accountTypes.length; i++) 
+        {
+            accountType.getItems().add(Account.getTypeString(accountTypes[i]));
+        }
         
         Database.getInstance().connectQuery(session ->
         {
@@ -89,6 +109,8 @@ public class UsersConfigPaneController extends SettingsPaneController
         root.getStyleClass().add("button");
         root.setSpacing(10);
 
+        root.setOnMouseClicked(e -> onUserClicked(account));
+        
         ContextMenu contextMenu = new ContextMenu();
         final var menuItem = new MenuItem("Delete");
         menuItem.setOnAction(event -> removeUser(account));
@@ -112,5 +134,30 @@ public class UsersConfigPaneController extends SettingsPaneController
         info.getChildren().add(new Label(account.getTypeString()));
         
         return root;
+    }
+    
+    private void onUserClicked(Account account)
+    {
+        this.selectedAccount = account;
+        
+        deleteAccount.setDisable(account.getType() == Account.AccountType.ROOT);
+        
+        userIcon.setIconName(account.getIconName());
+        userName.setText(account.getName());
+        
+        accountType.setValue(account.getTypeString());
+        accountType.setDisable(account.getType() == Account.AccountType.ROOT);
+        
+        passwordField.setText("abc123.");
+        confirmPasswordField.setText("abc123.");
+
+        changePasswordOnNextLogin.setSelected(account.isChangePasswordOnNextLogin());
+        
+        userView.setVisible(true);
+    }
+
+    public void deleteUser(ActionEvent actionEvent) 
+    {
+        
     }
 }

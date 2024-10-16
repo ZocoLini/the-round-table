@@ -157,18 +157,35 @@ public class ConfigStageController
     @FXML
     private void apply()
     {
+        if (currentPaneController == null)
+        {
+            return;
+        }
+        
         currentPaneController.apply();
     }
 
     @FXML
     private void cancel()
     {
+        if (currentPaneController == null) 
+        {
+            ((Stage) mainPane.getScene().getWindow()).close();
+            return;
+        }
+        
         currentPaneController.cancel();
     }
 
     @FXML
     private void accept()
     {
+        if (currentPaneController == null)
+        {
+            cancel();
+            return;
+        }
+        
         currentPaneController.acept();
     }
 }

@@ -1,23 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<HBox fx:id="root" spacing="15" xmlns="http://javafx.com/javafx/17.0.12" 
+<?import org.lebastudios.theroundtable.ui.IconButton?>
+<?import org.lebastudios.theroundtable.ui.IconView?>
+<HBox fx:id="root" spacing="15" xmlns="http://javafx.com/javafx/17.0.12"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lebastudios.theroundtable.config.UsersConfigPaneController">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
-    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true">
-        <VBox fx:id="usersContainer" spacing="15">
+    <StackPane styleClass="border-round">
+        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true">
+            <VBox fx:id="usersContainer" spacing="5">
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                </padding>
+            </VBox>
+        </ScrollPane>
+        <IconButton iconName="add-user.png" StackPane.alignment="BOTTOM_RIGHT" onAction="#addUser">
+            <StackPane.margin>
+                <Insets bottom="5" right="5"/>
+            </StackPane.margin>
+        </IconButton>
+    </StackPane>
+
+    <StackPane maxWidth="Infinity" HBox.hgrow="ALWAYS" fx:id="userView" visible="false">
+        <VBox maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="border-round" spacing="5">
             <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                <Insets top="10" left="10" right="10" bottom="10"/>
             </padding>
+            <VBox alignment="TOP_CENTER">
+                <IconView fx:id="userIcon" />
+                <Label style="-fx-font-size: 16" fx:id="userName" />
+            </VBox>
+            <VBox spacing="5" VBox.vgrow="ALWAYS" maxHeight="Infinity" alignment="CENTER">
+                <HBox alignment="CENTER_LEFT">
+                    <Label HBox.hgrow="ALWAYS" maxWidth="Infinity" text="%word.password" />
+                    <PasswordField  prefWidth="150" fx:id="passwordField" />
+                </HBox>
+                <HBox alignment="CENTER_LEFT">
+                    <Label HBox.hgrow="ALWAYS" maxWidth="Infinity" text="%phrase.confirmpassword" />
+                    <PasswordField prefWidth="150" fx:id="confirmPasswordField" />
+                </HBox>
+                <HBox alignment="CENTER_LEFT">
+                    <Label HBox.hgrow="ALWAYS" maxWidth="Infinity" text="%phrase.accountype" />
+                    <ComboBox prefWidth="150" fx:id="accountType" />
+                </HBox>
+            </VBox>
+            <CheckBox text="Change password on next login" fx:id="changePasswordOnNextLogin" />
         </VBox>
-    </ScrollPane>
-    
-    <VBox spacing="15">
-        <Button onAction="#addUser" text="%phrase.adduser" />
-    </VBox>
+        <IconButton StackPane.alignment="TOP_RIGHT" fx:id="deleteAccount" iconName="delete.png" onAction="#deleteUser">
+            <StackPane.margin>
+                <Insets top="5" right="5" />
+            </StackPane.margin>
+        </IconButton>
+    </StackPane>
 </HBox>
