@@ -17,6 +17,7 @@ import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Account;
+import org.lebastudios.theroundtable.events.UserEvents;
 import org.lebastudios.theroundtable.language.LangBundleLoader;
 
 import java.util.List;
@@ -86,6 +87,7 @@ public class AccountStageController
         }
 
         AccountManager.getInstance().setCurrentLogged(accountSelected);
+        UserEvents.OnAccountLogIn.invoke(accountSelected);
         ((Stage) root.getScene().getWindow()).close();
     }
 

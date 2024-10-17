@@ -29,7 +29,7 @@ public class PluginsStageController
         LangBundleLoader.addLangBundle(loader, Launcher.class);
         Parent root = loader.load();
 
-        TheRoundTableApplication.showAndWaitInStage(root, "Plugins", true);
+        TheRoundTableApplication.showAndWaitInStage(root, "Plugins");
     }
 
     public void initialize()

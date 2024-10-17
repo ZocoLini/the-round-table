@@ -72,6 +72,7 @@ public class TheRoundTableApplication extends Application
     @Override
     public void start(Stage stage)
     {
+        // TODO: loadPlugins() shold be able to load the translations.
         PluginLoader.loadPlugins();
         LangFileLoader.loadLang(
                 new JSONFile<>(PreferencesConfigData.class).get().langauge,
@@ -152,6 +153,10 @@ public class TheRoundTableApplication extends Application
         }
     }
     
+    // TODO: Refactor and made different clases using the builder pattern
+    //  Scene Builder
+    //  Stage Builder
+    
     public static Scene createScene(Parent root)
     {
         return ThemeLoader.addActualTheme(new Scene(root));
@@ -163,6 +168,7 @@ public class TheRoundTableApplication extends Application
         stage.setTitle(title);
         stage.setResizable(resizeable);
         stage.initModality(Modality.APPLICATION_MODAL);
+        stage.getIcons().add(ImageLoader.getIcon("the-round-table-logo.png"));
         stage.setScene(createScene(root));
         
         stageConsumer.accept(stage);
