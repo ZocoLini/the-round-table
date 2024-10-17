@@ -9,7 +9,6 @@ import javafx.stage.WindowEvent;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.accounts.AccountStageController;
 import org.lebastudios.theroundtable.apparience.ImageLoader;
-import org.lebastudios.theroundtable.apparience.ThemeLoader;
 import org.lebastudios.theroundtable.config.data.CashRegisterStateData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PreferencesConfigData;
@@ -19,6 +18,8 @@ import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 import org.lebastudios.theroundtable.language.LangFileLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 import org.lebastudios.theroundtable.setup.SetupStageController;
+import org.lebastudios.theroundtable.ui.SceneBuilder;
+import org.lebastudios.theroundtable.ui.StageBuilder;
 import org.lebastudios.theroundtable.ui.TaskManager;
 import org.lebastudios.theroundtable.updates.UpdateAppJar;
 
@@ -159,17 +160,17 @@ public class TheRoundTableApplication extends Application
     
     public static Scene createScene(Parent root)
     {
-        return ThemeLoader.addActualTheme(new Scene(root));
+        return new SceneBuilder(root).build();
     }
     
     public static Stage showAndWaitInStage(Parent root, String title, boolean resizeable, Consumer<Stage> stageConsumer)
     {
-        Stage stage = new Stage();
-        stage.setTitle(title);
-        stage.setResizable(resizeable);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.getIcons().add(ImageLoader.getIcon("the-round-table-logo.png"));
-        stage.setScene(createScene(root));
+        Stage stage = new StageBuilder(root)
+                .setTitle(title)
+                .setModality(Modality.APPLICATION_MODAL)
+                .setResizeable(resizeable)
+                .setIconName("the-round-table-logo.png")
+                .build();
         
         stageConsumer.accept(stage);
         
