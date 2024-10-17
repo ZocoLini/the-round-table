@@ -17,6 +17,7 @@ import org.lebastudios.theroundtable.ui.IconButton;
 import org.lebastudios.theroundtable.ui.IconView;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class UsersConfigPaneController extends SettingsPaneController
 {
@@ -41,7 +42,6 @@ public class UsersConfigPaneController extends SettingsPaneController
     public void initialize()
     {
         userIcon.setIconSize(100);
-        usersContainer.getChildren().clear();
         
         accountType.getItems().clear();
         var accountTypes = Account.AccountType.values();
@@ -49,11 +49,26 @@ public class UsersConfigPaneController extends SettingsPaneController
         {
             accountType.getItems().add(Account.getTypeString(accountTypes[i]));
         }
+
+        reloadUsersContainer();
+    }
+
+    private void reloadUsersContainer()
+    {
+        usersContainer.getChildren().clear();
         
         Database.getInstance().connectQuery(session ->
         {
             for (Account account : session.createQuery("from Account", Account.class).list())
             {
+                if (account.isDeleted()) continue;
+                
+                final var currentLogged = AccountManager.getInstance().getCurrentLogged();
+                
+                if (account.getType() != Account.AccountType.ROOT &&
+                        Objects.equals(account.getId(), currentLogged.getId())) continue;
+                if (!currentLogged.hasAuthorityOver(account)) continue;
+                
                 usersContainer.getChildren().add(createUserNode(account));
             }
         });
@@ -69,8 +84,11 @@ public class UsersConfigPaneController extends SettingsPaneController
         }
     }
 
-    public void removeUser(Account selectedAccount) 
+    @FXML 
+    private void removeUser() 
     {
+        if (selectedAccount == null) return;
+        
         if (selectedAccount.getType() == Account.AccountType.ROOT)
         {
             InformationTextDialogController.loadAttachedNode("The root account cannot be deleted.");
@@ -99,7 +117,8 @@ public class UsersConfigPaneController extends SettingsPaneController
             }
         });
         
-        initialize();
+        userView.setVisible(false);
+        reloadUsersContainer();
     }
     
     private Node createUserNode(Account account)
@@ -110,16 +129,6 @@ public class UsersConfigPaneController extends SettingsPaneController
         root.setSpacing(10);
 
         root.setOnMouseClicked(e -> onUserClicked(account));
-        
-        ContextMenu contextMenu = new ContextMenu();
-        final var menuItem = new MenuItem("Delete");
-        menuItem.setOnAction(event -> removeUser(account));
-        contextMenu.getItems().add(menuItem);
-        root.setOnContextMenuRequested(event ->
-        {
-            contextMenu.show(root, event.getScreenX(), event.getScreenY());
-
-        });
         
         IconView icon = new IconView(account.getIconName());
         root.getChildren().add(icon);
@@ -154,10 +163,5 @@ public class UsersConfigPaneController extends SettingsPaneController
         changePasswordOnNextLogin.setSelected(account.isChangePasswordOnNextLogin());
         
         userView.setVisible(true);
-    }
-
-    public void deleteUser(ActionEvent actionEvent) 
-    {
-        
     }
 }

@@ -32,7 +32,10 @@ public class AccountCreatorController
         
         TheRoundTableApplication.showAndWaitInStage(loader.load(), "Create Account");
         
-        return account;
+        Account acc = account;
+        account = null;
+        
+        return acc;
     }
 
     public void initialize()

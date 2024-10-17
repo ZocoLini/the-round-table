@@ -50,7 +50,7 @@
             </VBox>
             <CheckBox text="Change password on next login" fx:id="changePasswordOnNextLogin" />
         </VBox>
-        <IconButton StackPane.alignment="TOP_RIGHT" fx:id="deleteAccount" iconName="delete.png" onAction="#deleteUser">
+        <IconButton StackPane.alignment="TOP_RIGHT" fx:id="deleteAccount" iconName="delete.png" onAction="#removeUser">
             <StackPane.margin>
                 <Insets top="5" right="5" />
             </StackPane.margin>
