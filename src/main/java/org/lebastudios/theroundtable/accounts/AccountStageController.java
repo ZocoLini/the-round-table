@@ -87,7 +87,6 @@ public class AccountStageController
         }
 
         AccountManager.getInstance().setCurrentLogged(accountSelected);
-        UserEvents.OnAccountLogIn.invoke(accountSelected);
         ((Stage) root.getScene().getWindow()).close();
     }
 

@@ -112,9 +112,10 @@ public class MainStageController
         
         // TODO: The settings stage should be reloaded too
         
+        // TODO: Problems with the theme loader
+        
         root.getScene().getWindow().hide();
-
-        UserEvents.OnAccountLogOut.invoke(AccountManager.getInstance().getCurrentLogged());
+        AccountManager.getInstance().logOut();
         
         TheRoundTableApplication.showAndWaitInStage(AccountStageController.getParentNode(), "Login", true, s ->
         {

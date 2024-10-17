@@ -3,8 +3,8 @@ package org.lebastudios.theroundtable.accounts;
 import lombok.Getter;
 import lombok.Setter;
 import org.lebastudios.theroundtable.database.entities.Account;
+import org.lebastudios.theroundtable.events.UserEvents;
 
-@Setter
 @Getter
 public class AccountManager
 {
@@ -41,4 +41,15 @@ public class AccountManager
         return currentLogged == null ? "default" : currentLogged.getName();
     }
 
+    public void setCurrentLogged(Account currentLogged)
+    {
+        this.currentLogged = currentLogged;
+        UserEvents.OnAccountLogIn.invoke(currentLogged);
+    }
+    
+    public void logOut()
+    {
+        UserEvents.OnAccountLogOut.invoke(this.currentLogged);
+        this.currentLogged = null;
+    }
 }
