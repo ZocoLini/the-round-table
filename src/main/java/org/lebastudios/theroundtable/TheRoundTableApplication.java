@@ -154,10 +154,6 @@ public class TheRoundTableApplication extends Application
         }
     }
     
-    // TODO: Refactor and made different clases using the builder pattern
-    //  Scene Builder
-    //  Stage Builder
-    
     public static Scene createScene(Parent root)
     {
         return new SceneBuilder(root).build();

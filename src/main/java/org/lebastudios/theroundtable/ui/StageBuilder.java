@@ -7,8 +7,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.lebastudios.theroundtable.apparience.ImageLoader;
 
-import java.util.function.Consumer;
-
 public class StageBuilder
 {
     private final Scene scene;

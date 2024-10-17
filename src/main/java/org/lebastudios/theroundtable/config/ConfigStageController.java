@@ -14,6 +14,7 @@ import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.accounts.AccountManager;
 import org.lebastudios.theroundtable.apparience.ThemeLoader;
+import org.lebastudios.theroundtable.events.UserEvents;
 import org.lebastudios.theroundtable.language.LangBundleLoader;
 import org.lebastudios.theroundtable.language.LangFileLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
@@ -24,6 +25,15 @@ public class ConfigStageController
 {
     public static ControllableUIObject<ConfigStageController> configStageRoot;
     private static Stage configStage;
+
+    static {
+        UserEvents.OnAccountLogOut.addListener(_ ->
+        {
+            configStage = null;
+            configStageRoot = null;
+        });
+    }
+    
     @FXML private SettingsTreeView configSectionsTreeView;
     @FXML private ScrollPane mainPane;
     private SettingsPaneController currentPaneController;
