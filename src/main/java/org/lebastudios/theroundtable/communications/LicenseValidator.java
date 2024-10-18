@@ -76,7 +76,7 @@ public class LicenseValidator
 
                             Platform.exit();
                         });
-                        
+
                         return null;
                     }
                 }

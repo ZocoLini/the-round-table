@@ -24,7 +24,7 @@ public abstract class SettingsPaneController
     }
 
     public void initialize() {}
-    
+
     public final Node getRoot()
     {
         return root;

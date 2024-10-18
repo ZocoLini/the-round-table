@@ -27,7 +27,8 @@ public class SetupStageController
     };
     private static final Node[] setupPaneTitles = {
             new TitleBuilder(LangFileLoader.getTranslation("setup.title.adminconfig"), "admin-user.png").build(),
-            new TitleBuilder(LangFileLoader.getTranslation("setup.title.establishmentconfig"), "establishment.png").build(),
+            new TitleBuilder(LangFileLoader.getTranslation("setup.title.establishmentconfig"),
+                    "establishment.png").build(),
             new TitleBuilder(LangFileLoader.getTranslation("setup.title.printersconfig"), "printer.png").build(),
             new TitleBuilder(LangFileLoader.getTranslation("setup.title.databaseconfig"), "database.png").build(),
     };
@@ -61,7 +62,7 @@ public class SetupStageController
     private void backButtonAction(ActionEvent actionEvent)
     {
         currentPane--;
-        
+
         onCurrentPaneUpdate();
     }
 
@@ -74,7 +75,7 @@ public class SetupStageController
 
         onCurrentPaneUpdate();
     }
-    
+
     private void onCurrentPaneUpdate()
     {
         backButton.setDisable(currentPane <= 0);

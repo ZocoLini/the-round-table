@@ -43,7 +43,6 @@ public class ImageLoader
         image = loadImage(textureName, ImageType.TEXTURE);
 
         if (image == null) return getTexture("texture-not-found.png");
-        ;
 
         loadedTextures.put(textureName, image);
         return image;

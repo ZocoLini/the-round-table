@@ -13,22 +13,22 @@ import java.util.function.BiConsumer;
 public class AccountBoxController
 {
     @Getter private final Account account;
-    
+
     @FXML private VBox root;
     @FXML private IconView accountIcon;
     @FXML private Label accountName;
-    
+
     public AccountBoxController(Account account)
     {
         this.account = account;
     }
-    
+
     public void initialize()
     {
         accountName.setText(account.getName());
         accountIcon.setIconName(account.getIconName());
     }
-    
+
     public void setOnAction(BiConsumer<AccountBoxController, Node> action)
     {
         root.setOnMouseClicked(_ -> action.accept(this, root));

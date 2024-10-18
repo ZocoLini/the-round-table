@@ -88,7 +88,7 @@ public class Product
     {
         return taxesIncluded ? price.divide(taxes.add(BigDecimal.ONE), 2, RoundingMode.FLOOR) : price;
     }
-    
+
     @Override
     public int hashCode()
     {

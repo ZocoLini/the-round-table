@@ -56,10 +56,11 @@ public class TheRoundTableApplication extends Application
         if (userDirectory != null) return userDirectory;
 
         String enviroment = System.getenv("ENVIRONMENT");
-        if (enviroment != null 
-                && enviroment.equals("dev")) userDirectory = System.getProperty("user.home") + File.separator + ".round-table-dev";
-        else userDirectory = System.getProperty("user.home") + File.separator + ".round-table";
-        
+        if (enviroment != null
+                && enviroment.equals("dev"))
+        {userDirectory = System.getProperty("user.home") + File.separator + ".round-table-dev";}
+        else {userDirectory = System.getProperty("user.home") + File.separator + ".round-table";}
+
         return userDirectory;
     }
 
@@ -79,7 +80,7 @@ public class TheRoundTableApplication extends Application
                 new JSONFile<>(PreferencesConfigData.class).get().langauge,
                 System.getProperty("user.country")
         );
-        
+
         if (SetupStageController.checkIfStart())
         {
             showAndWaitInStage(SetupStageController.getParentNode(), "Setup", true, s ->
@@ -98,7 +99,7 @@ public class TheRoundTableApplication extends Application
                 s.getIcons().add(ImageLoader.getIcon("the-round-table-logo.png"));
             });
         }
-        
+
         showAndWaitInStage(AccountStageController.getParentNode(), "Login", true, s ->
         {
             s.setOnCloseRequest(e -> System.exit(0));
@@ -112,36 +113,37 @@ public class TheRoundTableApplication extends Application
         stage.setMinHeight(480);
         stage.setScene(mainScene);
         stage.show();
-        
+
         TaskManager.getInstance().startNewTaskWithProgressBar(createCheckingForUpdateTask());
-        
+
         stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, (windowEvent ->
         {
-            if (windowEvent.isConsumed()) return; 
-            
+            if (windowEvent.isConsumed()) return;
+
             checkIfTheCashReghisterIsClosed(windowEvent);
         }));
     }
 
     private AppTask createCheckingForUpdateTask()
     {
-        return new AppTask() {
+        return new AppTask()
+        {
             @Override
             protected Void call()
             {
                 updateMessage("Checking for updates...");
 
                 new UpdateAppJar().update();
-                
+
                 return null;
             }
         };
     }
-    
+
     private void checkIfTheCashReghisterIsClosed(WindowEvent event)
     {
         var cashRegisterState = new JSONFile<>(CashRegisterStateData.class).get();
-        if (cashRegisterState.open) 
+        if (cashRegisterState.open)
         {
             InformationTextDialogController.loadAttachedNode(
                     LangFileLoader.getTranslation("textblock.needtoclosethecashregister")
@@ -153,12 +155,12 @@ public class TheRoundTableApplication extends Application
             AppLifeCicleEvents.OnAppCloseRequest.invoke();
         }
     }
-    
+
     public static Scene createScene(Parent root)
     {
         return new SceneBuilder(root).build();
     }
-    
+
     public static Stage showAndWaitInStage(Parent root, String title, boolean resizeable, Consumer<Stage> stageConsumer)
     {
         Stage stage = new StageBuilder(root)
@@ -167,17 +169,18 @@ public class TheRoundTableApplication extends Application
                 .setResizeable(resizeable)
                 .setIconName("the-round-table-logo.png")
                 .build();
-        
+
         stageConsumer.accept(stage);
-        
+
         stage.showAndWait();
 
         return stage;
     }
-    
+
     public static Stage showAndWaitInStage(Parent root, String title, boolean resizeable)
     {
-        return showAndWaitInStage(root, title, resizeable, stage -> {});
+        return showAndWaitInStage(root, title, resizeable, stage ->
+        {});
     }
 
     public static Stage showAndWaitInStage(Parent root, String title)

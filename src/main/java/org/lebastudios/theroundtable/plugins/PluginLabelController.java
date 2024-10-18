@@ -87,7 +87,8 @@ public class PluginLabelController
     @FXML
     private void uninstallPlugin()
     {
-        var pluginFile = new File(new JSONFile<>(PluginsConfigData.class).get().pluginsFolder + pluginData.pluginId + ".jar");
+        var pluginFile =
+                new File(new JSONFile<>(PluginsConfigData.class).get().pluginsFolder + pluginData.pluginId + ".jar");
 
         if (pluginFile.exists()
                 && pluginFile.isFile()

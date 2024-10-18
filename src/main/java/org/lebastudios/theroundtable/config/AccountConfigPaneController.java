@@ -31,7 +31,7 @@ public class AccountConfigPaneController extends SettingsPaneController
         var accountData = new JSONFile<>(AccountConfigData.class);
         accountData.get().license = licenseId.getText();
         accountData.save();
-        
+
         TaskManager.getInstance().startNewTaskWithProgressBar(
                 new LicenseValidator(onLicenseValidated)
                         .createValidatingLicenseTask()
@@ -47,7 +47,7 @@ public class AccountConfigPaneController extends SettingsPaneController
                 var accountData = new JSONFile<>(AccountConfigData.class);
                 accountData.get().license = lastLicense;
                 accountData.save();
-                
+
                 InformationTextDialogController.loadAttachedNode(
                         "Your license could not be validated. Check your internet connection and try again."
                 );

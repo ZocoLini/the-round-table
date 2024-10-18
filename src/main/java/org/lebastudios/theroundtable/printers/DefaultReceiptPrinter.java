@@ -129,7 +129,7 @@ public class DefaultReceiptPrinter implements IReceiptPrinter
         PrinterManager.getInstance().getFooterPrinter().print(escpos);
 
         new OpenCashDrawer().print(escpos);
-        
+
         return escpos;
     }
 }

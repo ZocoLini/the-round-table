@@ -8,13 +8,13 @@ public class SettingsData implements FileRepresentator
 {
     public boolean setupComplete = false;
     public ProxyData proxyData = new ProxyData();
-    
+
     @Override
     public File getFile()
     {
         return new File(TheRoundTableApplication.getUserDirectory() + "/settings.json");
     }
-    
+
     public static class ProxyData
     {
         public boolean usingProxy = false;

@@ -13,7 +13,7 @@ public class DatabaseConfigData implements FileRepresentator
     public boolean enableBackups = false;
     public String backupFolder =
             TheRoundTableApplication.getUserDirectory() + File.separator + "trt-db-backups" + File.separator;
-    
+
     @Override
     public File getFile()
     {

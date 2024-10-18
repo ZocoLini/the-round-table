@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -19,13 +18,10 @@ import org.controlsfx.control.action.Action;
 import org.lebastudios.theroundtable.accounts.AccountManager;
 import org.lebastudios.theroundtable.accounts.AccountStageController;
 import org.lebastudios.theroundtable.apparience.ImageLoader;
-import org.lebastudios.theroundtable.apparience.ThemeLoader;
 import org.lebastudios.theroundtable.config.ConfigStageController;
 import org.lebastudios.theroundtable.config.data.DatabaseConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.database.BackupDB;
-import org.lebastudios.theroundtable.database.entities.Account;
-import org.lebastudios.theroundtable.events.UserEvents;
 import org.lebastudios.theroundtable.language.LangBundleLoader;
 import org.lebastudios.theroundtable.language.LangFileLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
@@ -67,7 +63,7 @@ public class MainStageController
         leftButtons.getChildren().addAll(PluginLoader.getLeftButtons());
         rightButtons.getChildren().addAll(PluginLoader.getRightButtons());
     }
-    
+
     @SneakyThrows
     @FXML
     private void openSettingsStage()
@@ -109,12 +105,12 @@ public class MainStageController
     {
         // TODO: Enable an option to let the admins decide if the users can close session without closing the cash 
         //  register. Maybe use a checkbox in the User Account to mark this behaviour
-        
+
         // TODO: Problems with the theme loader
-        
+
         root.getScene().getWindow().hide();
         AccountManager.getInstance().logOut();
-        
+
         TheRoundTableApplication.showAndWaitInStage(AccountStageController.getParentNode(), "Login", true, s ->
         {
             s.setOnCloseRequest(e -> System.exit(0));

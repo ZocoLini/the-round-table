@@ -26,14 +26,15 @@ public class ConfigStageController
     public static ControllableUIObject<ConfigStageController> configStageRoot;
     private static Stage configStage;
 
-    static {
+    static
+    {
         UserEvents.OnAccountLogOut.addListener(_ ->
         {
             configStage = null;
             configStageRoot = null;
         });
     }
-    
+
     @FXML private SettingsTreeView configSectionsTreeView;
     @FXML private ScrollPane mainPane;
     private SettingsPaneController currentPaneController;
@@ -88,7 +89,7 @@ public class ConfigStageController
         var generalConfigSection = new TreeIconItem(LangFileLoader.getTranslation("word.general"),
                 "settings.png");
         generalConfigSection.setExpanded(true);
-        
+
         if (AccountManager.getInstance().isAccountAdmin())
         {
             generalConfigSection.getChildren().add(
@@ -96,21 +97,21 @@ public class ConfigStageController
                             "user.png",
                             () -> loadFXML("accountConfigPane.fxml"))
             );
-            
+
             generalConfigSection.getChildren().add(
                     new TreeIconItem(LangFileLoader.getTranslation("word.users"),
                             "users.png",
                             () -> loadFXML("usersConfigPane.fxml"))
             );
         }
-        
+
         generalConfigSection.getChildren().add(
                 new TreeIconItem(LangFileLoader.getTranslation("word.preferences"),
                         "preferences.png",
                         () -> loadFXML("preferencesConfigPane.fxml"))
         );
-        
-        if (AccountManager.getInstance().isAccountAdmin()) 
+
+        if (AccountManager.getInstance().isAccountAdmin())
         {
             generalConfigSection.getChildren().add(
                     new TreeIconItem(LangFileLoader.getTranslation("word.establishment"),
@@ -128,7 +129,7 @@ public class ConfigStageController
                             () -> loadFXML("databaseConfigPane.fxml"))
             );
         }
-        
+
         generalConfigSection.getChildren().add(
                 new TreeIconItem(LangFileLoader.getTranslation("word.about"),
                         "help.png",
@@ -171,19 +172,19 @@ public class ConfigStageController
         {
             return;
         }
-        
+
         currentPaneController.apply();
     }
 
     @FXML
     private void cancel()
     {
-        if (currentPaneController == null) 
+        if (currentPaneController == null)
         {
             ((Stage) mainPane.getScene().getWindow()).close();
             return;
         }
-        
+
         currentPaneController.cancel();
     }
 
@@ -195,7 +196,7 @@ public class ConfigStageController
             cancel();
             return;
         }
-        
+
         currentPaneController.acept();
     }
 }

@@ -63,21 +63,21 @@ public class Receipt
     {
         return transaction.getAmount();
     }
-    
+
     public BigDecimal getNotTaxedTotal()
     {
         var total = BigDecimal.ZERO;
-        
+
         for (var productReceipt : products)
         {
             total = total.add(productReceipt.getProduct().getNotTaxedPrice().multiply(productReceipt.getQuantity()));
         }
-        
+
         total = total.add(unknownProductsValue.divide(new BigDecimal("1.1"), 2, RoundingMode.FLOOR));
-        
+
         return total;
     }
-    
+
     public String getCustomerName()
     {
         if (client == null)

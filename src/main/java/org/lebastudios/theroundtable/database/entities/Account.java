@@ -24,7 +24,7 @@ public class Account
         this.password = BCrypt.withDefaults().hashToString(12, password.toCharArray());
         this.type = type;
     }
-    
+
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,51 +38,55 @@ public class Account
 
     @Column(name = "DELETED", nullable = false)
     private boolean deleted;
-    
+
     @Column(name = "TYPE", nullable = false)
     @Enumerated(EnumType.STRING)
     private AccountType type = AccountType.CASHIER;
-    
+
     @Column(name = "CHANGE_PASSWORD_ON_NEXT_LOGIN", nullable = false)
     private boolean changePasswordOnNextLogin = false;
-    
+
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE) @ToString.Exclude
     private Set<Receipt> receipts;
 
     public boolean hasAuthorityOver(Account account)
     {
         if (this.id == account.id) return true;
-        
-        return switch (type) 
+
+        return switch (type)
         {
             case ROOT -> true;
             case ADMIN -> account.getType() != AccountType.ROOT && account.getType() != AccountType.ADMIN;
-            case MANAGER -> account.getType() != AccountType.ROOT 
+            case MANAGER -> account.getType() != AccountType.ROOT
                     && account.getType() != AccountType.ADMIN && account.getType() != AccountType.MANAGER;
             case CASHIER, ACCOUNTANT -> false;
         };
     }
-    
-    public String getTypeString() {
+
+    public String getTypeString()
+    {
         return getTypeString(type);
     }
 
-    public static String getTypeString(AccountType type) {
+    public static String getTypeString(AccountType type)
+    {
         return LangFileLoader.getTranslation("enum.accounttype." + type.name().toLowerCase());
     }
-    
-    public String getIconName() {
+
+    public String getIconName()
+    {
         return getIconName(type);
     }
-    
-    public static String getIconName(AccountType type) {
-        return switch (type) 
+
+    public static String getIconName(AccountType type)
+    {
+        return switch (type)
         {
             case ROOT, ADMIN -> "admin-user.png";
             default -> "user.png";
         };
     }
-    
+
     public enum AccountType
     {
         ROOT,

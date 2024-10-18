@@ -14,6 +14,7 @@ public class PrinterManager
     @Getter @Setter private IPrinter headerPrinter = new DefaultHeaderPrinter();
     @Getter @Setter private IOrderPrinter orderPrinter = new DefaultOrderPrinter();
     @Getter @Setter private IPrinter footerPrinter = new DefaultFooterPrinter();
+
     private PrinterManager() {}
 
     public static PrinterManager getInstance()

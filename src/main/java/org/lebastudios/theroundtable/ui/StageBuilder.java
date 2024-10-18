@@ -66,7 +66,7 @@ public class StageBuilder
         stage.initModality(modality);
 
         stage.getIcons().add(ImageLoader.getIcon(iconName));
-        
+
         return stage;
     }
 }

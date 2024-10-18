@@ -36,7 +36,7 @@ public class Database
             var config = new Configuration().configure();
 
             DatabaseConfigData databaseConfigData = new JSONFile<>(DatabaseConfigData.class).get();
-            
+
             config.getProperties().put(
                     Environment.JAKARTA_JDBC_URL, "jdbc:h2:"
                             + databaseConfigData.databaseFolder

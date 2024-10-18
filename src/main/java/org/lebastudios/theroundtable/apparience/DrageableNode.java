@@ -51,7 +51,8 @@ public class DrageableNode
             event.consume();
         });
 
-        node.setOnMouseDragged(event -> {
+        node.setOnMouseDragged(event ->
+        {
             if (!shouldDrag.test(node)) return;
 
             // Dispara el evento de mouse drag over
@@ -61,7 +62,8 @@ public class DrageableNode
                     false, false, false, false, false, null, node));
         });
 
-        node.setOnMouseReleased(event -> {
+        node.setOnMouseReleased(event ->
+        {
             if (!shouldDrag.test(node)) return;
 
             // Dispara el evento de mouse drag released

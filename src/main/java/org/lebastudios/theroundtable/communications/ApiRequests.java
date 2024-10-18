@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import javafx.application.Platform;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.AppTask;
-import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.MainStageController;
+import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PluginsConfigData;
 import org.lebastudios.theroundtable.plugins.pluginData.PluginData;
@@ -134,7 +134,7 @@ public class ApiRequests
 
     public static PluginData[] getPluginsDataAvailable()
     {
-        try (var client = HttpClient.newHttpClient();)
+        try (var client = HttpClient.newHttpClient())
         {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/plugins/pluginsData"))
@@ -160,7 +160,7 @@ public class ApiRequests
 
     public static boolean pluginNeedUpdate(PluginData pluginData)
     {
-        try (var client = HttpClient.newHttpClient();)
+        try (var client = HttpClient.newHttpClient())
         {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/plugins/" + pluginData.pluginId + "/updateable?version=" +
@@ -191,14 +191,14 @@ public class ApiRequests
 
     public static Boolean isLicenseValid(String license)
     {
-        try (var client = HttpClient.newHttpClient();)
+        try (var client = HttpClient.newHttpClient())
         {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/licenses/validate?license_id=" + license))
                     .header("Content-Type", "application/json")
                     .GET()
                     .build();
-            
+
             var response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             HashMap<String, Boolean> responseMap = new Gson().fromJson(response.body(), HashMap.class);
@@ -211,12 +211,12 @@ public class ApiRequests
             return null;
         }
     }
-    
+
     public static boolean has_license(String email, String password)
     {
         return false;
     }
-    
+
     public static boolean login(String email, String password)
     {
         return false;

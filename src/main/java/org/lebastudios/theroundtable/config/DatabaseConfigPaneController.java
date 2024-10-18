@@ -24,11 +24,11 @@ public class DatabaseConfigPaneController extends SettingsPaneController
     public void initialize()
     {
         var data = new JSONFile<>(DatabaseConfigData.class).get();
-        
+
         databasesDirectory.setText(data.databaseFolder);
         enableBackups.setSelected(data.enableBackups);
         databasesBackupDirectory.setText(data.backupFolder);
-        
+
         backupSection.disableProperty().bind(enableBackups.selectedProperty().not());
     }
 
@@ -36,7 +36,7 @@ public class DatabaseConfigPaneController extends SettingsPaneController
     public void apply()
     {
         var data = new JSONFile<>(DatabaseConfigData.class);
-        
+
         // When database directory changes
         try
         {
@@ -48,15 +48,15 @@ public class DatabaseConfigPaneController extends SettingsPaneController
             new InformationTextDialogController("ERROR: " + e.getMessage()).initialize();
             return;
         }
-        
+
         data.get().enableBackups = enableBackups.isSelected();
-        
+
         data.save();
-        
-        if (data.get().enableBackups) BackupDB.getInstance().initialize();
-        else BackupDB.getInstance().stop();
+
+        if (data.get().enableBackups) {BackupDB.getInstance().initialize();}
+        else {BackupDB.getInstance().stop();}
     }
-    
+
     private void updateDatabaseDirectory(DatabaseConfigData data)
     {
         if (!databasesDirectory.getText().equals(data.databaseFolder))
@@ -73,49 +73,51 @@ public class DatabaseConfigPaneController extends SettingsPaneController
             {
                 file.renameTo(new File(newDirectory.getAbsolutePath() + "/" + file.getName()));
             }
-            
+
             data.databaseFolder = databasesDirectory.getText();
         }
     }
-    
+
     private void updateBackupDirectory(DatabaseConfigData data)
     {
         if (!databasesBackupDirectory.getText().equals(data.backupFolder))
         {
             File oldDirectory = new File(data.backupFolder);
             File newDirectory = new File(databasesBackupDirectory.getText());
-            
-            if (!newDirectory.exists() && !newDirectory.mkdirs()) 
+
+            if (!newDirectory.exists() && !newDirectory.mkdirs())
             {
                 throw new RuntimeException("Failed to create new backup directory.");
             }
-            
+
             for (File file : oldDirectory.listFiles())
             {
                 file.renameTo(new File(newDirectory.getAbsolutePath() + "/" + file.getName()));
             }
-            
+
             data.backupFolder = databasesBackupDirectory.getText();
             oldDirectory.delete();
         }
     }
-    
-    @FXML private void selectDatabasesBackupDirectory(ActionEvent actionEvent) 
+
+    @FXML
+    private void selectDatabasesBackupDirectory(ActionEvent actionEvent)
     {
         File path = getDirectoryChooser("Select Backup Directory").showDialog(root.getScene().getWindow());
         if (path == null) return;
-        
+
         databasesBackupDirectory.setText(path.getAbsolutePath());
     }
 
-    @FXML private void selectDatabasesDirectory(ActionEvent actionEvent) 
+    @FXML
+    private void selectDatabasesDirectory(ActionEvent actionEvent)
     {
         File path = getDirectoryChooser("Select Databases Directory").showDialog(root.getScene().getWindow());
         if (path == null) return;
-        
+
         databasesDirectory.setText(path.getAbsolutePath());
     }
-    
+
     private DirectoryChooser getDirectoryChooser(String title)
     {
         DirectoryChooser directoryChooser = new DirectoryChooser();

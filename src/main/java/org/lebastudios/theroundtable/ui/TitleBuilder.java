@@ -12,13 +12,13 @@ public class TitleBuilder
     private int textSize = 18;
     private int iconSize = 50;
     private int iconGap = 10;
-    
+
     public TitleBuilder(String text, String iconName)
     {
         this.text = text;
         this.iconName = iconName;
     }
-    
+
     public TitleBuilder(String text)
     {
         this(text, "");
@@ -52,24 +52,24 @@ public class TitleBuilder
         this.textSize = textSize;
         return this;
     }
-    
+
     public TitleBuilder setIconSize(int iconSize)
     {
         this.iconSize = iconSize;
         return this;
     }
-    
+
     public TitleBuilder setIconGap(int iconGap)
     {
         this.iconGap = iconGap;
         return this;
     }
-    
+
     public Node build()
     {
         IconView icon = new IconView(iconName);
         icon.setIconSize(iconSize);
-        
+
         Label label = new Label(text, icon);
         label.graphicTextGapProperty().set(iconGap);
         label.setStyle(String.format("-fx-font-weight: %s; -fx-font-size: %d", weight, textSize));

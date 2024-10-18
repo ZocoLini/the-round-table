@@ -36,7 +36,7 @@ public class PluginsStageController
     {
         this.instantiateInstalledPlugins();
         new Thread(this::instantiateAvailablePlugins).start();
-        
+
         tabPane.getSelectionModel().selectedItemProperty().addListener((_, _, _) ->
         {
             tabPane.getScene().getWindow().sizeToScene();

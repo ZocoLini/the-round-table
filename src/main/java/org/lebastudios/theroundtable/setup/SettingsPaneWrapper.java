@@ -9,7 +9,7 @@ import org.lebastudios.theroundtable.language.LangBundleLoader;
 public class SettingsPaneWrapper extends SetupPaneController
 {
     private final SettingsPaneController controller;
-    
+
     @SneakyThrows
     public SettingsPaneWrapper(String paneName)
     {

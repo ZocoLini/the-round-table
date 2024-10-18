@@ -19,7 +19,8 @@ public class PluginLoader
 
     public static void loadPlugins()
     {
-        File[] jars = new File(new JSONFile<>(PluginsConfigData.class).get().pluginsFolder).listFiles((dir, name) -> name.endsWith(".jar"));
+        File[] jars = new File(new JSONFile<>(PluginsConfigData.class).get().pluginsFolder).listFiles(
+                (dir, name) -> name.endsWith(".jar"));
         if (jars == null) return;
 
         for (File jar : jars)

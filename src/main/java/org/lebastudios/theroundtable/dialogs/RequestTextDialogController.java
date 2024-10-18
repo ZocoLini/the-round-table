@@ -56,7 +56,8 @@ public class RequestTextDialogController
     public static void loadAttachedNode(Consumer<String> action, String title, String inputTip,
             Function<String, Boolean> validator)
     {
-        loadAttachedNode(action, title, inputTip, validator, "", "", () -> {});
+        loadAttachedNode(action, title, inputTip, validator, "", "", () ->
+        {});
     }
 
     public void initialize()
