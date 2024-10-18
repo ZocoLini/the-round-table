@@ -47,6 +47,7 @@
                     <Label HBox.hgrow="ALWAYS" maxWidth="Infinity" text="%phrase.accountype" />
                     <ComboBox prefWidth="150" fx:id="accountType" />
                 </HBox>
+                <Label style="-fx-font-style: italic; -fx-text-fill: red" fx:id="errorLabel"/>
             </VBox>
             <CheckBox text="Change password on next login" fx:id="changePasswordOnNextLogin" />
         </VBox>

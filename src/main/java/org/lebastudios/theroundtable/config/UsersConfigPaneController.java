@@ -23,6 +23,7 @@ import java.util.Objects;
 
 public class UsersConfigPaneController extends SettingsPaneController
 {
+    @FXML private Label errorLabel;
     @FXML private IconButton deleteAccount;
     @FXML private ComboBox<String> accountType;
     @FXML private CheckBox changePasswordOnNextLogin;
@@ -38,6 +39,37 @@ public class UsersConfigPaneController extends SettingsPaneController
     @Override
     public void apply()
     {
+        if (selectedAccount == null) return;
+
+        Account.AccountType type = Account.AccountType.values()[accountType.getSelectionModel().getSelectedIndex() + 1];
+        if (type == null) return;
+
+        if (passwordField.getText().length() <= 8 
+                && !passwordField.getText().equals("abc123.") 
+                && !confirmPasswordField.getText().equals("abc123.")) 
+        {
+            errorLabel.setText("Password must be at least 8 characters long.");
+            return;
+        }
+        
+        if (!passwordField.getText().equals(confirmPasswordField.getText()))
+        {
+            errorLabel.setText("Passwords do not match.");
+            return;
+        }
+
+        Database.getInstance().connectTransaction(session ->
+        {
+            Account account = session.get(Account.class, selectedAccount.getId());
+
+            account.setType(type);
+            account.setChangePasswordOnNextLogin(changePasswordOnNextLogin.isSelected());
+            account.setPassword(passwordField.getText());
+
+            session.merge(account);
+        });
+
+        reloadUsersContainer();
     }
 
     @Override
