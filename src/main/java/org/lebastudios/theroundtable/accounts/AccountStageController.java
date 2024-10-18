@@ -85,6 +85,8 @@ public class AccountStageController
             return;
         }
 
+        // TODO: Implementar cambio de la contraseña
+        
         AccountManager.getInstance().setCurrentLogged(accountSelected);
         ((Stage) root.getScene().getWindow()).close();
     }
