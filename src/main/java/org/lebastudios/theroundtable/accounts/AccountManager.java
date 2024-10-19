@@ -43,6 +43,9 @@ public class AccountManager
     public void setCurrentLogged(Account currentLogged)
     {
         this.currentLogged = currentLogged;
+
+        if (currentLogged == null) return;
+        
         UserEvents.OnAccountLogIn.invoke(currentLogged);
     }
 

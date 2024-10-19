@@ -1,6 +1,5 @@
 package org.lebastudios.theroundtable.accounts;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -77,7 +76,7 @@ public class AccountStageController
 
     public void submitPassword(ActionEvent actionEvent)
     {
-        if (!BCrypt.verifyer().verify(passwordField.getText().toCharArray(), accountSelected.getPassword()).verified)
+        if (!LocalPasswordValidator.validatePassword(passwordField.getText(), accountSelected.getPassword()))
         {
             passwordField.clear();
             passwordError.setText("Invalid password");
@@ -85,10 +84,19 @@ public class AccountStageController
             return;
         }
 
-        // TODO: Implementar cambio de la contraseña
-        
-        AccountManager.getInstance().setCurrentLogged(accountSelected);
-        ((Stage) root.getScene().getWindow()).close();
+        if (accountSelected.isChangePasswordOnNextLogin())
+        {
+            new ChangePasswordStageController(accountSelected).setOnAccept(() ->
+            {
+                AccountManager.getInstance().setCurrentLogged(accountSelected);
+                ((Stage) root.getScene().getWindow()).close();
+            }).instantiate();
+        }
+        else
+        {
+            AccountManager.getInstance().setCurrentLogged(accountSelected);
+            ((Stage) root.getScene().getWindow()).close();
+        }
     }
 
     public void cancelPassword(ActionEvent actionEvent)

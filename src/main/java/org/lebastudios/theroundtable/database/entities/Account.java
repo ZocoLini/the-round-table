@@ -1,6 +1,5 @@
 package org.lebastudios.theroundtable.database.entities;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +20,7 @@ public class Account
     public Account(String name, String password, AccountType type)
     {
         this.name = name;
-        this.password = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+        this.password = password;
         this.type = type;
     }
 

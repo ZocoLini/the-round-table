@@ -40,10 +40,6 @@
                     <PasswordField  prefWidth="150" fx:id="passwordField" />
                 </HBox>
                 <HBox alignment="CENTER_LEFT">
-                    <Label HBox.hgrow="ALWAYS" maxWidth="Infinity" text="%phrase.confirmpassword" />
-                    <PasswordField prefWidth="150" fx:id="confirmPasswordField" />
-                </HBox>
-                <HBox alignment="CENTER_LEFT">
                     <Label HBox.hgrow="ALWAYS" maxWidth="Infinity" text="%phrase.accountype" />
                     <ComboBox prefWidth="150" fx:id="accountType" />
                 </HBox>

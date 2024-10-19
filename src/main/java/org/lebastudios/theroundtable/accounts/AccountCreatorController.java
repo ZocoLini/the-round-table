@@ -66,7 +66,7 @@ public class AccountCreatorController
 
         Account account = new Account(
                 usernameField.getText(),
-                passwordField.getText(),
+                LocalPasswordValidator.hashPassword(passwordField.getText()),
                 Account.AccountType.values()[accountTypeChoiceBox.getSelectionModel().getSelectedIndex() + 1]
         );
 

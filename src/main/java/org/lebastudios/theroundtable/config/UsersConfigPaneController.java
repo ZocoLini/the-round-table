@@ -13,6 +13,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.lebastudios.theroundtable.accounts.AccountCreatorController;
 import org.lebastudios.theroundtable.accounts.AccountManager;
+import org.lebastudios.theroundtable.accounts.ChangePasswordStageController;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Account;
 import org.lebastudios.theroundtable.dialogs.InformationTextDialogController;
@@ -28,7 +29,6 @@ public class UsersConfigPaneController extends SettingsPaneController
     @FXML private ComboBox<String> accountType;
     @FXML private CheckBox changePasswordOnNextLogin;
     @FXML private PasswordField passwordField;
-    @FXML private PasswordField confirmPasswordField;
     @FXML private VBox usersContainer;
     @FXML private IconView userIcon;
     @FXML private Label userName;
@@ -44,27 +44,12 @@ public class UsersConfigPaneController extends SettingsPaneController
         Account.AccountType type = Account.AccountType.values()[accountType.getSelectionModel().getSelectedIndex() + 1];
         if (type == null) return;
 
-        if (passwordField.getText().length() <= 8 
-                && !passwordField.getText().equals("abc123.") 
-                && !confirmPasswordField.getText().equals("abc123.")) 
-        {
-            errorLabel.setText("Password must be at least 8 characters long.");
-            return;
-        }
-        
-        if (!passwordField.getText().equals(confirmPasswordField.getText()))
-        {
-            errorLabel.setText("Passwords do not match.");
-            return;
-        }
-
         Database.getInstance().connectTransaction(session ->
         {
             Account account = session.get(Account.class, selectedAccount.getId());
 
             account.setType(type);
             account.setChangePasswordOnNextLogin(changePasswordOnNextLogin.isSelected());
-            account.setPassword(passwordField.getText());
 
             session.merge(account);
         });
@@ -85,6 +70,9 @@ public class UsersConfigPaneController extends SettingsPaneController
         }
 
         reloadUsersContainer();
+        
+        passwordField.setEditable(false);
+        passwordField.setOnMouseClicked(e -> new ChangePasswordStageController(selectedAccount).instantiate());
     }
 
     private void reloadUsersContainer()
@@ -192,7 +180,6 @@ public class UsersConfigPaneController extends SettingsPaneController
         accountType.setDisable(account.getType() == Account.AccountType.ROOT);
 
         passwordField.setText("abc123.");
-        confirmPasswordField.setText("abc123.");
 
         changePasswordOnNextLogin.setSelected(account.isChangePasswordOnNextLogin());
 

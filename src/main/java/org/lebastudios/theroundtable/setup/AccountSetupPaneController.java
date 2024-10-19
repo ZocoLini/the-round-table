@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
+import org.lebastudios.theroundtable.accounts.LocalPasswordValidator;
 import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Account;
@@ -41,7 +42,9 @@ public class AccountSetupPaneController extends SetupPaneController
     @Override
     public void apply()
     {
-        Account account = new Account(usernameField.getText(), passwordField.getText(), Account.AccountType.ROOT);
+        Account account = new Account(usernameField.getText(), 
+                LocalPasswordValidator.hashPassword(passwordField.getText()), 
+                Account.AccountType.ROOT);
 
         Database.getInstance().connectTransaction(session ->
         {
@@ -59,7 +62,7 @@ public class AccountSetupPaneController extends SetupPaneController
             return false;
         }
 
-        if (passwordField.getText().isBlank() || passwordField.getText().length() < 8)
+        if (LocalPasswordValidator.validatePasswordFormat(passwordField.getText()))
         {
             errorLabel.setText(LangFileLoader.getTranslation("setup.error.invalidpassword"));
             UIEffects.shakeNode(passwordField);
