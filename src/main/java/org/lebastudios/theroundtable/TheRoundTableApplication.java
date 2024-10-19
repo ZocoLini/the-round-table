@@ -7,6 +7,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import lombok.SneakyThrows;
+import org.lebastudios.theroundtable.accounts.AccountManager;
 import org.lebastudios.theroundtable.accounts.AccountStageController;
 import org.lebastudios.theroundtable.apparience.ImageLoader;
 import org.lebastudios.theroundtable.config.data.CashRegisterStateData;
@@ -114,7 +115,10 @@ public class TheRoundTableApplication extends Application
         stage.setScene(mainScene);
         stage.show();
 
-        TaskManager.getInstance().startNewTaskWithProgressBar(createCheckingForUpdateTask());
+        if (AccountManager.getInstance().isAccountAdmin()) 
+        {
+            TaskManager.getInstance().startNewTaskWithProgressBar(createCheckingForUpdateTask());
+        }
 
         stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, (windowEvent ->
         {

@@ -3,6 +3,7 @@ VERSION 2.0.0
 -> Improve the scene loading making use of threads for the loading of the views
 -> Imrove the way plugins communicate between them
 -> Find a faster database for the app and compatible with rust sqlx crate if posible (SurrealDB would be nice)
--> Simplificar la base de datos permitiendo guardar en el ticket informacion objetivamente redundante (como total, taxes, etc)
+-> Simplificar la base de datos permitiendo guardar en el ticket 
+informacion objetivamente redundante (como total, taxes, etc) buscando ganar en velocidad
 
 -> Refactor the code to a better scability (create a better abstraction for Controllers)
