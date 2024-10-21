@@ -16,22 +16,24 @@ import java.math.BigDecimal;
 @Entity
 public class Product_Receipt
 {
-    @EmbeddedId
-    private ProductReceiptId id;
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
+    @Column(name = "RECEIPT_ID", nullable = false)
+    private int receipt_Id;
 
     @Column(name = "QUANTITY", nullable = false)
     private BigDecimal quantity;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @MapsId("product_Id")
-    @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")
-    private Product product;
+    @Column(name = "PRICE", nullable = false)
+    private BigDecimal price;
+    
+    @Column(name = "PRODUCT_NAME", nullable = false)
+    private String productName;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @MapsId("receipt_Id")
     @JoinColumn(name = "RECEIPT_ID", referencedColumnName = "ID")
     private Receipt receipt;
-
-    @Embeddable
-    public record ProductReceiptId(int product_Id, int receipt_Id) {}
 }
