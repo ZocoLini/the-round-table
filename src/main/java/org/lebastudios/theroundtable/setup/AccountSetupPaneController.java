@@ -62,7 +62,7 @@ public class AccountSetupPaneController extends SetupPaneController
             return false;
         }
 
-        if (LocalPasswordValidator.validatePasswordFormat(passwordField.getText()))
+        if (!LocalPasswordValidator.isValidFormat(passwordField.getText()))
         {
             errorLabel.setText(LangFileLoader.getTranslation("setup.error.invalidpassword"));
             UIEffects.shakeNode(passwordField);
