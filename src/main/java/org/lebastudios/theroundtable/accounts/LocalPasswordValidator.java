@@ -4,7 +4,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class LocalPasswordValidator
 {
-    public static boolean validatePasswordFormat(String password)
+    public static boolean isValidFormat(String password)
     {
         return password.length() >= 8;
     }

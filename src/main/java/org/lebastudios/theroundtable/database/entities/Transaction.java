@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name = "TRANSACTION")
+@Table(name = "MONEY_TRANSACTION")
 public class Transaction
 {
     @Id
@@ -32,5 +32,6 @@ public class Transaction
     private String description;
 
     @OneToOne
+    @JoinColumn(name = "RECEIPT_ID", referencedColumnName = "ID")
     private Receipt receipt;
 }

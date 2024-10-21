@@ -3,12 +3,12 @@ package org.lebastudios.theroundtable.database;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Environment;
 import org.lebastudios.theroundtable.config.data.DatabaseConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.database.entities.*;
 import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 
+import java.io.File;
 import java.util.function.Consumer;
 
 public class Database
@@ -33,14 +33,16 @@ public class Database
         try
         {
             // Create the SessionFactory from hibernate.cfg.xml
-            var config = new Configuration().configure();
+            var config = new Configuration();
 
             DatabaseConfigData databaseConfigData = new JSONFile<>(DatabaseConfigData.class).get();
 
-            config.getProperties().put(
-                    Environment.JAKARTA_JDBC_URL, "jdbc:h2:"
+            new File(databaseConfigData.databaseFolder).mkdirs();
+                
+            config.setProperty(
+                    "hibernate.connection.url", "jdbc:sqlite:"
                             + databaseConfigData.databaseFolder
-                            + "/" + databaseConfigData.establishmentDatabaseName
+                            + databaseConfigData.establishmentDatabaseName + ".sqlite"
             );
 
             config.addAnnotatedClass(Category.class)
@@ -52,7 +54,7 @@ public class Database
                     .addAnnotatedClass(Transaction.class)
                     .addAnnotatedClass(Account.class);
 
-            return config.buildSessionFactory();
+            return config.configure().buildSessionFactory();
         }
         catch (Throwable ex)
         {

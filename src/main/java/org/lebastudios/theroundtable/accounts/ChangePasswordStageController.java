@@ -54,7 +54,7 @@ public class ChangePasswordStageController extends StageController
     @FXML
     private void changePassword(ActionEvent actionEvent)
     {
-        if (!LocalPasswordValidator.validatePasswordFormat(password.getText()))
+        if (!LocalPasswordValidator.isValidFormat(password.getText()))
         {
             UIEffects.shakeNode(password);
             return;
