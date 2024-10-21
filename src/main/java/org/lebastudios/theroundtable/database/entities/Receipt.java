@@ -26,6 +26,9 @@ public class Receipt
     @Column(name = "TABLE_NAME", nullable = false)
     private String tableName;
 
+    /**
+     * The amount of money that the client paid. Not the total amount of the receipt.
+     */
     @Column(name = "PAYMENT_AMOUNT", nullable = false)
     private BigDecimal paymentAmount;
     
@@ -44,9 +47,6 @@ public class Receipt
     @Column(name = "EMPLOYEE_NAME")
     private String employeeName;
 
-    @Column(name = "TRANSACTION_ID")
-    private int transactionId;
-
     @OneToMany(mappedBy = "receipt", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Product_Receipt> products;
 
@@ -54,6 +54,17 @@ public class Receipt
     @JoinColumn(name = "TRANSACTION_ID", referencedColumnName = "ID")
     private Transaction transaction;
 
+    public void setAccount(Account account)
+    {
+        employeeName = account.getName();
+    }
+    
+    public void setClient(String name, String identifier)
+    {
+        clientName = name;
+        clientIdentifier = identifier;
+    }
+    
     public BigDecimal getTaxedTotal()
     {
         return transaction.getAmount();
@@ -64,7 +75,7 @@ public class Receipt
         return getTaxedTotal().subtract(taxesAmount);
     }
 
-    public String getCustomerName()
+    public String getClientString()
     {
         if (clientName == null)
         {

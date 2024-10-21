@@ -35,9 +35,6 @@ public class Account
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(name = "DELETED", nullable = false)
-    private boolean deleted;
-
     @Column(name = "TYPE", nullable = false)
     @Enumerated(EnumType.STRING)
     private AccountType type = AccountType.CASHIER;

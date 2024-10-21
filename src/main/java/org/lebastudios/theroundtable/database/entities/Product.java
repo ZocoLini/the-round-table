@@ -63,6 +63,10 @@ public class Product
         DatabaseEntitiesEvents.onProductsModified.invoke();
     }
 
+    /**
+     * Returns the price of the product with taxes.
+     * @return The price of the product with taxes.
+     */
     public BigDecimal getPrice()
     {
         return taxesIncluded ? price : price.add(price.multiply(taxes));

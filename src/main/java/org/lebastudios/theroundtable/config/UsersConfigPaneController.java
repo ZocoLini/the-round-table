@@ -83,8 +83,6 @@ public class UsersConfigPaneController extends SettingsPaneController
         {
             for (Account account : session.createQuery("from Account", Account.class).list())
             {
-                if (account.isDeleted()) continue;
-
                 final var currentLogged = AccountManager.getInstance().getCurrentLogged();
 
                 if (account.getType() != Account.AccountType.ROOT &&

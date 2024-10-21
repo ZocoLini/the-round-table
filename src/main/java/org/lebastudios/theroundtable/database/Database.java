@@ -49,7 +49,6 @@ public class Database
                     .addAnnotatedClass(Product.class)
                     .addAnnotatedClass(SubCategory.class)
                     .addAnnotatedClass(Receipt.class)
-                    .addAnnotatedClass(Client.class)
                     .addAnnotatedClass(Product_Receipt.class)
                     .addAnnotatedClass(Transaction.class)
                     .addAnnotatedClass(Account.class);
