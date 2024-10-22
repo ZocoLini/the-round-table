@@ -11,19 +11,19 @@
     </padding>
     
     <columnConstraints>
-        <ColumnConstraints />
+        <ColumnConstraints hgrow="ALWAYS" />
         <ColumnConstraints />
     </columnConstraints>
     
     <rowConstraints>
-        <RowConstraints /> <!-- Printers section -->
-        <RowConstraints />
-        <RowConstraints /> <!-- Ticket section -->
-        <RowConstraints />
-        <RowConstraints />
-        <RowConstraints />
-        <RowConstraints />
-        <RowConstraints />
+        <RowConstraints valignment="CENTER" /> <!-- Printers section -->
+        <RowConstraints valignment="CENTER" />
+        <RowConstraints valignment="CENTER" /> <!-- Ticket section -->
+        <RowConstraints valignment="CENTER" />
+        <RowConstraints valignment="CENTER" />
+        <RowConstraints valignment="CENTER" />
+        <RowConstraints valignment="CENTER" />
+        <RowConstraints valignment="CENTER" />
     </rowConstraints>
     
     <Label text="%word.printers" maxHeight="Infinity" maxWidth="Infinity" style="-fx-font-size: 16; -fx-font-weight: bold;"
