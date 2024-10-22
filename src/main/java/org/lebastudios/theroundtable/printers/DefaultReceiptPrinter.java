@@ -5,8 +5,6 @@ import com.github.anastaciocintra.escpos.EscPosConst;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PrintersConfigData;
 import org.lebastudios.theroundtable.database.Database;
-import org.lebastudios.theroundtable.database.entities.Account;
-import org.lebastudios.theroundtable.database.entities.Client;
 import org.lebastudios.theroundtable.database.entities.Order;
 import org.lebastudios.theroundtable.database.entities.Receipt;
 import org.lebastudios.theroundtable.language.LangFileLoader;
@@ -46,24 +44,20 @@ public class DefaultReceiptPrinter implements IReceiptPrinter
             {
                 try
                 {
-                    if (receipt.getClientId() == null)
+                    if (receipt.getClientIdentifier() == null)
                     {
                         escpos.writeLF(LangFileLoader.getTranslation("phrase.generalpublicclient"));
                     }
                     else
                     {
-                        var client = session.get(Client.class, receipt.getClientId());
-
                         escpos.writeLF(LangFileLoader.getTranslation("word.client")
-                                + ": " + client.getName() + " - " + client.getId());
+                                + ": " + receipt.getClientName() + " - " + receipt.getClientIdentifier());
                     }
 
-                    if (receipt.getAccountId() != null)
+                    if (receipt.getAttendantName() != null)
                     {
-                        var attendant = session.get(Account.class, receipt.getAccountId());
-
                         escpos.writeLF(LangFileLoader.getTranslation("phrase.attendedby")
-                                + attendant.getName() + " - " + attendant.getId());
+                                + receipt.getAttendantName());
                     }
                 }
                 catch (Exception _) {}

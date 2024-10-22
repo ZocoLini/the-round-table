@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.Session;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.events.DatabaseEntitiesEvents;
@@ -16,7 +15,6 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "CATEGORY")
 public class Category

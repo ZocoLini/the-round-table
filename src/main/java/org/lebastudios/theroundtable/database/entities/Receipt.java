@@ -4,16 +4,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "RECEIPT")
 public class Receipt
@@ -29,36 +26,51 @@ public class Receipt
     @Column(name = "TABLE_NAME", nullable = false)
     private String tableName;
 
+    /**
+     * The amount of money that the client paid. Not the total amount of the receipt.
+     */
     @Column(name = "PAYMENT_AMOUNT", nullable = false)
     private BigDecimal paymentAmount;
+    
+    @Column(name = "TAXES_AMOUNT", nullable = false)
+    private BigDecimal taxesAmount;
 
     @Column(name = "UNKNOWN_PRODUCTS_VALUE", nullable = false)
     private BigDecimal unknownProductsValue = new BigDecimal("0");
 
-    @Column(name = "CLIENT_ID", insertable = false, updatable = false)
-    private String clientId;
+    @Column(name = "CLIENT_NAME")
+    private String clientName;
+    
+    @Column(name = "CLIENT_IDENTIFIER")
+    private String clientIdentifier;
 
-    @Column(name = "ACCOUNT_ID", insertable = false, updatable = false)
-    private Integer accountId;
-
-    @Column(name = "TRANSACTION_ID", insertable = false, updatable = false)
-    private int transactionId;
+    @Column(name = "EMPLOYEE_NAME")
+    private String employeeName;
 
     @OneToMany(mappedBy = "receipt", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Product_Receipt> products;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "CLIENT_ID", referencedColumnName = "ID")
-    private Client client;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "ACCOUNT_ID", referencedColumnName = "ID")
-    private Account account;
 
     @OneToOne(optional = false)
     @JoinColumn(name = "TRANSACTION_ID", referencedColumnName = "ID")
     private Transaction transaction;
 
+    public void setAccount(Account account)
+    {
+        employeeName = account.getName();
+    }
+    
+    public void setClient(String name, String identifier)
+    {
+        clientName = name;
+        clientIdentifier = identifier;
+    }
+
+    public void setOrder(Order order)
+    {
+        tableName = order.getOrderName();
+        taxesAmount = order.getTotalTaxes();
+    }
+    
     public BigDecimal getTaxedTotal()
     {
         return transaction.getAmount();
@@ -66,34 +78,25 @@ public class Receipt
 
     public BigDecimal getNotTaxedTotal()
     {
-        var total = BigDecimal.ZERO;
-
-        for (var productReceipt : products)
-        {
-            total = total.add(productReceipt.getProduct().getNotTaxedPrice().multiply(productReceipt.getQuantity()));
-        }
-
-        total = total.add(unknownProductsValue.divide(new BigDecimal("1.1"), 2, RoundingMode.FLOOR));
-
-        return total;
+        return getTaxedTotal().subtract(taxesAmount);
     }
 
-    public String getCustomerName()
+    public String getClientString()
     {
-        if (client == null)
+        if (clientName == null)
         {
             return "Público general";
         }
         else
         {
-            return client.getName() + " - " + client.getId();
+            return clientName + " - " + clientIdentifier;
         }
     }
 
     public String getAttendantName()
     {
-        return account == null
+        return employeeName == null
                 ? "Unknown employee"
-                : account.getName();
+                : employeeName;
     }
 }

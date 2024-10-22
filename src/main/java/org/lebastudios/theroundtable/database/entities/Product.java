@@ -11,7 +11,6 @@ import org.lebastudios.theroundtable.events.DatabaseEntitiesEvents;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -44,9 +43,6 @@ public class Product
     @Column(name = "TAXES_INCLUDED", nullable = false)
     private Boolean taxesIncluded = true;
 
-    @Column(name = "REMOVED", nullable = false)
-    private boolean removed = false;
-
     @Column(name = "ENABLED", nullable = false)
     private boolean enabled = true;
 
@@ -55,30 +51,22 @@ public class Product
     @JoinColumn(name = "SUB_CATEGORY_NAME", referencedColumnName = "NAME")
     private SubCategory subCategory;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-    private Set<Product_Receipt> productReceipts;
-
     public static void removeProductFromDB(int productId)
     {
         Database.getInstance().connectTransaction(session ->
         {
             var entity = session.get(Product.class, productId);
-
-            if (entity == null) throw new IllegalArgumentException("Product not found");
-
-            if (entity.getProductReceipts().isEmpty())
-            {
-                session.remove(entity);
-            }
-            else
-            {
-                entity.setRemoved(true);
-            }
+            
+            session.remove(entity);
         });
 
         DatabaseEntitiesEvents.onProductsModified.invoke();
     }
 
+    /**
+     * Returns the price of the product with taxes.
+     * @return The price of the product with taxes.
+     */
     public BigDecimal getPrice()
     {
         return taxesIncluded ? price : price.add(price.multiply(taxes));

@@ -75,6 +75,23 @@ public class Order
         return total;
     }
 
+    public BigDecimal getTotalWithoutTaxes()
+    {
+        BigDecimal total = BigDecimal.ZERO;
+
+        for (var entry : products.entrySet())
+        {
+            total = total.add(entry.getKey().getNotTaxedPrice().multiply(entry.getValue()));
+        }
+
+        return total;
+    }
+    
+    public BigDecimal getTotalTaxes()
+    {
+        return getTotal().subtract(getTotalWithoutTaxes());
+    }
+    
     public void removeProductQty(Product product, BigDecimal quantity)
     {
         if (!products.containsKey(product))

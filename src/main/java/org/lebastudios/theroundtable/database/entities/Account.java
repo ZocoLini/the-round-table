@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.lebastudios.theroundtable.language.LangFileLoader;
 
-import java.util.Set;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -35,9 +35,6 @@ public class Account
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(name = "DELETED", nullable = false)
-    private boolean deleted;
-
     @Column(name = "TYPE", nullable = false)
     @Enumerated(EnumType.STRING)
     private AccountType type = AccountType.CASHIER;
@@ -45,12 +42,9 @@ public class Account
     @Column(name = "CHANGE_PASSWORD_ON_NEXT_LOGIN", nullable = false)
     private boolean changePasswordOnNextLogin = false;
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE) @ToString.Exclude
-    private Set<Receipt> receipts;
-
     public boolean hasAuthorityOver(Account account)
     {
-        if (this.id == account.id) return true;
+        if (Objects.equals(this.id, account.id)) return true;
 
         return switch (type)
         {

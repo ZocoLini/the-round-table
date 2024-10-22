@@ -83,8 +83,6 @@ public class UsersConfigPaneController extends SettingsPaneController
         {
             for (Account account : session.createQuery("from Account", Account.class).list())
             {
-                if (account.isDeleted()) continue;
-
                 final var currentLogged = AccountManager.getInstance().getCurrentLogged();
 
                 if (account.getType() != Account.AccountType.ROOT &&
@@ -128,15 +126,7 @@ public class UsersConfigPaneController extends SettingsPaneController
         {
             Account account = session.get(Account.class, selectedAccount.getId());
 
-            if (account.getReceipts().isEmpty())
-            {
-                session.remove(account);
-            }
-            else
-            {
-                account.setDeleted(true);
-                session.merge(account);
-            }
+            session.remove(account);
         });
 
         userView.setVisible(false);
