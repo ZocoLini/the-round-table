@@ -3,39 +3,52 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml" fx:id="root"
-      xmlns="http://javafx.com/javafx" spacing="15"
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:id="root" maxWidth="Infinity" maxHeight="Infinity"
+      xmlns="http://javafx.com/javafx" vgap="5" hgap="5"
       fx:controller="org.lebastudios.theroundtable.config.PrintersConfigPaneController">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
-    <HBox spacing="15" alignment="CENTER_LEFT">
-        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%phrase.defaultprinter"/>
-        <ChoiceBox maxWidth="250" fx:id="defaultPrinter" prefWidth="200" prefHeight="30"/>
-
-    </HBox>
-    <HBox spacing="15" alignment="CENTER_LEFT">
-        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%phrase.hideEstablishmentLogo"/>
-        <CheckBox maxWidth="250" fx:id="hideEstablishmentLogo" prefWidth="200" prefHeight="30"/>
-
-    </HBox>
-    <HBox spacing="15" alignment="CENTER_LEFT">
-        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%phrase.hideReceiptData"/>
-        <CheckBox maxWidth="250" fx:id="hideReceiptData" prefWidth="200" prefHeight="30"/>
-
-    </HBox>
-    <HBox spacing="15" alignment="CENTER_LEFT">
-        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%phrase.hideTaxesIncludedMsg"/>
-        <CheckBox maxWidth="250" fx:id="hideTaxesIncludedMsg" prefWidth="200" prefHeight="30"/>
-
-    </HBox>
-    <HBox spacing="15" alignment="CENTER_LEFT">
-        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%phrase.hideTaxesDesglose"/>
-        <CheckBox maxWidth="250" fx:id="hideTaxesDesglose" prefWidth="200" prefHeight="30"/>
-
-    </HBox>
-    <HBox spacing="15" alignment="CENTER_LEFT">
-        <Label maxWidth="Infinity" HBox.hgrow="ALWAYS" text="%phrase.hidePaymentInfo"/>
-        <CheckBox maxWidth="250" fx:id="hidePaymentInfo" prefWidth="200" prefHeight="30"/>
-    </HBox>
-</VBox>
+    
+    <columnConstraints>
+        <ColumnConstraints />
+        <ColumnConstraints />
+    </columnConstraints>
+    
+    <rowConstraints>
+        <RowConstraints /> <!-- Printers section -->
+        <RowConstraints />
+        <RowConstraints /> <!-- Ticket section -->
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+    </rowConstraints>
+    
+    <Label text="%word.printers" maxHeight="Infinity" maxWidth="Infinity" style="-fx-font-size: 16; -fx-font-weight: bold;"
+            GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
+    
+    <Label text="%phrase.defaultprinter" maxWidth="Infinity"
+           GridPane.columnIndex="0" GridPane.rowIndex="1" />
+    <ChoiceBox minWidth="250" maxWidth="Infinity" fx:id="defaultPrinter" 
+               GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    
+    <Label text="%phrase.ticketprintingoptions" maxWidth="Infinity" maxHeight="Infinity" style="-fx-font-size: 16; -fx-font-weight: bold;"
+           GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+    
+    <CheckBox maxHeight="Infinity" maxWidth="Infinity" fx:id="hideEstablishmentLogo"
+              GridPane.columnIndex="0" GridPane.rowIndex="3" text="%phrase.hideEstablishmentLogo"/>
+    
+    <CheckBox maxHeight="Infinity" maxWidth="Infinity" fx:id="hideReceiptData"
+              GridPane.columnIndex="0" GridPane.rowIndex="4" text="%phrase.hideReceiptData"/>
+    
+    <CheckBox maxHeight="Infinity" maxWidth="Infinity" fx:id="hideTaxesIncludedMsg"
+              GridPane.columnIndex="0" GridPane.rowIndex="5" text="%phrase.hideTaxesIncludedMsg"/>
+    
+    <CheckBox maxHeight="Infinity" maxWidth="Infinity" fx:id="hideTaxesDesglose"
+              GridPane.columnIndex="0" GridPane.rowIndex="6" text="%phrase.hideTaxesDesglose"/>
+    
+    <CheckBox maxHeight="Infinity" maxWidth="Infinity" fx:id="hidePaymentInfo"
+              GridPane.columnIndex="0" GridPane.rowIndex="7" text="%phrase.hidePaymentInfo"/>
+</GridPane>
