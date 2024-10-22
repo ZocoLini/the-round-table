@@ -9,4 +9,9 @@ public class BigDecimalOperations
     {
         return dividend.divide(divisor, 2, RoundingMode.FLOOR);
     }
+    
+    public static String toString(BigDecimal value)
+    {
+        return value.setScale(2, RoundingMode.FLOOR).toString();
+    } 
 }

@@ -23,7 +23,7 @@ public class Product_Receipt
     /**
      * The total amount paid for the product. Taxes included. 
      * This is the price of the product multiplied by the 
-     * quantity. The value variable is the price of the product with or without taxes.
+     * quantity. The value variable is the price of the product with taxes.
      */
     @Column(name = "TOTAL_VALUE", nullable = false)
     @Getter @Setter private BigDecimal totalValue;
@@ -47,6 +47,7 @@ public class Product_Receipt
     public void setProduct(Product product)
     {
         productName = product.getName();
+        productValue = product.getPrice();
         totalValue = product.getPrice().multiply(quantity);
         taxes = product.getTaxes();
         taxesIncluded = product.getTaxesIncluded();

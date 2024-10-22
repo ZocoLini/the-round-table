@@ -64,6 +64,12 @@ public class Receipt
         clientName = name;
         clientIdentifier = identifier;
     }
+
+    public void setOrder(Order order)
+    {
+        tableName = order.getOrderName();
+        taxesAmount = order.getTotalTaxes();
+    }
     
     public BigDecimal getTaxedTotal()
     {
