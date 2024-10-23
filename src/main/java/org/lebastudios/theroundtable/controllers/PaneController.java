@@ -1,9 +1,5 @@
 package org.lebastudios.theroundtable.controllers;
 
-public final class PaneController extends Controller
+public abstract class PaneController<T extends Controller<T>> extends Controller<T>
 {
-    protected PaneController(String fxml)
-    {
-        super(fxml);
-    }
 }

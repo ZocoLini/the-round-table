@@ -2,19 +2,18 @@ package org.lebastudios.theroundtable.accounts;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Modality;
-import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.controllers.StageController;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Account;
-import org.lebastudios.theroundtable.language.LangBundleLoader;
 import org.lebastudios.theroundtable.ui.StageBuilder;
 
-public class ChangePasswordStageController extends StageController
+import java.net.URL;
+
+public class ChangePasswordStageController extends StageController<ChangePasswordStageController>
 {
     @FXML private PasswordField password;
     @FXML private PasswordField confirmPassword;
@@ -24,8 +23,6 @@ public class ChangePasswordStageController extends StageController
 
     public ChangePasswordStageController(Account account)
     {
-        super("changePasswordStage.fxml");
-
         this.account = account;
     }
 
@@ -35,20 +32,16 @@ public class ChangePasswordStageController extends StageController
         return this;
     }
 
-    @SneakyThrows
     @Override
-    public void instantiate()
+    protected void customizeStageBuilder(StageBuilder stageBuilder)
     {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(getFxml()));
-        LangBundleLoader.addLangBundle(loader, Launcher.class);
-        loader.setController(this);
-        loader.load();
+        stageBuilder.setModality(Modality.APPLICATION_MODAL);
+    }
 
-        new StageBuilder(getParent())
-                .setModality(Modality.APPLICATION_MODAL)
-                .setTitle("Change password")
-                .build()
-                .showAndWait();
+    @Override
+    public String getTitle()
+    {
+        return "Change password";
     }
 
     @FXML
@@ -84,5 +77,17 @@ public class ChangePasswordStageController extends StageController
     private void cancel(ActionEvent actionEvent)
     {
         close();
+    }
+
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return ChangePasswordStageController.class.getResource("changePasswordStage.fxml");
     }
 }

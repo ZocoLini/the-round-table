@@ -1,24 +1,44 @@
 package org.lebastudios.theroundtable.controllers;
 
-import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.lebastudios.theroundtable.apparience.ThemeLoader;
+import org.lebastudios.theroundtable.ui.StageBuilder;
 
-public abstract class StageController extends Controller
+import java.util.function.Consumer;
+
+public abstract class StageController<T extends Controller<T>> extends Controller<T>
 {
-    protected StageController(String fxml)
+    public final void instantiate(Consumer<T> acceptController)
     {
-        super(fxml);
-    }
-
-    public abstract void instantiate();
-    
-    public final Parent getParent()
-    {
-        return (Parent) getRoot();
+        StageBuilder stageBuilder = getDefaultStageBuilder();
+        
+        acceptController.accept(this.controller);
+        customizeStageBuilder(stageBuilder);
+        
+        stageBuilder.build().show();
     }
     
-    public final void close()
+    public final void instantiate()
     {
-        ((Stage) getParent().getScene().getWindow()).close();
+        instantiate(_ -> {});
+    }
+    
+    private StageBuilder getDefaultStageBuilder()
+    {
+        Scene scene = new Scene(getParent());
+        ThemeLoader.addActualTheme(scene);
+        
+        return new StageBuilder(scene)
+                .setTitle(getTitle());
+    }
+    
+    protected abstract void customizeStageBuilder(StageBuilder stageBuilder);
+    
+    public abstract String getTitle();
+    
+    protected final void close()
+    {
+        ((Stage) getRoot().getScene().getWindow()).close();
     }
 }

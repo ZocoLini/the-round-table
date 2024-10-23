@@ -5,15 +5,22 @@ import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PreferencesConfigData;
+import org.lebastudios.theroundtable.events.UserEvents;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ThemeLoader
 {
-    private static final List<Scene> scenesInstantiated = new ArrayList<>();
+    private static final Set<Scene> scenesInstantiated = new HashSet<>();
 
+    static {
+        UserEvents.OnAccountLogIn.addListener(a -> reloadThemes());
+    }
+    
     public static void reloadThemes()
     {
         for (var scene : scenesInstantiated)
@@ -21,8 +28,6 @@ public class ThemeLoader
             scene.getStylesheets().removeLast();
             addActualTheme(scene);
         }
-
-        new Thread(ThemeLoader::removeRemovedScenes).start();
     }
 
     @SneakyThrows
@@ -30,8 +35,7 @@ public class ThemeLoader
     {
         removeRemovedScenes();
 
-        if (!scenesInstantiated.contains(scene)) scenesInstantiated.add(scene);
-
+        scenesInstantiated.add(scene);
 
         var actualTheme = new JSONFile<>(PreferencesConfigData.class).get().theme;
 

@@ -72,7 +72,11 @@ public class UsersConfigPaneController extends SettingsPaneController
         reloadUsersContainer();
         
         passwordField.setEditable(false);
-        passwordField.setOnMouseClicked(e -> new ChangePasswordStageController(selectedAccount).instantiate());
+        passwordField.setOnMouseClicked(e ->
+        {
+            if (selectedAccount.getType() != Account.AccountType.ROOT)
+                new ChangePasswordStageController(selectedAccount).instantiate();
+        });
     }
 
     private void reloadUsersContainer()
