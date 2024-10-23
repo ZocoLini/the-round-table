@@ -105,9 +105,7 @@ public class MainStageController
     {
         // TODO: Enable an option to let the admins decide if the users can close session without closing the cash 
         //  register. Maybe use a checkbox in the User Account to mark this behaviour
-
-        // TODO: Problems with the theme loader
-
+        
         root.getScene().getWindow().hide();
         AccountManager.getInstance().logOut();
 

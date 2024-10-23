@@ -12,6 +12,11 @@ public class BigDecimalOperations
     
     public static String toString(BigDecimal value)
     {
-        return value.setScale(2, RoundingMode.FLOOR).toString();
+        return round(value).toString();
     } 
+    
+    public static BigDecimal round(BigDecimal value)
+    {
+        return value.setScale(2, RoundingMode.FLOOR);
+    }
 }

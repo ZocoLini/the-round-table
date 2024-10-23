@@ -134,7 +134,7 @@ public class DefaultReceiptPrinter implements IReceiptPrinter
         new InLinePrinter().concatLeft(BigDecimalOperations.toString(percentageOver100), 6)
                 .concatLeft(" % " + LangFileLoader.getTranslation("word.iva") + " ")
                 .concatLeft(LangFileLoader.getTranslation("word.over"))
-                .concatRight(taxes.toString(), 8, EscPosConst.Justification.Right)
-                .concatRight(base.toString(), 8, EscPosConst.Justification.Right).print(escpos);
+                .concatRight(base.toString(), 8, EscPosConst.Justification.Right)
+                .concatRight(taxes.toString(), 8, EscPosConst.Justification.Right).print(escpos);
     }
 }

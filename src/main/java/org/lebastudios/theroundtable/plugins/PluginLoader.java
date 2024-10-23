@@ -32,25 +32,10 @@ public class PluginLoader
 
                 ServiceLoader<IPlugin> serviceLoader = ServiceLoader.load(IPlugin.class, classLoader);
 
-                // Load all plugins that can be loaded
-                boolean keepTryingToLoad = true;
-
-                while (keepTryingToLoad)
+                for (var plugin : serviceLoader)
                 {
-                    keepTryingToLoad = false;
-                    for (IPlugin plugin : serviceLoader)
-                    {
-                        var pluginData = plugin.getPluginData();
-
-                        pluginsInstalled.put(pluginData.pluginName, plugin);
-
-                        if (pluginsLoaded.containsKey(pluginData.pluginName)) continue;
-                        if (!canBePluginLoaded(plugin)) continue;
-
-                        pluginsLoaded.put(plugin.getPluginData().pluginName, plugin);
-                        keepTryingToLoad = true;
-                        plugin.initialize();
-                    }
+                    var pluginData = plugin.getPluginData();
+                    pluginsInstalled.put(pluginData.pluginId, plugin);
                 }
             }
             catch (Exception e)
@@ -58,10 +43,30 @@ public class PluginLoader
                 System.err.println("Error loading plugin: " + jar.getName() + " " + e.getMessage());
             }
         }
+
+        // Load all plugins that can be loaded
+        boolean keepTryingToLoad = true;
+
+        while (keepTryingToLoad)
+        {
+            keepTryingToLoad = false;
+            for (IPlugin plugin : pluginsInstalled.values())
+            {
+                var pluginData = plugin.getPluginData();
+                
+                if (pluginsLoaded.containsKey(pluginData.pluginId)) continue;
+                if (!canBePluginLoaded(plugin)) continue;
+
+                pluginsLoaded.put(plugin.getPluginData().pluginId, plugin);
+                keepTryingToLoad = true;
+                plugin.initialize();
+            }
+        }
     }
 
     public static boolean canBePluginLoaded(IPlugin plugin)
     {
+        // TODO: Make a better version comparator
         if (plugin.getPluginData().pluginRequiredCoreVersion
                 .compareTo(TheRoundTableApplication.getAppVersion()) > 0) {return false;}
 
@@ -69,8 +74,8 @@ public class PluginLoader
 
         for (var dependency : plugin.getPluginData().pluginDependencies)
         {
-            if (!pluginsLoaded.containsKey(dependency.pluginName)) return false;
-            if (pluginsLoaded.get(dependency.pluginName).getPluginData().pluginVersion
+            if (!pluginsLoaded.containsKey(dependency.pluginId)) return false;
+            if (pluginsLoaded.get(dependency.pluginId).getPluginData().pluginVersion
                     .compareTo(dependency.pluginVersion) < 0) {return false;}
         }
 
