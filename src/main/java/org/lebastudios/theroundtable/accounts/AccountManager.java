@@ -19,14 +19,6 @@ public class AccountManager
         return instance;
     }
 
-    public boolean isAccountValidToSignRecips()
-    {
-        if (currentLogged == null) return false;
-
-        return currentLogged.getType() != Account.AccountType.ROOT
-                && currentLogged.getType() != Account.AccountType.ACCOUNTANT;
-    }
-
     public boolean isAccountAdmin()
     {
         if (currentLogged == null) return false;

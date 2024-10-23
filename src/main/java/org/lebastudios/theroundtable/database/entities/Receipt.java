@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.lebastudios.theroundtable.language.LangFileLoader;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -85,7 +86,7 @@ public class Receipt
     {
         if (clientName == null)
         {
-            return "Público general";
+            return LangFileLoader.getTranslation("phrase.generalpublicclient");
         }
         else
         {

@@ -5,6 +5,7 @@ import com.github.anastaciocintra.escpos.EscPosConst;
 import com.github.anastaciocintra.escpos.Style;
 import org.lebastudios.theroundtable.database.entities.Order;
 import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.maths.BigDecimalOperations;
 
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -15,8 +16,7 @@ public final class DefaultOrderPrinter implements IOrderPrinter
     public EscPos print(EscPos escpos, Order order) throws IOException
     {
         // Top Label
-        var linePrinter = new InLinePrinter();
-        linePrinter.concatLeft("", 3)
+        new InLinePrinter().concatLeft("", 3)
                 .concatLeft("Qty", 6)
                 .concatLeft(" ")
                 .concatLeft(LangFileLoader.getTranslation("word.product"), 20)
@@ -28,13 +28,12 @@ public final class DefaultOrderPrinter implements IOrderPrinter
 
         for (var entry : order.getProducts().entrySet())
         {
-            var total = entry.getKey().getPrice().multiply(entry.getValue()).toString();
-            var price = entry.getKey().getPrice().toString();
+            var total = BigDecimalOperations.toString(entry.getKey().getPrice().multiply(entry.getValue()));
+            var price = BigDecimalOperations.toString(entry.getKey().getPrice());
             var productQty = entry.getValue().toString();
             var productName = entry.getKey().getName();
 
-            linePrinter = new InLinePrinter();
-            linePrinter.concatLeft("", 3)
+            new InLinePrinter().concatLeft("", 3)
                     .concatLeft(productQty, 6)
                     .concatLeft(" ")
                     .concatLeft(productName, 20)
@@ -44,8 +43,7 @@ public final class DefaultOrderPrinter implements IOrderPrinter
 
         new LineFiller("-").print(escpos);
 
-        linePrinter = new InLinePrinter(Style.FontSize._2);
-        linePrinter.concatLeft("TOTAL")
+        new InLinePrinter(Style.FontSize._2).concatLeft("TOTAL")
                 .concatRight(order.getTotal().setScale(2, RoundingMode.FLOOR).toString())
                 .concatRight("EUR").print(escpos);
 

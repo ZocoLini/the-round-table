@@ -11,7 +11,6 @@ public class PrintersConfigPaneController extends SettingsPaneController
 {
     @FXML private CheckBox hideEstablishmentLogo;
     @FXML private CheckBox hideReceiptData;
-    @FXML private CheckBox hideTaxesIncludedMsg;
     @FXML private CheckBox hideTaxesDesglose;
     @FXML private CheckBox hidePaymentInfo;
     @FXML private ChoiceBox<String> defaultPrinter;
@@ -26,7 +25,6 @@ public class PrintersConfigPaneController extends SettingsPaneController
         printerData.get().hideTaxesDesglose = hideTaxesDesglose.isSelected();
         printerData.get().hidePaymentInfo = hidePaymentInfo.isSelected();
         printerData.get().hideReceiptData = hideReceiptData.isSelected();
-        printerData.get().hideTaxesIncludedMsg = hideTaxesIncludedMsg.isSelected();
         printerData.get().hideEstablishmentLogo = hideEstablishmentLogo.isSelected();
 
         printerData.save();
@@ -53,7 +51,6 @@ public class PrintersConfigPaneController extends SettingsPaneController
         }
 
         hideReceiptData.setSelected(printerData.hideReceiptData);
-        hideTaxesIncludedMsg.setSelected(printerData.hideTaxesIncludedMsg);
         hideTaxesDesglose.setSelected(printerData.hideTaxesDesglose);
         hidePaymentInfo.setSelected(printerData.hidePaymentInfo);
         hideEstablishmentLogo.setSelected(printerData.hideEstablishmentLogo);

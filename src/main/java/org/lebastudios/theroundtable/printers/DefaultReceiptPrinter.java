@@ -8,11 +8,13 @@ import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Order;
 import org.lebastudios.theroundtable.database.entities.Receipt;
 import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.maths.BigDecimalOperations;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.temporal.ChronoUnit;
+import java.util.TreeMap;
 
 public class DefaultReceiptPrinter implements IReceiptPrinter
 {
@@ -44,21 +46,11 @@ public class DefaultReceiptPrinter implements IReceiptPrinter
             {
                 try
                 {
-                    if (receipt.getClientIdentifier() == null)
-                    {
-                        escpos.writeLF(LangFileLoader.getTranslation("phrase.generalpublicclient"));
-                    }
-                    else
-                    {
-                        escpos.writeLF(LangFileLoader.getTranslation("word.client")
-                                + ": " + receipt.getClientName() + " - " + receipt.getClientIdentifier());
-                    }
-
-                    if (receipt.getAttendantName() != null)
-                    {
-                        escpos.writeLF(LangFileLoader.getTranslation("phrase.attendedby")
-                                + receipt.getAttendantName());
-                    }
+                    escpos.writeLF(LangFileLoader.getTranslation("word.client")
+                            + ": " + receipt.getClientString());
+                    
+                    escpos.writeLF(LangFileLoader.getTranslation("phrase.attendedby")
+                            + receipt.getAttendantName());
                 }
                 catch (Exception _) {}
             });
@@ -72,27 +64,27 @@ public class DefaultReceiptPrinter implements IReceiptPrinter
 
         // Taxes
 
-        if (!printerConfig.hideTaxesIncludedMsg)
-        {
-            escpos.writeLF(LangFileLoader.getTranslation("phrase.taxesincluded"));
-
-            escpos.feed(1);
-        }
-
         if (!printerConfig.hideTaxesDesglose)
         {
-            new InLinePrinter().concatRight("BASE", 20, EscPosConst.Justification.Left_Default)
-                    .concatRight(LangFileLoader.getTranslation("word.iva"), 8, EscPosConst.Justification.Left_Default)
-                    .concatRight(LangFileLoader.getTranslation("word.quote"), 15,
-                            EscPosConst.Justification.Left_Default)
-                    .print(escpos);
+            TreeMap<BigDecimal, BigDecimal> taxes = new TreeMap<>();
 
-            var baseImponible = order.getTotal().divide(new BigDecimal("1.10"), 2, RoundingMode.FLOOR);
-            var taxes = order.getTotal().subtract(baseImponible).setScale(2, RoundingMode.FLOOR);
+            order.getProducts().forEach((product, qty) ->
+            {
+                taxes.put(product.getTaxes(),
+                        taxes.getOrDefault(product.getTaxes(), BigDecimal.ZERO).add(qty.multiply(product.getPrice())));
+            });
 
-            new InLinePrinter().concatRight(baseImponible.toString(), 20, EscPosConst.Justification.Left_Default)
-                    .concatRight("10%", 8, EscPosConst.Justification.Left_Default)
-                    .concatRight(taxes.toString(), 15, EscPosConst.Justification.Left_Default).print(escpos);
+            taxes.forEach((percen, total) ->
+            {
+                try
+                {
+                    printTaxesGroup(escpos, percen, total);
+                }
+                catch (IOException e)
+                {
+                    throw new RuntimeException(e);
+                }
+            });
 
             escpos.feed(1);
         }
@@ -110,7 +102,7 @@ public class DefaultReceiptPrinter implements IReceiptPrinter
                     .concatRight("", 6).print(escpos);
 
             new InLinePrinter().concatLeft("", 6)
-                    .concatLeft(receipt.getPaymentAmount().toString(), 18)
+                    .concatLeft(BigDecimalOperations.toString(receipt.getPaymentAmount()), 18)
                     .concatRight(
                             order.getTotal().subtract(receipt.getPaymentAmount()).abs().setScale(2, RoundingMode.FLOOR)
                                     .toString(),
@@ -125,5 +117,24 @@ public class DefaultReceiptPrinter implements IReceiptPrinter
         new OpenCashDrawer().print(escpos);
 
         return escpos;
+    }
+
+    /**
+     * 
+     * @param escpos
+     * @param percentage beetween 0 and 1
+     * @param total with taxes
+     */
+    private void printTaxesGroup(EscPos escpos, BigDecimal percentage, BigDecimal total) throws IOException
+    {
+        var percentageOver100 = percentage.multiply(new BigDecimal(100));
+        var base = BigDecimalOperations.divide(total, percentage.add(BigDecimal.ONE));
+        var taxes = total.subtract(base);
+        
+        new InLinePrinter().concatLeft(BigDecimalOperations.toString(percentageOver100), 6)
+                .concatLeft(" % " + LangFileLoader.getTranslation("word.iva") + " ")
+                .concatLeft(LangFileLoader.getTranslation("word.over"))
+                .concatRight(taxes.toString(), 8, EscPosConst.Justification.Right)
+                .concatRight(base.toString(), 8, EscPosConst.Justification.Right).print(escpos);
     }
 }

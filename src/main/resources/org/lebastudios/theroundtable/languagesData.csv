@@ -19,7 +19,7 @@ word.time,Time,Hora
 phrase.tablename,Table,Mesa
 phrase.simplifiedreceipt,Simplified Receipt,Recibo simplificado
 word.client,Client,Cliente
-phrase.generalpublicclient,General Public,Publico general
+phrase.generalpublicclient,General Public,Contado
 phrase.attendedby,Attended by: ,Atendido por 
 phrase.taxesincluded,Taxes Included,Impuestos incluidos
 phrase.paymentmethod,Payment Method: ,Metodo de pago: 
@@ -49,3 +49,4 @@ setup.title.databaseconfig,Database,Base de datos
 setup.error.invalidpassword,Password must be at least 8 characters long,La contraseña debe tener 8 caracteres o más
 setup.error.invalidname,Username must be at least 3 characters long,El nombre debe tener 3 caracteres o más
 setup.error.passwordmatch,Passwords do not match,Las contraseñas no coinciden
+word.over,Over,Sobre

@@ -13,7 +13,6 @@ public class PrintersConfigData implements FileRepresentator
                     : PrintServiceLookup.lookupDefaultPrintService().toString();
 
     public boolean hideReceiptData = false;
-    public boolean hideTaxesIncludedMsg = false;
     public boolean hideTaxesDesglose = false;
     public boolean hidePaymentInfo = false;
     public boolean hideEstablishmentLogo = false;

@@ -23,7 +23,6 @@
         <RowConstraints valignment="CENTER" />
         <RowConstraints valignment="CENTER" />
         <RowConstraints valignment="CENTER" />
-        <RowConstraints valignment="CENTER" />
     </rowConstraints>
     
     <Label text="%word.printers" maxHeight="Infinity" maxWidth="Infinity" style="-fx-font-size: 16; -fx-font-weight: bold;"
@@ -43,12 +42,9 @@
     <CheckBox maxHeight="Infinity" maxWidth="Infinity" fx:id="hideReceiptData"
               GridPane.columnIndex="0" GridPane.rowIndex="4" text="%phrase.hideReceiptData"/>
     
-    <CheckBox maxHeight="Infinity" maxWidth="Infinity" fx:id="hideTaxesIncludedMsg"
-              GridPane.columnIndex="0" GridPane.rowIndex="5" text="%phrase.hideTaxesIncludedMsg"/>
-    
     <CheckBox maxHeight="Infinity" maxWidth="Infinity" fx:id="hideTaxesDesglose"
-              GridPane.columnIndex="0" GridPane.rowIndex="6" text="%phrase.hideTaxesDesglose"/>
+              GridPane.columnIndex="0" GridPane.rowIndex="5" text="%phrase.hideTaxesDesglose"/>
     
     <CheckBox maxHeight="Infinity" maxWidth="Infinity" fx:id="hidePaymentInfo"
-              GridPane.columnIndex="0" GridPane.rowIndex="7" text="%phrase.hidePaymentInfo"/>
+              GridPane.columnIndex="0" GridPane.rowIndex="6" text="%phrase.hidePaymentInfo"/>
 </GridPane>

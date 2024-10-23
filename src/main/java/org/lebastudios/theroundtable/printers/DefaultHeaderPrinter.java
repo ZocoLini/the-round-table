@@ -40,9 +40,21 @@ public final class DefaultHeaderPrinter implements IPrinter
 
         escpos.feed(1);
 
-        new PrintNotEmptyString(establishmentDat.address, Styles.CENTERED).print(escpos);
-        new PrintNotEmptyString(establishmentDat.city, Styles.CENTERED).print(escpos);
-        new PrintNotEmptyString(establishmentDat.zipCode, Styles.CENTERED).print(escpos);
+        
+        PrintNotEmptyString printer = new PrintNotEmptyString(establishmentDat.address, Styles.CENTERED);
+        printer.setNewLine(false);
+        
+        printer.print(escpos);
+        escpos.write(" ");
+        
+        printer.setText(establishmentDat.city);
+        printer.print(escpos);
+        escpos.write(" ");
+        
+        printer.setText(establishmentDat.zipCode);
+        printer.setNewLine(true);
+        printer.print(escpos);
+        
         new PrintNotEmptyString(establishmentDat.phone, Styles.CENTERED).print(escpos);
 
         return escpos;
