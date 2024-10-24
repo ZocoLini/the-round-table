@@ -16,15 +16,40 @@ public abstract class Controller<T extends Controller<T>>
  
     @Getter protected T controller;
     
+    private Thread loadingRoot;
+    
     public final Node getRoot()
     {
+        if (loadingRoot != null)
+        {
+            try
+            {
+                loadingRoot.join();
+            }
+            catch (InterruptedException _) {}
+        }
+        
         if (root == null) loadFXML();
         
         return this.root;
     }
 
+    public void loadAsync()
+    {
+        Thread loadingThread = new Thread(() ->
+        {
+            loadFXML();
+            loadingRoot = null;
+        });
+        loadingThread.start();
+        
+        loadingRoot = loadingThread;
+    }
+    
     public final void loadFXML()
     {
+        if (root != null) return;
+        
         final var fxmlLoader = getFXMLLoader();
         try
         {
