@@ -2,5 +2,6 @@ VERSION 2.0.0
 
 -> Improve the scene loading making use of threads for the loading of the views
 -> Imrove the way plugins communicate between them
+-> ¿Guardar el estado de los recibos por si sucediera algo que se pudiese recuperar la informacion?
 
 -> Refactor the code to a better scability (create a better abstraction for Controllers)
