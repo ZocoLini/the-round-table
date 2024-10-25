@@ -65,7 +65,8 @@ public abstract class Controller<T extends Controller<T>>
         }
         catch (IOException e)
         {
-            throw new RuntimeException("Resource " + getFXML() + " not found");
+            e.printStackTrace();
+            throw new RuntimeException("Error loading resource " + getFXML());
         }
 
         this.controller = fxmlLoader.getController();
