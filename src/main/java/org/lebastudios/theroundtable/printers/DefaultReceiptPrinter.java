@@ -7,7 +7,7 @@ import org.lebastudios.theroundtable.config.data.PrintersConfigData;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Order;
 import org.lebastudios.theroundtable.database.entities.Receipt;
-import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
 import org.lebastudios.theroundtable.maths.BigDecimalOperations;
 
 import java.io.IOException;

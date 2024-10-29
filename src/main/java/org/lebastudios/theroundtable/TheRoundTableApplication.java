@@ -12,11 +12,13 @@ import org.lebastudios.theroundtable.accounts.AccountStageController;
 import org.lebastudios.theroundtable.apparience.ImageLoader;
 import org.lebastudios.theroundtable.config.data.CashRegisterStateData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
-import org.lebastudios.theroundtable.config.data.PreferencesConfigData;
 import org.lebastudios.theroundtable.dialogs.ConfirmationTextDialogController;
 import org.lebastudios.theroundtable.dialogs.InformationTextDialogController;
 import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
-import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
+import org.lebastudios.theroundtable.locale.AppLocale;
+import org.lebastudios.theroundtable.locale.LangLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 import org.lebastudios.theroundtable.setup.SetupStageController;
 import org.lebastudios.theroundtable.ui.SceneBuilder;
@@ -75,12 +77,7 @@ public class TheRoundTableApplication extends Application
     @Override
     public void start(Stage stage)
     {
-        // TODO: loadPlugins() shold be able to load the translations.
-        PluginLoader.loadPlugins();
-        LangFileLoader.loadLang(
-                new JSONFile<>(PreferencesConfigData.class).get().langauge,
-                System.getProperty("user.country")
-        );
+        LangLoader.loadLang(Launcher.class, AppLocale.getActualLocale());
 
         if (SetupStageController.checkIfStart())
         {
@@ -106,7 +103,9 @@ public class TheRoundTableApplication extends Application
             s.setOnCloseRequest(e -> System.exit(0));
             s.getIcons().add(ImageLoader.getIcon("the-round-table-logo.png"));
         });
-
+        
+        PluginLoader.loadPlugins();
+        
         Scene mainScene = createScene(MainStageController.getParentNode());
         stage.setTitle("The Round Table");
         stage.getIcons().add(ImageLoader.getIcon("the-round-table-logo.png"));

@@ -12,7 +12,7 @@ import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.communications.ApiRequests;
-import org.lebastudios.theroundtable.language.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
 
 public class PluginsStageController
 {
@@ -26,7 +26,7 @@ public class PluginsStageController
     public static void showPluginsStage()
     {
         var loader = new FXMLLoader(PluginsStageController.class.getResource("pluginsStage.fxml"));
-        LangBundleLoader.addLangBundle(loader, Launcher.class);
+        LangBundleLoader.loadLang(loader, Launcher.class);
         Parent root = loader.load();
 
         TheRoundTableApplication.showAndWaitInStage(root, "Plugins");

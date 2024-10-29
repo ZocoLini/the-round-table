@@ -4,7 +4,7 @@ import javafx.fxml.FXMLLoader;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.config.SettingsPaneController;
-import org.lebastudios.theroundtable.language.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
 
 public class SettingsPaneWrapper extends SetupPaneController
 {
@@ -14,7 +14,7 @@ public class SettingsPaneWrapper extends SetupPaneController
     public SettingsPaneWrapper(String paneName)
     {
         FXMLLoader loader = new FXMLLoader(SettingsPaneController.class.getResource(paneName));
-        LangBundleLoader.addLangBundle(loader, Launcher.class);
+        LangBundleLoader.loadLang(loader, Launcher.class);
         loader.load();
         this.controller = loader.getController();
         this.root = controller.getRoot();

@@ -22,8 +22,8 @@ import org.lebastudios.theroundtable.config.ConfigStageController;
 import org.lebastudios.theroundtable.config.data.DatabaseConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.database.BackupDB;
-import org.lebastudios.theroundtable.language.LangBundleLoader;
-import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 import org.lebastudios.theroundtable.plugins.PluginsStageController;
 import org.lebastudios.theroundtable.ui.IconButton;
@@ -49,7 +49,7 @@ public class MainStageController
     public static Parent getParentNode()
     {
         FXMLLoader loader = new FXMLLoader(MainStageController.class.getResource("mainStage.fxml"));
-        LangBundleLoader.addLangBundle(loader, MainStageController.class);
+        LangBundleLoader.loadLang(loader, MainStageController.class);
         return loader.load();
     }
 

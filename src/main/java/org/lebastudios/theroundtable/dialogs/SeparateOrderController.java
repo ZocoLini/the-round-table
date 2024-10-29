@@ -14,8 +14,8 @@ import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.database.entities.Order;
 import org.lebastudios.theroundtable.database.entities.Product;
-import org.lebastudios.theroundtable.language.LangBundleLoader;
-import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class SeparateOrderController
     {
         var loader = new FXMLLoader(SeparateOrderController.class.getResource("separateOrder.fxml"));
         loader.setController(new SeparateOrderController(order, acceptSeparation));
-        LangBundleLoader.addLangBundle(loader, Launcher.class);
+        LangBundleLoader.loadLang(loader, Launcher.class);
 
         TheRoundTableApplication.showAndWaitInStage(loader.load(),
                 LangFileLoader.getTranslation("tiltle.separateorderdialog"));

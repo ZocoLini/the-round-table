@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import lombok.Getter;
-import org.lebastudios.theroundtable.language.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
 
 import java.io.IOException;
 import java.net.URL;
@@ -53,7 +53,7 @@ public abstract class Controller<T extends Controller<T>>
         final var fxmlLoader = getFXMLLoader();
         try
         {
-            LangBundleLoader.addLangBundle(fxmlLoader, getBundleClass());
+            LangBundleLoader.loadLang(fxmlLoader, getBundleClass());
             
             try
             {

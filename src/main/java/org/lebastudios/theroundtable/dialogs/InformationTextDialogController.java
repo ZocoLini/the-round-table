@@ -8,8 +8,8 @@ import javafx.stage.Stage;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
-import org.lebastudios.theroundtable.language.LangBundleLoader;
-import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 public class InformationTextDialogController
 {
@@ -28,7 +28,7 @@ public class InformationTextDialogController
         var loader = new FXMLLoader(InformationTextDialogController.class.getResource("informationTextDialog.fxml"));
 
         loader.setController(new InformationTextDialogController(informationText));
-        LangBundleLoader.addLangBundle(loader, Launcher.class);
+        LangBundleLoader.loadLang(loader, Launcher.class);
 
         TheRoundTableApplication.showAndWaitInStage(loader.load(), LangFileLoader.getTranslation("title.infodialog"));
     }

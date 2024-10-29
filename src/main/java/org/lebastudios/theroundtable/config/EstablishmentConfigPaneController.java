@@ -8,7 +8,7 @@ import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.apparience.ImageLoader;
 import org.lebastudios.theroundtable.config.data.EstablishmentConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
-import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 import java.io.File;
 import java.io.FileInputStream;

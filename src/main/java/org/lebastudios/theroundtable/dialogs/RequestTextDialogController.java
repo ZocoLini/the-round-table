@@ -10,7 +10,7 @@ import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.apparience.UIEffects;
-import org.lebastudios.theroundtable.language.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -47,7 +47,7 @@ public class RequestTextDialogController
 
         loader.setController(new RequestTextDialogController(action, inputTip, validator, info, validationError,
                 onCancel));
-        LangBundleLoader.addLangBundle(loader, Launcher.class);
+        LangBundleLoader.loadLang(loader, Launcher.class);
 
         TheRoundTableApplication.showAndWaitInStage(loader.load(), title);
     }

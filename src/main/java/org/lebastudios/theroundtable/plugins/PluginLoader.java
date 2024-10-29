@@ -4,6 +4,10 @@ import javafx.scene.control.Button;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PluginsConfigData;
+import org.lebastudios.theroundtable.locale.AppLocale;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangLoader;
 import org.lebastudios.theroundtable.plugins.pluginData.PluginData;
 import org.lebastudios.theroundtable.ui.TreeIconItem;
 
@@ -59,7 +63,7 @@ public class PluginLoader
 
                 pluginsLoaded.put(plugin.getPluginData().pluginId, plugin);
                 keepTryingToLoad = true;
-                plugin.initialize();
+                loadPlugin(plugin);
             }
         }
     }
@@ -127,6 +131,20 @@ public class PluginLoader
         return classes;
     }
 
+    public static void loadPlugin(IPlugin plugin)
+    {
+        // Load plugin translations
+        LangLoader.loadLang(plugin.getClass(), AppLocale.getActualLocale());
+        
+        // Initialize the plugin
+        plugin.initialize();
+    }
+    
+    public static void unloadPlugin(IPlugin plugin)
+    {
+        
+    }
+    
     public static Collection<IPlugin> getLoadedPlugins()
     {
         return pluginsLoaded.values();

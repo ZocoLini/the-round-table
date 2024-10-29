@@ -13,7 +13,7 @@ import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Account;
-import org.lebastudios.theroundtable.language.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
 
 public class AccountCreatorController
 {
@@ -28,7 +28,7 @@ public class AccountCreatorController
     public static Account createAcount()
     {
         FXMLLoader loader = new FXMLLoader(AccountCreatorController.class.getResource("accountCreator.fxml"));
-        LangBundleLoader.addLangBundle(loader, Launcher.class);
+        LangBundleLoader.loadLang(loader, Launcher.class);
 
         TheRoundTableApplication.showAndWaitInStage(loader.load(), "Create Account");
 

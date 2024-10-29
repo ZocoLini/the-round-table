@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.TaskProgressView;
 import org.lebastudios.theroundtable.AppTask;
-import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 public class TaskManager extends IconButton
 {

@@ -3,7 +3,7 @@ package org.lebastudios.theroundtable.updates;
 import javafx.application.Platform;
 import org.lebastudios.theroundtable.communications.ApiRequests;
 import org.lebastudios.theroundtable.dialogs.ConfirmationTextDialogController;
-import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 public class UpdateAppJar
 {

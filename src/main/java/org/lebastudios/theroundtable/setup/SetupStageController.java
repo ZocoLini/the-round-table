@@ -13,8 +13,8 @@ import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.SettingsData;
-import org.lebastudios.theroundtable.language.LangBundleLoader;
-import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
 import org.lebastudios.theroundtable.ui.TitleBuilder;
 
 public class SetupStageController
@@ -48,7 +48,7 @@ public class SetupStageController
     public static Parent getParentNode()
     {
         FXMLLoader loader = new FXMLLoader(SetupStageController.class.getResource("setupStage.fxml"));
-        LangBundleLoader.addLangBundle(loader, Launcher.class);
+        LangBundleLoader.loadLang(loader, Launcher.class);
 
         return loader.load();
     }

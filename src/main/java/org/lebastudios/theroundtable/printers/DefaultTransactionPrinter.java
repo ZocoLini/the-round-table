@@ -4,7 +4,7 @@ import com.github.anastaciocintra.escpos.EscPos;
 import com.github.anastaciocintra.escpos.EscPosConst;
 import com.github.anastaciocintra.escpos.Style;
 import org.lebastudios.theroundtable.database.entities.Transaction;
-import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 import java.io.IOException;
 import java.time.temporal.ChronoUnit;

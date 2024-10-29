@@ -8,8 +8,8 @@ import javafx.stage.Stage;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
-import org.lebastudios.theroundtable.language.LangBundleLoader;
-import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 import java.util.function.Consumer;
 
@@ -31,7 +31,7 @@ public class ConfirmationTextDialogController
         var loader = new FXMLLoader(ConfirmationTextDialogController.class.getResource("confirmationTextDialog.fxml"));
 
         loader.setController(new ConfirmationTextDialogController(informationText, action));
-        LangBundleLoader.addLangBundle(loader, Launcher.class);
+        LangBundleLoader.loadLang(loader, Launcher.class);
 
         TheRoundTableApplication.showAndWaitInStage(loader.load(),
                 LangFileLoader.getTranslation("title.confirmdialog"));

@@ -15,8 +15,8 @@ import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.accounts.AccountManager;
 import org.lebastudios.theroundtable.apparience.ThemeLoader;
 import org.lebastudios.theroundtable.events.UserEvents;
-import org.lebastudios.theroundtable.language.LangBundleLoader;
-import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 import org.lebastudios.theroundtable.ui.SettingsTreeView;
 import org.lebastudios.theroundtable.ui.TreeIconItem;
@@ -28,7 +28,7 @@ public class ConfigStageController
 
     static
     {
-        UserEvents.OnAccountLogOut.addListener(_ ->
+        UserEvents.OnAccountLogOutBefore.addListener(_ ->
         {
             configStage = null;
             configStageRoot = null;
@@ -63,7 +63,7 @@ public class ConfigStageController
         if (configStageRoot != null) return configStageRoot;
 
         var loader = new FXMLLoader(ConfigStageController.class.getResource("configStage.fxml"));
-        LangBundleLoader.addLangBundle(loader, Launcher.class);
+        LangBundleLoader.loadLang(loader, Launcher.class);
         Node root = loader.load();
         ConfigStageController controller = loader.getController();
 
@@ -144,7 +144,7 @@ public class ConfigStageController
         try
         {
             var loader = new FXMLLoader(ConfigStageController.class.getResource(fxmlPath));
-            LangBundleLoader.addLangBundle(loader, Launcher.class);
+            LangBundleLoader.loadLang(loader, Launcher.class);
 
             Node root = loader.load();
 

@@ -15,7 +15,7 @@ public class JSONFile<T extends FileRepresentator>
     private static final Map<Class<?>, Object> cache = new HashMap<>();
 
     static {
-        UserEvents.OnAccountLogOut.addListener(_ -> cache.clear());
+        UserEvents.OnAccountLogOutBefore.addListener(_ -> cache.clear());
     }
     
     private final T data;

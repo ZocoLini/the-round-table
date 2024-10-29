@@ -11,8 +11,8 @@ import org.lebastudios.theroundtable.accounts.LocalPasswordValidator;
 import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Account;
-import org.lebastudios.theroundtable.language.LangBundleLoader;
-import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 public class AccountSetupPaneController extends SetupPaneController
 {
@@ -25,7 +25,7 @@ public class AccountSetupPaneController extends SetupPaneController
     public static SetupPaneController loadAttachedNode()
     {
         FXMLLoader loader = new FXMLLoader(AccountSetupPaneController.class.getResource("accountSetupPane.fxml"));
-        LangBundleLoader.addLangBundle(loader, Launcher.class);
+        LangBundleLoader.loadLang(loader, Launcher.class);
         Node node = loader.load();
 
         SetupPaneController controller = loader.getController();

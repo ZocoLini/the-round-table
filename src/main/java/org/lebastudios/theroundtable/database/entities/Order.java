@@ -3,7 +3,7 @@ package org.lebastudios.theroundtable.database.entities;
 import lombok.Data;
 import lombok.Setter;
 import org.lebastudios.theroundtable.database.Database;
-import org.lebastudios.theroundtable.language.LangFileLoader;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

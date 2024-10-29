@@ -16,7 +16,7 @@ import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Account;
-import org.lebastudios.theroundtable.language.LangBundleLoader;
+import org.lebastudios.theroundtable.locale.LangBundleLoader;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class AccountStageController
     public static Parent getParentNode()
     {
         FXMLLoader loader = new FXMLLoader(AccountStageController.class.getResource("accountStage.fxml"));
-        LangBundleLoader.addLangBundle(loader, Launcher.class);
+        LangBundleLoader.loadLang(loader, Launcher.class);
 
         return loader.load();
     }
@@ -55,7 +55,7 @@ public class AccountStageController
     private Node generateAccountBox(Account account)
     {
         FXMLLoader loader = new FXMLLoader(AccountStageController.class.getResource("accountBox.fxml"));
-        LangBundleLoader.addLangBundle(loader, Launcher.class);
+        LangBundleLoader.loadLang(loader, Launcher.class);
 
         var controller = new AccountBoxController(account);
         loader.setController(controller);

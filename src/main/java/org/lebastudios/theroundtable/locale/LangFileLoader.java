@@ -1,4 +1,4 @@
-package org.lebastudios.theroundtable.language;
+package org.lebastudios.theroundtable.locale;
 
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 
@@ -7,35 +7,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class LangFileLoader
 {
     private static final Map<String, String> translations = new HashMap<>();
 
-    public static void loadLang(String lang, String country)
+    public static void loadLang(Locale locale, Class<?> pluginClass)
     {
-        translations.clear();
+        var resource = pluginClass.getResourceAsStream("languagesData.csv");
 
-        for (var resourceObject : PluginLoader.getRessourcesObjects())
+        if (resource == null)
         {
-            var resource = resourceObject.getClass().getResourceAsStream("languagesData.csv");
-
-            if (resource == null)
-            {
-                System.err.println("No language file found in " + resourceObject.getClass().getName());
-                continue;
-            }
-
-            computeTranslations(lang, country, resource);
+            System.err.println("No locale file found in " + pluginClass.getName());
+            return;
         }
+
+        computeTranslations(locale, resource);
     }
 
-    private static void computeTranslations(String lang, String country, InputStream fileToCompute)
+    private static void computeTranslations(Locale locale, InputStream fileToCompute)
     {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(fileToCompute)))
         {
-            int index = searchColumn(reader.readLine(), lang, country);
+            int index = searchColumn(reader.readLine(), locale);
 
             String line;
             while ((line = reader.readLine()) != null)
@@ -54,16 +50,16 @@ public class LangFileLoader
         }
     }
 
-    private static int searchColumn(String header, String langDesired, String countryDesired)
+    private static int searchColumn(String header, Locale locale)
     {
         String[] columns = header.split(",");
-        var langCode = langDesired + "_" + countryDesired;
+        var langCode = locale.getLanguage() + "_" + locale.getCountry();
         int alternativeIndex = -1;
 
         for (int i = 1; i < columns.length; i++)
         {
             if (columns[i].equals(langCode)) return i;
-            if (columns[i].startsWith(langDesired)) alternativeIndex = i;
+            if (columns[i].startsWith(locale.getLanguage())) alternativeIndex = i;
         }
 
         return alternativeIndex;

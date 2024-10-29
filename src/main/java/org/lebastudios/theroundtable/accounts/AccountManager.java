@@ -43,7 +43,8 @@ public class AccountManager
 
     public void logOut()
     {
-        UserEvents.OnAccountLogOut.invoke(this.currentLogged);
+        UserEvents.OnAccountLogOutBefore.invoke(this.currentLogged);
         this.currentLogged = null;
+        UserEvents.OnAccountLogOutAfter.invoke();
     }
 }
