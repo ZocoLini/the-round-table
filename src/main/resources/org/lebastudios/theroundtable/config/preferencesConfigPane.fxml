@@ -7,7 +7,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml" fx:id="root"
       xmlns="http://javafx.com/javafx"
       fx:controller="org.lebastudios.theroundtable.config.PreferencesConfigPaneController"
-      spacing="15">
+      spacing="5">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>

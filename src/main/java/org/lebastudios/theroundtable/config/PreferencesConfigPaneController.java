@@ -5,7 +5,6 @@ import javafx.scene.control.ChoiceBox;
 import org.lebastudios.theroundtable.apparience.ThemeLoader;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PreferencesConfigData;
-import org.lebastudios.theroundtable.locale.LangLoader;
 
 import java.util.Objects;
 
