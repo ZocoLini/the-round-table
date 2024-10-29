@@ -5,6 +5,7 @@ import javafx.scene.control.ChoiceBox;
 import org.lebastudios.theroundtable.apparience.ThemeLoader;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PreferencesConfigData;
+import org.lebastudios.theroundtable.locale.LangLoader;
 
 import java.util.Objects;
 
@@ -12,19 +13,6 @@ public class PreferencesConfigPaneController extends SettingsPaneController
 {
     @FXML private ChoiceBox<String> themeChoiceBox;
     @FXML private ChoiceBox<String> languageChoiceBox;
-
-    @Override
-    public void apply()
-    {
-        var preferencesManager = new JSONFile<>(PreferencesConfigData.class);
-
-        preferencesManager.get().langauge = languageChoiceBox.getValue();
-        preferencesManager.get().theme = themeChoiceBox.getValue();
-
-        preferencesManager.save();
-
-        ThemeLoader.reloadThemes();
-    }
 
     @Override
     public void initialize()
@@ -37,13 +25,16 @@ public class PreferencesConfigPaneController extends SettingsPaneController
             {
                 if (theme.isFile()) continue;
 
-                themeChoiceBox.getItems().add(theme.getName());
+                themeChoiceBox.getItems().add(transformThemeToDisplayableText(theme.getName()));
             }
         }
 
         if (languageChoiceBox.getItems().isEmpty())
         {
-            languageChoiceBox.getItems().addAll("es", "en");
+            languageChoiceBox.getItems().addAll(
+                    transformLanguageToDisplayableText("es"), 
+                    transformLanguageToDisplayableText("en")
+            );
         }
 
         setActualValues();
@@ -53,7 +44,62 @@ public class PreferencesConfigPaneController extends SettingsPaneController
     {
         var preferences = new JSONFile<>(PreferencesConfigData.class).get();
 
-        themeChoiceBox.setValue(preferences.theme);
-        languageChoiceBox.setValue(preferences.langauge);
+        themeChoiceBox.setValue(transformThemeToDisplayableText(preferences.theme));
+        languageChoiceBox.setValue(transformLanguageToDisplayableText(preferences.langauge));
     }
+
+    @Override
+    public void apply()
+    {
+        var preferencesManager = new JSONFile<>(PreferencesConfigData.class);
+
+        preferencesManager.get().langauge = transformLanguageToInternalText(languageChoiceBox.getValue());
+        preferencesManager.get().theme = transformThemeToInternalText(themeChoiceBox.getValue());
+
+        preferencesManager.save();
+
+        ThemeLoader.reloadThemes();
+    }
+    
+    // region: Methods for the customization of the displayed texts
+    
+    private String transformThemeToDisplayableText(String theme)
+    {
+        int index = theme.indexOf("-");
+        
+        if (index == -1) 
+        {
+            return theme.substring(0, 1).toUpperCase() + theme.substring(1);
+        }
+        
+        return theme.substring(0, 1).toUpperCase() + theme.substring(1, index) + " " 
+                + theme.substring(index + 1, index + 2).toUpperCase() + theme.substring(index + 2);
+    }
+    
+    private String transformThemeToInternalText(String theme)
+    {
+        return theme.toLowerCase().replace(" ", "-");
+    }
+    
+    private String transformLanguageToDisplayableText(String language)
+    {
+        return switch (language)
+        {
+            case "es" -> "Español";
+            case "en" -> "English";
+            default -> language;
+        };
+    }
+    
+    private String transformLanguageToInternalText(String language)
+    {
+        return switch (language)
+        {
+            case "Español" -> "es";
+            case "English" -> "en";
+            default -> language;
+        };
+    }
+    
+    // endregion
 }

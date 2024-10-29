@@ -9,13 +9,12 @@ import java.util.Locale;
 public class LangLoader
 {
     static {
-        UserEvents.OnAccountLogIn.addListener(_ -> reloadAllLangs());
-        UserEvents.OnAccountLogOutAfter.addListener(LangLoader::reloadAllLangs);
+        UserEvents.OnAccountLogIn.addListener(_ -> reloadLangs());
+        UserEvents.OnAccountLogOutAfter.addListener(LangLoader::reloadLangs);
     }
     
-    private static void reloadAllLangs()
+    private static void reloadLangs()
     {
-        System.out.println("Reloading all langs");
         LangLoader.loadLang(Launcher.class, AppLocale.getActualLocale());
 
         PluginLoader.getLoadedPlugins().forEach(plugin -> LangLoader.loadLang(plugin.getClass(), AppLocale.getActualLocale()));
