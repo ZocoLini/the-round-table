@@ -6,7 +6,7 @@
 <HBox xmlns:fx="http://javafx.com/fxml"
       xmlns="http://javafx.com/javafx"
       fx:controller="org.lebastudios.theroundtable.plugins.PluginsStageController"
-      prefHeight="350"  minWidth="450" maxWidth="Infinity">
+      prefHeight="350" minWidth="450" maxWidth="Infinity">
     <TabPane HBox.hgrow="ALWAYS" fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
         <padding>
             <Insets top="15" right="15" bottom="15" left="15"/>

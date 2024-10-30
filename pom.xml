@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.lebastudios</groupId>
-    <artifactId>the-round-table</artifactId>
+    <groupId>org.lebastudios.theroundtable</groupId>
+    <artifactId>desktop-app</artifactId>
     <version>2.0.0</version>
-    <name>the-round-table</name>
+    <name>desktop-app</name>
     <packaging>jar</packaging>
 
     <properties>

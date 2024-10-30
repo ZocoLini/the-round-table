@@ -4,8 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="root" maxWidth="Infinity" maxHeight="Infinity"
-      xmlns="http://javafx.com/javafx" vgap="5" hgap="5"
-      fx:controller="org.lebastudios.theroundtable.config.PrintersConfigPaneController">
+          xmlns="http://javafx.com/javafx" vgap="5" hgap="5"
+          fx:controller="org.lebastudios.theroundtable.config.PrintersConfigPaneController">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>

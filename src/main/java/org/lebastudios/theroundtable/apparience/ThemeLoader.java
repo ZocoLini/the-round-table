@@ -8,9 +8,7 @@ import org.lebastudios.theroundtable.config.data.PreferencesConfigData;
 import org.lebastudios.theroundtable.events.UserEvents;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class ThemeLoader

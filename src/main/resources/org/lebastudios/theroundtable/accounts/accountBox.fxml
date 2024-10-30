@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
 <?import org.lebastudios.theroundtable.ui.IconView?>
 <VBox xmlns="http://javafx.com/javafx" fx:id="root"
-      xmlns:fx="http://javafx.com/fxml" styleClass="button" 
+      xmlns:fx="http://javafx.com/fxml" styleClass="button"
       prefWidth="150" prefHeight="150"
       alignment="CENTER" spacing="10">
     

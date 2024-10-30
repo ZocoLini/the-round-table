@@ -1,7 +1,5 @@
 package org.lebastudios.theroundtable.locale;
 
-import org.lebastudios.theroundtable.plugins.PluginLoader;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
