@@ -25,6 +25,15 @@ public abstract class SettingsPaneController
 
     public void initialize() {}
 
+    public final void registerEvents() 
+    {
+        root.getScene().getWindow().setOnCloseRequest(e ->
+        {
+            e.consume();
+            cancel();
+        });
+    }
+    
     public final Node getRoot()
     {
         return root;

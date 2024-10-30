@@ -162,6 +162,7 @@ public class ConfigStageController
     public void swapMainPane(ControllableUIObject<SettingsPaneController> newControllableObj)
     {
         mainPane.setContent(newControllableObj.root());
+        newControllableObj.controller().registerEvents();
         currentPaneController = newControllableObj.controller();
     }
 
