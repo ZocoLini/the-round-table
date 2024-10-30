@@ -8,10 +8,10 @@
 <?import org.lebastudios.theroundtable.ui.IconButton?>
 <?import org.lebastudios.theroundtable.ui.IconView?>
 <HBox xmlns:fx="http://javafx.com/fxml" fx:id="root"
-      xmlns="http://javafx.com/javafx"
-      styleClass="button" spacing="15">
+      xmlns="http://javafx.com/javafx" alignment="CENTER_LEFT"
+      styleClass="border-round" spacing="15">
     <padding>
-        <Insets top="15" right="15" bottom="15" left="15"/>
+        <Insets top="5" right="5" bottom="5" left="5"/>
     </padding>
     <IconView mouseTransparent="true" fx:id="pluginIcon"/>
 

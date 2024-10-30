@@ -22,7 +22,20 @@ public class LangLoader
     
     public static void loadLang(Class<?> langClass, Locale locale)
     {
-        LangFileLoader.loadLang(locale, langClass);
-        LangBundleLoader.loadLang(langClass, locale);
+        Thread langFileThread = new Thread(() -> LangFileLoader.loadLang(locale, langClass));
+        Thread langBundleThread = new Thread(() -> LangBundleLoader.loadLang(langClass, locale));
+        
+        langFileThread.start();
+        langBundleThread.start();
+
+        try
+        {
+            langFileThread.join();
+            langBundleThread.join();
+        }
+        catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 }

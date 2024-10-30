@@ -6,9 +6,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.CheckBox?>
 <?import org.lebastudios.theroundtable.ui.IconButton?>
+<?import javafx.scene.control.TextField?>
 <VBox xmlns:fx="http://javafx.com/fxml" fx:id="root"
       xmlns="http://javafx.com/javafx"
-      fx:controller="org.lebastudios.theroundtable.config.DatabaseConfigPaneController" 
+      fx:controller="org.lebastudios.theroundtable.config.DatabaseConfigPaneController"
       spacing="15">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
@@ -23,9 +24,15 @@
         <Label HBox.hgrow="ALWAYS" maxWidth="Infinity" text="%phrase.activatebackups"/>
         <CheckBox fx:id="enableBackups"/>
     </HBox>    
-    <HBox fx:id="backupSection" alignment="CENTER_LEFT" spacing="5">
-        <Label HBox.hgrow="ALWAYS" maxWidth="Infinity" text="%phrase.databasebackupdir"/>
-        <Label style="-fx-font-style: italic" fx:id="databasesBackupDirectory"/>
-        <IconButton iconSize="24" iconName="open-file.png" onAction="#selectDatabasesBackupDirectory"/>
-    </HBox>
+    <VBox fx:id="backupSection" spacing="15">
+        <HBox alignment="CENTER_LEFT" spacing="5">
+            <Label HBox.hgrow="ALWAYS" maxWidth="Infinity" text="%phrase.databasebackupdir"/>
+            <Label style="-fx-font-style: italic" fx:id="databasesBackupDirectory"/>
+            <IconButton iconSize="24" iconName="open-file.png" onAction="#selectDatabasesBackupDirectory"/>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="5">
+            <Label HBox.hgrow="ALWAYS" maxWidth="Infinity" text="%phrase.nummaxBackups"/>
+            <TextField prefWidth="50" fx:id="numMaxBackups"/>
+        </HBox>
+    </VBox>
 </VBox>

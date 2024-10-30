@@ -10,6 +10,9 @@ import org.lebastudios.theroundtable.ui.TaskManager;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -94,7 +97,22 @@ public class BackupDB
                     return null;
                 }
 
-                File backupFile = new File(backupFolder.getAbsolutePath() + "/" + LocalDateTime.now() + ".zip");
+                // TODO: Validate that this works as expected
+                
+                final var backupsCreated = Objects.requireNonNull(backupFolder.listFiles());
+                
+                int numMaxBackups = new JSONFile<>(DatabaseConfigData.class).get().numMaxBackups;
+                
+                if (backupsCreated.length > numMaxBackups) 
+                {
+                    Arrays.stream(backupsCreated)
+                            .filter(file -> file.isFile())
+                            .sorted(Comparator.comparing(a -> LocalDateTime.parse(a.getName())))
+                            .skip(numMaxBackups)
+                            .forEach(file -> file.delete());
+                }
+                
+                File backupFile = new File(backupFolder.getAbsolutePath(), LocalDateTime.now() + ".zip");
 
                 try
                 {

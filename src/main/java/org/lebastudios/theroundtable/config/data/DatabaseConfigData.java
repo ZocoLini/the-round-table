@@ -11,6 +11,7 @@ public class DatabaseConfigData implements FileRepresentator
     public String databaseFolder =
             TheRoundTableApplication.getUserDirectory() + File.separator + "databases" + File.separator;
     public boolean enableBackups = false;
+    public int numMaxBackups = 5;
     public String backupFolder =
             TheRoundTableApplication.getUserDirectory() + File.separator + "trt-db-backups" + File.separator;
 
