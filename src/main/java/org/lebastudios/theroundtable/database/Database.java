@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 public class Database
 {
     private static Database instance;
-    private final SessionFactory sessionFactory = buildSessionFactory();
+    private SessionFactory sessionFactory = buildSessionFactory();
 
     private Database()
     {
@@ -28,21 +28,34 @@ public class Database
         return instance;
     }
 
+    public static File getDatabaseFile()
+    {
+        DatabaseConfigData databaseConfigData = new JSONFile<>(DatabaseConfigData.class).get();
+
+        return new File(
+                databaseConfigData.databaseFolder,
+                databaseConfigData.establishmentDatabaseName + ".sqlite"
+        );
+    }
+    
+    public void reloadDatabase()
+    {
+        sessionFactory.close();
+        sessionFactory = buildSessionFactory();
+    }
+    
     private SessionFactory buildSessionFactory()
     {
         try
         {
-            // Create the SessionFactory from hibernate.cfg.xml
             var config = new Configuration();
 
-            DatabaseConfigData databaseConfigData = new JSONFile<>(DatabaseConfigData.class).get();
-
-            new File(databaseConfigData.databaseFolder).mkdirs();
-                
+            File databaseFile = getDatabaseFile();
+            
+            databaseFile.mkdirs();
+            
             config.setProperty(
-                    "hibernate.connection.url", "jdbc:sqlite:"
-                            + databaseConfigData.databaseFolder
-                            + databaseConfigData.establishmentDatabaseName + ".sqlite"
+                    "hibernate.connection.url", "jdbc:sqlite:" + databaseFile.getAbsolutePath()
             );
 
             config.addAnnotatedClass(Category.class)

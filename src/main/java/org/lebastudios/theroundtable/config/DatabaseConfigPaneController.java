@@ -11,9 +11,11 @@ import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.config.data.DatabaseConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.database.BackupDB;
+import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.dialogs.InformationTextDialogController;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class DatabaseConfigPaneController extends SettingsPaneController
 {
@@ -96,12 +98,19 @@ public class DatabaseConfigPaneController extends SettingsPaneController
                 throw new RuntimeException("Failed to create new database directory.");
             }
 
-            for (File file : oldDirectory.listFiles())
-            {
-                file.renameTo(new File(newDirectory.getAbsolutePath() + "/" + file.getName()));
-            }
+            File databaseFile = Database.getDatabaseFile();
+            
+            databaseFile.renameTo(new File(newDirectory.getAbsolutePath(), databaseFile.getName()));
 
             data.databaseFolder = databasesDirectory.getText();
+            
+            try
+            {
+                if (oldDirectory.list().length == 0) oldDirectory.delete();
+            }
+            catch (Exception exception) {}
+            
+            Database.getInstance().reloadDatabase();
         }
     }
 
@@ -117,13 +126,17 @@ public class DatabaseConfigPaneController extends SettingsPaneController
                 throw new RuntimeException("Failed to create new backup directory.");
             }
 
-            for (File file : oldDirectory.listFiles())
-            {
-                file.renameTo(new File(newDirectory.getAbsolutePath() + "/" + file.getName()));
-            }
-
+            Arrays.stream(oldDirectory.listFiles())
+                    .filter(file -> file.isFile() && file.getName().endsWith(".zip"))
+                    .forEach(file -> file.renameTo(new File(newDirectory.getAbsolutePath(), file.getName())));
+            
             data.backupFolder = databasesBackupDirectory.getText();
-            oldDirectory.delete();
+
+            try
+            {
+                if (oldDirectory.list().length == 0) oldDirectory.delete();
+            }
+            catch (Exception exception) {}
         }
     }
 
