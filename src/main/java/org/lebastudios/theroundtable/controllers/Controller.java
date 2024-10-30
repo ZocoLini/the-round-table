@@ -13,9 +13,7 @@ import java.net.URL;
 public abstract class Controller<T extends Controller<T>>
 {
     @FXML private Node root;
- 
-    @Getter protected T controller;
-    
+    private T controller;
     private Thread loadingRoot;
     
     public final Node getRoot()
@@ -55,11 +53,10 @@ public abstract class Controller<T extends Controller<T>>
         {
             LangBundleLoader.loadLang(fxmlLoader, getBundleClass());
             
-            try
+            if (!hasFXMLControllerDefined()) 
             {
                 fxmlLoader.setController(this);
             }
-            catch (Exception exception) {}
             
             this.root = fxmlLoader.load();
         }
@@ -72,6 +69,16 @@ public abstract class Controller<T extends Controller<T>>
         this.controller = fxmlLoader.getController();
     }
     
+    public final T getController()
+    {
+        return controller == null ? (T) this : controller;
+    }
+    
+    public boolean hasFXMLControllerDefined()
+    {
+        return false;
+    }
+    
     public final Parent getParent()
     {
         return (Parent) getRoot();
@@ -81,7 +88,7 @@ public abstract class Controller<T extends Controller<T>>
     
     public abstract URL getFXML();
     
-    public FXMLLoader getFXMLLoader()
+    public final FXMLLoader getFXMLLoader()
     {
         return new FXMLLoader(getFXML());
     }
