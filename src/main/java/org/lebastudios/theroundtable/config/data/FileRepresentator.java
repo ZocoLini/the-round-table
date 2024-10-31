@@ -5,4 +5,9 @@ import java.io.File;
 public interface FileRepresentator
 {
     File getFile();
+
+    default void save()
+    {
+        new JSONFile<>(this).save();
+    }
 }

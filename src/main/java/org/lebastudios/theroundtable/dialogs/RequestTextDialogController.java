@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.apparience.UIEffects;
@@ -54,6 +55,9 @@ public class RequestTextDialogController extends StageController<RequestTextDial
         {
             infoLabel.setText(info);
             infoLabel.setVisible(true);
+        }
+        else {
+            ((VBox) getRoot()).getChildren().remove(infoLabel);
         }
     }
 

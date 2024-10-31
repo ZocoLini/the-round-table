@@ -25,6 +25,11 @@ public class JSONFile<T extends FileRepresentator>
         data = load(clazz);
     }
 
+    public JSONFile(T data)
+    {
+        this.data = data;
+    }
+    
     @SneakyThrows
     private <T extends FileRepresentator> T load(Class<T> clazz)
     {
