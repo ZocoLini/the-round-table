@@ -1,8 +1,9 @@
 package org.lebastudios.theroundtable.plugins;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.TreeItem;
+import org.lebastudios.theroundtable.config.SettingsItem;
 import org.lebastudios.theroundtable.plugins.pluginData.PluginData;
-import org.lebastudios.theroundtable.ui.TreeIconItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public interface IPlugin
         return new ArrayList<>();
     }
 
-    default TreeIconItem getSettingsRootTreeItem()
+    default TreeItem<SettingsItem> getSettingsRootTreeItem()
     {
         return null;
     }

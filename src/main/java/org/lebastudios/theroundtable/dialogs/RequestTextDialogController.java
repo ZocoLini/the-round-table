@@ -5,17 +5,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.apparience.UIEffects;
+import org.lebastudios.theroundtable.controllers.StageController;
 import org.lebastudios.theroundtable.locale.LangBundleLoader;
+import org.lebastudios.theroundtable.ui.StageBuilder;
 
+import java.net.URL;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class RequestTextDialogController
+public class RequestTextDialogController extends StageController<RequestTextDialogController>
 {
     private final Consumer<String> action;
     private final Runnable onCancel;
@@ -23,44 +27,31 @@ public class RequestTextDialogController
     private final String inputTip;
     private final String info;
     private final String validationError;
+    private final String title;
     @FXML private TextField textInputField;
     @FXML private Label infoLabel;
     @FXML private Label errorLabel;
 
-    public RequestTextDialogController(Consumer<String> action, String inputTip,
+    public RequestTextDialogController(Consumer<String> action, String inputTip, String title,
             Function<String, Boolean> validator, String info, String validationError, Runnable onCancel)
     {
         this.inputTip = inputTip;
 
         this.action = action;
         this.validator = validator;
+        this.title = title;
         this.info = info;
         this.validationError = validationError;
         this.onCancel = onCancel;
     }
 
-    @SneakyThrows
-    public static void loadAttachedNode(Consumer<String> action, String title, String inputTip,
-            Function<String, Boolean> validator, String info, String validationError, Runnable onCancel)
-    {
-        var loader = new FXMLLoader(RequestTextDialogController.class.getResource("requestTextDialog.fxml"));
-
-        loader.setController(new RequestTextDialogController(action, inputTip, validator, info, validationError,
-                onCancel));
-        LangBundleLoader.loadLang(loader, Launcher.class);
-
-        TheRoundTableApplication.showAndWaitInStage(loader.load(), title);
-    }
-
-    @SneakyThrows
-    public static void loadAttachedNode(Consumer<String> action, String title, String inputTip,
+    public RequestTextDialogController(Consumer<String> action, String title, String inputTip,
             Function<String, Boolean> validator)
     {
-        loadAttachedNode(action, title, inputTip, validator, "", "", () ->
-        {});
+        this(action, title, inputTip, validator, "", "", () -> {});
     }
-
-    public void initialize()
+    
+    @FXML @Override protected void initialize()
     {
         textInputField.setPromptText(inputTip);
 
@@ -84,8 +75,7 @@ public class RequestTextDialogController
 
         action.accept(textInputField.getText());
 
-        Stage stage = (Stage) textInputField.getScene().getWindow();
-        stage.close();
+        close();
     }
 
     private boolean validateInput()
@@ -99,8 +89,31 @@ public class RequestTextDialogController
     @FXML
     private void cancel(ActionEvent actionEvent)
     {
-        Stage stage = (Stage) textInputField.getScene().getWindow();
         onCancel.run();
-        stage.close();
+        close();
+    }
+
+    @Override
+    protected void customizeStageBuilder(StageBuilder stageBuilder)
+    {
+        stageBuilder.setModality(Modality.APPLICATION_MODAL);
+    }
+
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return RequestTextDialogController.class.getResource("requestTextDialog.fxml");
+    }
+
+    @Override
+    public String getTitle()
+    {
+        return this.title;
     }
 }

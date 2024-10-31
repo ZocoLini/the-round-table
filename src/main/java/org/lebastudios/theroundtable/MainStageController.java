@@ -1,40 +1,35 @@
 package org.lebastudios.theroundtable;
 
-import javafx.concurrent.Task;
+import com.sun.tools.javac.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.SplitPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.controlsfx.control.Notifications;
-import org.controlsfx.control.TaskProgressView;
 import org.controlsfx.control.action.Action;
 import org.lebastudios.theroundtable.accounts.AccountManager;
 import org.lebastudios.theroundtable.accounts.AccountStageController;
-import org.lebastudios.theroundtable.apparience.ImageLoader;
 import org.lebastudios.theroundtable.config.ConfigStageController;
 import org.lebastudios.theroundtable.config.data.DatabaseConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
+import org.lebastudios.theroundtable.controllers.PaneController;
 import org.lebastudios.theroundtable.database.BackupDB;
-import org.lebastudios.theroundtable.locale.LangBundleLoader;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 import org.lebastudios.theroundtable.plugins.PluginsStageController;
 import org.lebastudios.theroundtable.ui.IconButton;
+import org.lebastudios.theroundtable.ui.SceneBuilder;
 
-public class MainStageController
+import java.net.URL;
+
+public class MainStageController extends PaneController<MainStageController>
 {
     @Getter private static MainStageController instance;
     @FXML private IconButton pluginsButton;
-    @FXML private BorderPane root;
-    @FXML private TaskProgressView<Task<?>> taskProgressView;
-    @FXML private VBox rootTools;
     @FXML private VBox leftButtons;
     @FXML private VBox rightButtons;
     @FXML private SplitPane centralContainer;
@@ -46,15 +41,7 @@ public class MainStageController
     }
 
     @SneakyThrows
-    public static Parent getParentNode()
-    {
-        FXMLLoader loader = new FXMLLoader(MainStageController.class.getResource("mainStage.fxml"));
-        LangBundleLoader.loadLang(loader, MainStageController.class);
-        return loader.load();
-    }
-
-    @SneakyThrows
-    public void initialize()
+    @FXML @Override protected void initialize()
     {
         if (new JSONFile<>(DatabaseConfigData.class).get().enableBackups) BackupDB.getInstance().initialize();
 
@@ -64,17 +51,35 @@ public class MainStageController
         rightButtons.getChildren().addAll(PluginLoader.getRightButtons());
     }
 
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    public boolean hasFXMLControllerDefined()
+    {
+        return true;
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return MainStageController.class.getResource("mainStage.fxml");
+    }
+
     @SneakyThrows
     @FXML
     private void openSettingsStage()
     {
-        ConfigStageController.showConfigStage();
+       new ConfigStageController().instantiate();
     }
 
     @FXML
     private void openPluginsStage()
     {
-        PluginsStageController.showPluginsStage();
+        new PluginsStageController().instantiate();
     }
 
     public void swapCentralPaneMainNode(Node newNode)
@@ -94,7 +99,7 @@ public class MainStageController
     {
         Notifications.create()
                 .text(message)
-                .owner(root)
+                .owner(getRoot())
                 .action(action)
                 .show();
     }
@@ -105,18 +110,16 @@ public class MainStageController
     {
         // TODO: Enable an option to let the admins decide if the users can close session without closing the cash 
         //  register. Maybe use a checkbox in the User Account to mark this behaviour
-        
-        root.getScene().getWindow().hide();
+
+        Stage stage = getStage();
+
+        stage.hide();
         AccountManager.getInstance().logOut();
 
-        TheRoundTableApplication.showAndWaitInStage(AccountStageController.getParentNode(), "Login", true, s ->
-        {
-            s.setOnCloseRequest(e -> System.exit(0));
-            s.getIcons().add(ImageLoader.getIcon("the-round-table-logo.png"));
-        });
+        new AccountStageController().instantiate(true);
 
         // Loads and set the new instance and then shows it. The instance it calls is not this controller's one.
-        ((Stage) root.getScene().getWindow()).setScene(TheRoundTableApplication.createScene(getParentNode()));
-        ((Stage) instance.root.getScene().getWindow()).show();
+        stage.setScene(new SceneBuilder(new MainStageController().getParent()).build());
+        stage.show();
     }
 }

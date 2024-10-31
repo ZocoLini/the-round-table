@@ -1,13 +1,14 @@
 package org.lebastudios.theroundtable.plugins;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.TreeItem;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
+import org.lebastudios.theroundtable.config.SettingsItem;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PluginsConfigData;
 import org.lebastudios.theroundtable.locale.AppLocale;
 import org.lebastudios.theroundtable.locale.LangLoader;
 import org.lebastudios.theroundtable.plugins.pluginData.PluginData;
-import org.lebastudios.theroundtable.ui.TreeIconItem;
 
 import java.io.File;
 import java.net.URL;
@@ -104,9 +105,9 @@ public class PluginLoader
         return buttons;
     }
 
-    public static List<TreeIconItem> getSettingsTreeViews()
+    public static List<TreeItem<SettingsItem>> getSettingsTreeViews()
     {
-        List<TreeIconItem> items = new ArrayList<>();
+        List<TreeItem<SettingsItem>> items = new ArrayList<>();
 
         for (IPlugin plugin : pluginsLoaded.values())
         {

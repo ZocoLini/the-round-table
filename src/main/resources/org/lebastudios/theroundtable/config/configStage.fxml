@@ -3,13 +3,15 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import org.lebastudios.theroundtable.ui.SettingsTreeView?>
 <VBox xmlns:fx="http://javafx.com/fxml/1"
-      maxWidth="800.0"
+      maxWidth="800.0" maxHeight="600" fx:id="root"
       xmlns="http://javafx.com/javafx/17.0.2-ea"
       fx:controller="org.lebastudios.theroundtable.config.ConfigStageController">
     <HBox VBox.vgrow="ALWAYS">
-        <SettingsTreeView minWidth="200" fx:id="configSectionsTreeView"/>
+        <TreeView style="-fx-background-color: transparent; -fx-border-color: transparent;" 
+                  showRoot="false" minWidth="200" fx:id="configSectionsTreeView">
+            <TreeItem />
+        </TreeView>
 
         <Separator orientation="VERTICAL"/>
 

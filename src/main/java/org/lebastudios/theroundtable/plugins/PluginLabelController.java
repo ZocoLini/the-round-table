@@ -8,17 +8,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import lombok.SneakyThrows;
+import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.MainStageController;
 import org.lebastudios.theroundtable.communications.ApiRequests;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PluginsConfigData;
+import org.lebastudios.theroundtable.controllers.PaneController;
 import org.lebastudios.theroundtable.plugins.pluginData.PluginData;
 import org.lebastudios.theroundtable.ui.IconButton;
 import org.lebastudios.theroundtable.ui.IconView;
 
 import java.io.File;
+import java.net.URL;
 
-public class PluginLabelController
+public class PluginLabelController extends PaneController<PluginLabelController>
 {
     @FXML private IconView pluginIcon;
     @FXML private Label pluginName;
@@ -28,21 +31,24 @@ public class PluginLabelController
     @FXML private HBox root;
     private PluginData pluginData;
 
-    private PluginLabelController(PluginData pluginData)
+    public PluginLabelController(PluginData pluginData)
     {
         this.pluginData = pluginData;
     }
 
-    @SneakyThrows
-    public static Node getAttachedNode(PluginData pluginData)
+    @Override
+    public Class<?> getBundleClass()
     {
-        var loader = new FXMLLoader(PluginLabelController.class.getResource("pluginLabel.fxml"));
-        loader.setController(new PluginLabelController(pluginData));
-
-        return loader.load();
+        return Launcher.class;
     }
 
-    public void initialize()
+    @Override
+    public URL getFXML()
+    {
+        return PluginLabelController.class.getResource("pluginLabel.fxml");
+    }
+
+    @FXML @Override protected void initialize()
     {
         if (pluginData == null)
         {

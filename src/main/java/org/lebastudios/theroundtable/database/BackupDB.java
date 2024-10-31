@@ -1,5 +1,6 @@
 package org.lebastudios.theroundtable.database;
 
+import javafx.fxml.FXML;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.AppTask;
 import org.lebastudios.theroundtable.Zip;
@@ -87,14 +88,14 @@ public class BackupDB
 
                 if (!backupFolder.exists() && !backupFolder.mkdirs())
                 {
-                    InformationTextDialogController.loadAttachedNode("DATABASE ERROR: Failed to create backup directory.");
+                    new InformationTextDialogController("DATABASE ERROR: Failed to create backup directory.").instantiate();
                     updateProgress(100, 100);
                     return null;
                 }
 
                 if (!databaseFolder.exists() && !databaseFolder.mkdirs())
                 {
-                    InformationTextDialogController.loadAttachedNode("DATABASE ERROR: Failed to create database directory.");
+                    new InformationTextDialogController("DATABASE ERROR: Failed to create database directory.").instantiate();
                     updateProgress(100, 100);
                     return null;
                 }

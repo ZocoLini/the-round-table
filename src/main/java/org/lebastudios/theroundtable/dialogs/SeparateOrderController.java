@@ -6,24 +6,28 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.controlsfx.control.ListSelectionView;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
+import org.lebastudios.theroundtable.controllers.StageController;
 import org.lebastudios.theroundtable.database.entities.Order;
 import org.lebastudios.theroundtable.database.entities.Product;
 import org.lebastudios.theroundtable.locale.LangBundleLoader;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
+import org.lebastudios.theroundtable.ui.StageBuilder;
 
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class SeparateOrderController
+public class SeparateOrderController extends StageController<SeparateOrderController>
 {
     private final Order originalOrder;
     private final HashMap<Product, BigDecimal> originalProducts;
@@ -35,17 +39,6 @@ public class SeparateOrderController
         originalOrder = order;
         originalProducts = new HashMap<>(order.getProducts());
         this.acceptSeparation = acceptSeparation;
-    }
-
-    @SneakyThrows
-    public static void loadAttachedNode(@NonNull Order order, @NonNull BiConsumer<Order, Order> acceptSeparation)
-    {
-        var loader = new FXMLLoader(SeparateOrderController.class.getResource("separateOrder.fxml"));
-        loader.setController(new SeparateOrderController(order, acceptSeparation));
-        LangBundleLoader.loadLang(loader, Launcher.class);
-
-        TheRoundTableApplication.showAndWaitInStage(loader.load(),
-                LangFileLoader.getTranslation("tiltle.separateorderdialog"));
     }
 
     private static void moveProductQty(Product product, BigDecimal quantity,
@@ -90,7 +83,7 @@ public class SeparateOrderController
         return -1;
     }
 
-    public void initialize()
+    @FXML @Override protected void initialize()
     {
         setCustomListCell();
 
@@ -158,10 +151,34 @@ public class SeparateOrderController
         cancel();
     }
 
+    @Override
+    protected void customizeStageBuilder(StageBuilder stageBuilder)
+    {
+        stageBuilder.setModality(Modality.APPLICATION_MODAL);
+    }
+
     @FXML
     private void cancel()
     {
-        ((Stage) selectionView.getScene().getWindow()).close();
+        close();
+    }
+
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return SeparateOrderController.class.getResource("separateOrder.fxml");
+    }
+    
+    @Override
+    public String getTitle()
+    {
+        return LangFileLoader.getTranslation("tiltle.separateorderdialog");
     }
 
     private static class MoveOneUnitToTarget

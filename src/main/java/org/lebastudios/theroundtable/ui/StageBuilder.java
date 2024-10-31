@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.lebastudios.theroundtable.apparience.ImageLoader;
 
+import java.util.function.Consumer;
+
 public class StageBuilder
 {
     private final Scene scene;
@@ -15,6 +17,7 @@ public class StageBuilder
     private String title = "";
     private boolean resizeable = false;
     private Modality modality = Modality.NONE;
+    private Consumer<Stage> stageConsumer;
 
     public StageBuilder(Scene scene)
     {
@@ -56,6 +59,13 @@ public class StageBuilder
         return this;
     }
 
+    public StageBuilder setStageConsumer(Consumer<Stage> consumer)
+    {
+        this.stageConsumer = consumer;
+        return this;
+    }
+        
+    
     public Stage build()
     {
         Stage stage = new Stage(stageStyle);
@@ -67,6 +77,8 @@ public class StageBuilder
 
         stage.getIcons().add(ImageLoader.getIcon(iconName));
 
+        if (stageConsumer != null) stageConsumer.accept(stage);
+        
         return stage;
     }
 }

@@ -11,18 +11,15 @@ public class UpdateAppJar
     {
         if (ApiRequests.availableUpdate())
         {
-            Platform.runLater(() ->
-            {
-                ConfirmationTextDialogController.loadAttachedNode(
-                        LangFileLoader.getTranslation("textblock.confupdate"),
-                        response ->
-                        {
-                            if (!response) return;
+            Platform.runLater(() -> new ConfirmationTextDialogController(
+                    LangFileLoader.getTranslation("textblock.confupdate"),
+                    response ->
+                    {
+                        if (!response) return;
 
-                            ApiRequests.getLastAppVersion();
-                        }
-                );
-            });
+                        ApiRequests.getLastAppVersion();
+                    }
+            ).instantiate());
         }
     }
 }

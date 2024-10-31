@@ -2,39 +2,41 @@ package org.lebastudios.theroundtable.setup;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
-import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
+import org.lebastudios.theroundtable.config.DatabaseConfigPaneController;
+import org.lebastudios.theroundtable.config.EstablishmentConfigPaneController;
+import org.lebastudios.theroundtable.config.PrintersConfigPaneController;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.SettingsData;
-import org.lebastudios.theroundtable.locale.LangBundleLoader;
+import org.lebastudios.theroundtable.controllers.StageController;
+import org.lebastudios.theroundtable.dialogs.ConfirmationTextDialogController;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
+import org.lebastudios.theroundtable.ui.StageBuilder;
 import org.lebastudios.theroundtable.ui.TitleBuilder;
 
-public class SetupStageController
+import java.net.URL;
+
+public class SetupStageController extends StageController<SetupStageController>
 {
     private static final SetupPaneController[] setupPanes = {
-            AccountSetupPaneController.loadAttachedNode(),
-            new SettingsPaneWrapper("establishmentConfigPane.fxml"),
-            new SettingsPaneWrapper("printersConfigPane.fxml"),
-            new SettingsPaneWrapper("databaseConfigPane.fxml"),
+            new AccountSetupPaneController(
+                    new TitleBuilder(LangFileLoader.getTranslation("setup.title.adminconfig"),
+                            "admin-user.png").build()),
+            new SettingsPaneWrapperController(new EstablishmentConfigPaneController(),
+                    new TitleBuilder(LangFileLoader.getTranslation("setup.title.establishmentconfig"),
+                            "establishment.png").build()),
+            new SettingsPaneWrapperController(new PrintersConfigPaneController(),
+                    new TitleBuilder(LangFileLoader.getTranslation("setup.title.printersconfig"),
+                            "printer.png").build()),
+            new SettingsPaneWrapperController(new DatabaseConfigPaneController(),
+                    new TitleBuilder(LangFileLoader.getTranslation("setup.title.databaseconfig"),
+                            "database.png").build()),
     };
-    private static final Node[] setupPaneTitles = {
-            new TitleBuilder(LangFileLoader.getTranslation("setup.title.adminconfig"), "admin-user.png").build(),
-            new TitleBuilder(LangFileLoader.getTranslation("setup.title.establishmentconfig"),
-                    "establishment.png").build(),
-            new TitleBuilder(LangFileLoader.getTranslation("setup.title.printersconfig"), "printer.png").build(),
-            new TitleBuilder(LangFileLoader.getTranslation("setup.title.databaseconfig"), "database.png").build(),
-    };
+
     private int currentPane = -1;
 
-    public BorderPane root;
     @FXML private Button backButton;
     @FXML private Button nextButton;
     @FXML private ScrollPane mainPane;
@@ -44,18 +46,46 @@ public class SetupStageController
         return !new JSONFile<>(SettingsData.class).get().setupComplete;
     }
 
-    @SneakyThrows
-    public static Parent getParentNode()
-    {
-        FXMLLoader loader = new FXMLLoader(SetupStageController.class.getResource("setupStage.fxml"));
-        LangBundleLoader.loadLang(loader, Launcher.class);
-
-        return loader.load();
-    }
-
-    public void initialize()
+    @FXML
+    @Override
+    protected void initialize()
     {
         backButton.setDisable(true);
+    }
+
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    protected void customizeStageBuilder(StageBuilder stageBuilder)
+    {
+        stageBuilder.setResizeable(true)
+                .setStageConsumer(s -> s.setOnCloseRequest(e ->
+                {
+                    new ConfirmationTextDialogController(
+                            LangFileLoader.getTranslation("textblock.closingsetup"),
+                            response ->
+                            {
+                                if (response) System.exit(0);
+                            }
+                    ).instantiate();
+                    e.consume();
+                }));
+    }
+
+    @Override
+    public boolean hasFXMLControllerDefined()
+    {
+        return true;
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return SetupStageController.class.getResource("setupStage.fxml");
     }
 
     @FXML
@@ -69,7 +99,7 @@ public class SetupStageController
     @FXML
     private void nextButtonAction(ActionEvent actionEvent)
     {
-        if (currentPane >= 0 && !setupPanes[currentPane].validateData()) return;
+        if (currentPane >= 0 && !setupPanes[currentPane].getController().validateData()) return;
 
         currentPane++;
 
@@ -100,12 +130,17 @@ public class SetupStageController
             settingsData.get().setupComplete = true;
             settingsData.save();
 
-            ((Stage) mainPane.getScene().getWindow()).close();
+            close();
 
             return;
         }
 
         mainPane.setContent(setupPanes[currentPane].getRoot());
-        root.setTop(setupPaneTitles[currentPane]);
+    }
+
+    @Override
+    public String getTitle()
+    {
+        return "Setup";
     }
 }

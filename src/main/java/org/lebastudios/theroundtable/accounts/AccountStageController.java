@@ -14,13 +14,16 @@ import javafx.stage.Stage;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.apparience.UIEffects;
+import org.lebastudios.theroundtable.controllers.StageController;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Account;
 import org.lebastudios.theroundtable.locale.LangBundleLoader;
+import org.lebastudios.theroundtable.ui.StageBuilder;
 
+import java.net.URL;
 import java.util.List;
 
-public class AccountStageController
+public class AccountStageController extends StageController<AccountStageController>
 {
     @FXML private Label passwordError;
     @FXML private PasswordField passwordField;
@@ -30,19 +33,10 @@ public class AccountStageController
 
     private Account accountSelected;
 
-    @SneakyThrows
-    public static Parent getParentNode()
-    {
-        FXMLLoader loader = new FXMLLoader(AccountStageController.class.getResource("accountStage.fxml"));
-        LangBundleLoader.loadLang(loader, Launcher.class);
-
-        return loader.load();
-    }
-
-    public void initialize()
+    @FXML @Override protected void initialize()
     {
         root.setCenter(accountsBox);
-
+        
         Database.getInstance().connectQuery(session ->
         {
             List<Account> accounts = session.createQuery("from Account", Account.class).list();
@@ -54,17 +48,11 @@ public class AccountStageController
     @SneakyThrows
     private Node generateAccountBox(Account account)
     {
-        FXMLLoader loader = new FXMLLoader(AccountStageController.class.getResource("accountBox.fxml"));
-        LangBundleLoader.loadLang(loader, Launcher.class);
-
         var controller = new AccountBoxController(account);
-        loader.setController(controller);
-
-        Node root = loader.load();
 
         controller.setOnAction(this::onAccountSelected);
 
-        return root;
+        return controller.getRoot();
     }
 
     private void onAccountSelected(AccountBoxController controller, Node node)
@@ -105,5 +93,35 @@ public class AccountStageController
         passwordField.clear();
         passwordError.setText("");
         root.setCenter(accountsBox);
+    }
+
+    @Override
+    protected void customizeStageBuilder(StageBuilder stageBuilder) 
+    {
+        stageBuilder.setStageConsumer(stage -> stage.setOnCloseRequest(e -> System.exit(0)));
+    }
+
+    @Override
+    public boolean hasFXMLControllerDefined()
+    {
+        return true;
+    }
+
+    @Override
+    public String getTitle()
+    {
+        return "Login";
+    }
+
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return AccountStageController.class.getResource("accountStage.fxml");
     }
 }

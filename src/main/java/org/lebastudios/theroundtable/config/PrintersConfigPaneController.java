@@ -3,9 +3,12 @@ package org.lebastudios.theroundtable.config;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PrintersConfigData;
 import org.lebastudios.theroundtable.printers.PrinterManager;
+
+import java.net.URL;
 
 public class PrintersConfigPaneController extends SettingsPaneController
 {
@@ -31,7 +34,7 @@ public class PrintersConfigPaneController extends SettingsPaneController
     }
 
     @Override
-    public void initialize()
+    @FXML protected void initialize()
     {
         var printerData = new JSONFile<>(PrintersConfigData.class).get();
 
@@ -54,5 +57,23 @@ public class PrintersConfigPaneController extends SettingsPaneController
         hideTaxesDesglose.setSelected(printerData.hideTaxesDesglose);
         hidePaymentInfo.setSelected(printerData.hidePaymentInfo);
         hideEstablishmentLogo.setSelected(printerData.hideEstablishmentLogo);
+    }
+
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    public boolean hasFXMLControllerDefined()
+    {
+        return true;
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return AboutConfigPaneController.class.getResource("printersConfigPane.fxml");
     }
 }

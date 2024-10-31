@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.accounts.AccountCreatorController;
 import org.lebastudios.theroundtable.accounts.AccountManager;
 import org.lebastudios.theroundtable.accounts.ChangePasswordStageController;
@@ -20,6 +21,7 @@ import org.lebastudios.theroundtable.dialogs.InformationTextDialogController;
 import org.lebastudios.theroundtable.ui.IconButton;
 import org.lebastudios.theroundtable.ui.IconView;
 
+import java.net.URL;
 import java.util.Objects;
 
 public class UsersConfigPaneController extends SettingsPaneController
@@ -58,7 +60,7 @@ public class UsersConfigPaneController extends SettingsPaneController
     }
 
     @Override
-    public void initialize()
+    @FXML protected void initialize()
     {
         userIcon.setIconSize(100);
 
@@ -100,12 +102,13 @@ public class UsersConfigPaneController extends SettingsPaneController
 
     public void addUser(ActionEvent actionEvent)
     {
-        Account account = AccountCreatorController.createAcount();
-
-        if (account != null)
+        new AccountCreatorController().instantiate(controller -> controller.setAccountConsumer(account ->
         {
-            usersContainer.getChildren().add(createUserNode(account));
-        }
+            if (account != null)
+            {
+                usersContainer.getChildren().add(createUserNode(account));
+            }
+        }), false);
     }
 
     @FXML
@@ -115,14 +118,14 @@ public class UsersConfigPaneController extends SettingsPaneController
 
         if (selectedAccount.getType() == Account.AccountType.ROOT)
         {
-            InformationTextDialogController.loadAttachedNode("The root account cannot be deleted.");
+            new InformationTextDialogController("The root account cannot be deleted.").instantiate();
             return;
         }
 
         if (selectedAccount.getType() == Account.AccountType.ADMIN
                 && AccountManager.getInstance().getCurrentLogged().getType() != Account.AccountType.ROOT)
         {
-            InformationTextDialogController.loadAttachedNode("Only the root account can delete an admin account.");
+            new InformationTextDialogController("Only the root account can delete an admin account.").instantiate();
             return;
         }
 
@@ -178,5 +181,23 @@ public class UsersConfigPaneController extends SettingsPaneController
         changePasswordOnNextLogin.setSelected(account.isChangePasswordOnNextLogin());
 
         userView.setVisible(true);
+    }
+
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    public boolean hasFXMLControllerDefined()
+    {
+        return true;
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return AboutConfigPaneController.class.getResource("usersConfigPane.fxml");
     }
 }

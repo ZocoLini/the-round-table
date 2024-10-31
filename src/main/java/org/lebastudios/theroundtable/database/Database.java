@@ -52,7 +52,7 @@ public class Database
 
             File databaseFile = getDatabaseFile();
             
-            databaseFile.mkdirs();
+            databaseFile.getParentFile().mkdirs();
             
             config.setProperty(
                     "hibernate.connection.url", "jdbc:sqlite:" + databaseFile.getAbsolutePath()

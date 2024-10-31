@@ -2,10 +2,12 @@ package org.lebastudios.theroundtable.config;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.apparience.ThemeLoader;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PreferencesConfigData;
 
+import java.net.URL;
 import java.util.Objects;
 
 public class PreferencesConfigPaneController extends SettingsPaneController
@@ -14,7 +16,7 @@ public class PreferencesConfigPaneController extends SettingsPaneController
     @FXML private ChoiceBox<String> languageChoiceBox;
 
     @Override
-    public void initialize()
+    @FXML protected void initialize()
     {
         if (themeChoiceBox.getItems().isEmpty())
         {
@@ -58,6 +60,24 @@ public class PreferencesConfigPaneController extends SettingsPaneController
         preferencesManager.save();
 
         ThemeLoader.reloadThemes();
+    }
+
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    public boolean hasFXMLControllerDefined()
+    {
+        return true;
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return AboutConfigPaneController.class.getResource("preferencesConfigPane.fxml");
     }
     
     // region: Methods for the customization of the displayed texts

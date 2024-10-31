@@ -3,39 +3,31 @@ package org.lebastudios.theroundtable.config;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import org.lebastudios.theroundtable.controllers.PaneController;
 
-public abstract class SettingsPaneController
+public abstract class SettingsPaneController extends PaneController<SettingsPaneController>
 {
-    @FXML protected Node root;
-
     public final void acept()
     {
-        apply();
-        cancel();
+        getController().apply();
+        getController().cancel();
     }
 
     abstract public void apply();
 
     public final void cancel()
     {
-        initialize();
+        getController().initialize();
 
-        ((Stage) root.getScene().getWindow()).close();
+        getStage().close();
     }
-
-    public void initialize() {}
 
     public final void registerEvents() 
     {
-        root.getScene().getWindow().setOnCloseRequest(e ->
+        getStage().setOnCloseRequest(e ->
         {
             e.consume();
-            cancel();
+            getController().cancel();
         });
-    }
-    
-    public final Node getRoot()
-    {
-        return root;
     }
 }

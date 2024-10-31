@@ -1,18 +1,17 @@
 package org.lebastudios.theroundtable.setup;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import lombok.SneakyThrows;
-import org.lebastudios.theroundtable.Launcher;
+import javafx.scene.layout.BorderPane;
 import org.lebastudios.theroundtable.accounts.LocalPasswordValidator;
 import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Account;
-import org.lebastudios.theroundtable.locale.LangBundleLoader;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
+
+import java.net.URL;
 
 public class AccountSetupPaneController extends SetupPaneController
 {
@@ -21,22 +20,21 @@ public class AccountSetupPaneController extends SetupPaneController
     @FXML private TextField passwordField;
     @FXML private TextField confirmPasswordField;
 
-    @SneakyThrows
-    public static SetupPaneController loadAttachedNode()
+    public AccountSetupPaneController(Node titleNode)
     {
-        FXMLLoader loader = new FXMLLoader(AccountSetupPaneController.class.getResource("accountSetupPane.fxml"));
-        LangBundleLoader.loadLang(loader, Launcher.class);
-        Node node = loader.load();
-
-        SetupPaneController controller = loader.getController();
-        controller.root = node;
-
-        return controller;
+        super(titleNode);
     }
 
-    public void initialize()
+    @FXML @Override protected void initialize()
     {
+        ((BorderPane) getRoot()).setTop(titleNode);
         errorLabel.setText("");
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return AccountSetupPaneController.class.getResource("accountSetupPane.fxml");
     }
 
     @Override
@@ -47,9 +45,7 @@ public class AccountSetupPaneController extends SetupPaneController
                 Account.AccountType.ROOT);
 
         Database.getInstance().connectTransaction(session ->
-        {
-            session.persist(account);
-        });
+                session.persist(account));
     }
 
     @Override

@@ -2,44 +2,41 @@ package org.lebastudios.theroundtable.config;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TreeCell;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
-import org.lebastudios.theroundtable.ControllableUIObject;
 import org.lebastudios.theroundtable.Launcher;
-import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.accounts.AccountManager;
-import org.lebastudios.theroundtable.apparience.ThemeLoader;
+import org.lebastudios.theroundtable.apparience.ImageLoader;
+import org.lebastudios.theroundtable.controllers.StageController;
 import org.lebastudios.theroundtable.events.UserEvents;
-import org.lebastudios.theroundtable.locale.LangBundleLoader;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
-import org.lebastudios.theroundtable.ui.SettingsTreeView;
-import org.lebastudios.theroundtable.ui.TreeIconItem;
+import org.lebastudios.theroundtable.ui.StageBuilder;
 
-public class ConfigStageController
+import java.net.URL;
+import java.util.function.Consumer;
+
+public class ConfigStageController extends StageController<ConfigStageController>
 {
-    public static ControllableUIObject<ConfigStageController> configStageRoot;
-    private static Stage configStage;
+    public static Stage configStage;
 
     static
     {
-        UserEvents.OnAccountLogOutBefore.addListener(_ ->
-        {
-            configStage = null;
-            configStageRoot = null;
-        });
+        UserEvents.OnAccountLogOutBefore.addListener(_ -> configStage = null);
     }
 
-    @FXML private SettingsTreeView configSectionsTreeView;
+    @FXML private TreeView<SettingsItem> configSectionsTreeView;
     @FXML private ScrollPane mainPane;
     private SettingsPaneController currentPaneController;
 
-    public static void showConfigStage()
+    @Override
+    public void instantiate(Consumer<ConfigStageController> acceptController, boolean shouldWait)
     {
         if (configStage != null)
         {
@@ -47,123 +44,109 @@ public class ConfigStageController
             return;
         }
 
-        configStage = new Stage();
-        configStage.setTitle(LangFileLoader.getTranslation("title.settingsstage"));
-        configStage.setResizable(false);
-        configStage.setMaxHeight(600);
-        configStage.initModality(Modality.APPLICATION_MODAL);
+        super.instantiate(acceptController, shouldWait);
 
-        configStage.setScene(ThemeLoader.addActualTheme(new Scene((Parent) getAttachedNode().root())));
-        configStage.show();
+        configStage = getStage();
     }
 
-    @SneakyThrows
-    private static ControllableUIObject<ConfigStageController> getAttachedNode()
+    @SneakyThrows @FXML @Override
+    protected void initialize()
     {
-        if (configStageRoot != null) return configStageRoot;
+        configSectionsTreeView.setCellFactory(_ -> new TreeCell<>()
+        {
+            {
+                this.setOnMouseClicked(_ ->
+                {
+                    if (this.getTreeItem() == null) return;
 
-        var loader = new FXMLLoader(ConfigStageController.class.getResource("configStage.fxml"));
-        LangBundleLoader.loadLang(loader, Launcher.class);
-        Node root = loader.load();
-        ConfigStageController controller = loader.getController();
+                    if (this.getTreeItem() instanceof TreeItem<SettingsItem> item)
+                    {
+                        ConfigStageController.this.swapMainPane(item.getValue().settingPane());
+                    }
+                });
+            }
 
-        configStageRoot = new ControllableUIObject<>(root, controller);
+            @Override
+            protected void updateItem(SettingsItem item, boolean empty)
+            {
+                super.updateItem(item, empty);
 
-        return configStageRoot;
-    }
+                if (empty || item == null)
+                {
+                    setText(null);
+                    setGraphic(null);
+                }
+                else
+                {
+                    setText(item.value());
 
-    @SneakyThrows
-    public void initialize()
-    {
+                    var imageView = new ImageView(ImageLoader.getIcon(item.iconName()));
+                    imageView.setFitHeight(20);
+                    imageView.setFitWidth(20);
+                    this.setGraphic(imageView);
+                }
+            }
+        });
         configSectionsTreeView.getRoot().getChildren().add(createGeneralConfigSection());
 
         configSectionsTreeView.getRoot().getChildren().addAll(PluginLoader.getSettingsTreeViews());
 
-        mainPane.setContent(
-                new FXMLLoader(TheRoundTableApplication.class.getResource("defaultCenterPane.fxml")).load()
-        );
+        mainPane.setContent(new FXMLLoader(Launcher.class.getResource("defaultCenterPane.fxml")).load());
     }
 
-    private TreeIconItem createGeneralConfigSection()
+    private TreeItem<SettingsItem> createGeneralConfigSection()
     {
-        var generalConfigSection = new TreeIconItem(LangFileLoader.getTranslation("word.general"),
-                "settings.png");
+        var generalConfigSection = new TreeItem<>(new SettingsItem(LangFileLoader.getTranslation("word.general"),
+                "settings.png", null));
         generalConfigSection.setExpanded(true);
 
         if (AccountManager.getInstance().isAccountAdmin())
         {
             generalConfigSection.getChildren().add(
-                    new TreeIconItem(LangFileLoader.getTranslation("word.account"),
-                            "user.png",
-                            () -> loadFXML("accountConfigPane.fxml"))
+                    new TreeItem<>(new SettingsItem(LangFileLoader.getTranslation("word.account"),
+                            "user.png", new AccountConfigPaneController()))
             );
 
             generalConfigSection.getChildren().add(
-                    new TreeIconItem(LangFileLoader.getTranslation("word.users"),
-                            "users.png",
-                            () -> loadFXML("usersConfigPane.fxml"))
+                    new TreeItem<>(new SettingsItem(LangFileLoader.getTranslation("word.users"),
+                            "users.png", new UsersConfigPaneController()))
             );
         }
 
         generalConfigSection.getChildren().add(
-                new TreeIconItem(LangFileLoader.getTranslation("word.preferences"),
-                        "preferences.png",
-                        () -> loadFXML("preferencesConfigPane.fxml"))
+                new TreeItem<>(new SettingsItem(LangFileLoader.getTranslation("word.preferences"),
+                        "preferences.png", new PreferencesConfigPaneController()))
         );
 
         if (AccountManager.getInstance().isAccountAdmin())
         {
             generalConfigSection.getChildren().add(
-                    new TreeIconItem(LangFileLoader.getTranslation("word.establishment"),
-                            "establishment.png",
-                            () -> loadFXML("establishmentConfigPane.fxml"))
+                    new TreeItem<>(new SettingsItem(LangFileLoader.getTranslation("word.establishment"),
+                            "establishment.png", new EstablishmentConfigPaneController()))
             );
             generalConfigSection.getChildren().add(
-                    new TreeIconItem(LangFileLoader.getTranslation("word.printers"),
-                            "printer.png",
-                            () -> loadFXML("printersConfigPane.fxml"))
+                    new TreeItem<>(new SettingsItem(LangFileLoader.getTranslation("word.printers"),
+                            "printer.png", new PrintersConfigPaneController()))
             );
             generalConfigSection.getChildren().add(
-                    new TreeIconItem(LangFileLoader.getTranslation("word.database"),
-                            "database.png",
-                            () -> loadFXML("databaseConfigPane.fxml"))
+                    new TreeItem<>(new SettingsItem(LangFileLoader.getTranslation("word.database"),
+                            "database.png", new DatabaseConfigPaneController()))
             );
         }
 
         generalConfigSection.getChildren().add(
-                new TreeIconItem(LangFileLoader.getTranslation("word.about"),
-                        "help.png",
-                        () -> loadFXML("aboutConfigPane.fxml"))
+                new TreeItem<>(new SettingsItem(LangFileLoader.getTranslation("word.about"),
+                        "help.png", new AboutConfigPaneController()))
         );
 
         return generalConfigSection;
     }
 
-    private ControllableUIObject<SettingsPaneController> loadFXML(String fxmlPath)
+    public void swapMainPane(SettingsPaneController controller)
     {
-        try
-        {
-            var loader = new FXMLLoader(ConfigStageController.class.getResource(fxmlPath));
-            LangBundleLoader.loadLang(loader, Launcher.class);
-
-            Node root = loader.load();
-
-            SettingsPaneController controller = loader.getController();
-
-            return new ControllableUIObject<>(root, controller);
-        }
-        catch (Exception e)
-        {
-            System.err.println("Error loading FXML: " + fxmlPath);
-            return null;
-        }
-    }
-
-    public void swapMainPane(ControllableUIObject<SettingsPaneController> newControllableObj)
-    {
-        mainPane.setContent(newControllableObj.root());
-        newControllableObj.controller().registerEvents();
-        currentPaneController = newControllableObj.controller();
+        mainPane.setContent(controller.getRoot());
+        controller.registerEvents();
+        currentPaneController = controller;
     }
 
     @FXML
@@ -174,7 +157,7 @@ public class ConfigStageController
             return;
         }
 
-        currentPaneController.apply();
+        currentPaneController.getController().apply();
     }
 
     @FXML
@@ -182,7 +165,7 @@ public class ConfigStageController
     {
         if (currentPaneController == null)
         {
-            ((Stage) mainPane.getScene().getWindow()).close();
+            close();
             return;
         }
 
@@ -199,5 +182,35 @@ public class ConfigStageController
         }
 
         currentPaneController.acept();
+    }
+
+    @Override
+    public boolean hasFXMLControllerDefined()
+    {
+        return true;
+    }
+
+    @Override
+    public String getTitle()
+    {
+        return LangFileLoader.getTranslation("title.settingsstage");
+    }
+
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    protected void customizeStageBuilder(StageBuilder stageBuilder)
+    {
+        stageBuilder.setModality(Modality.APPLICATION_MODAL);
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return ConfigStageController.class.getResource("configStage.fxml");
     }
 }

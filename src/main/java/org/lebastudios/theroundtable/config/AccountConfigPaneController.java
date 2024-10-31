@@ -3,12 +3,14 @@ package org.lebastudios.theroundtable.config;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.communications.LicenseValidator;
 import org.lebastudios.theroundtable.config.data.AccountConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.dialogs.InformationTextDialogController;
 import org.lebastudios.theroundtable.ui.TaskManager;
 
+import java.net.URL;
 import java.util.function.Consumer;
 
 public class AccountConfigPaneController extends SettingsPaneController
@@ -17,7 +19,7 @@ public class AccountConfigPaneController extends SettingsPaneController
     private String lastLicense = "";
 
     @Override
-    public void initialize()
+    @FXML protected void initialize()
     {
         var accountData = new JSONFile<>(AccountConfigData.class).get();
 
@@ -48,10 +50,28 @@ public class AccountConfigPaneController extends SettingsPaneController
                 accountData.get().license = lastLicense;
                 accountData.save();
 
-                InformationTextDialogController.loadAttachedNode(
+                new InformationTextDialogController(
                         "Your license could not be validated. Check your internet connection and try again."
-                );
+                ).instantiate();
             });
         }
     };
+
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    public boolean hasFXMLControllerDefined()
+    {
+        return true;
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return AboutConfigPaneController.class.getResource("accountConfigPane.fxml");
+    }
 }

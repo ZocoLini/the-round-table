@@ -22,13 +22,12 @@ public class LicenseValidator
         {
             if (!validation)
             {
-                Platform.runLater(() ->
-                {
-                    RequestTextDialogController.loadAttachedNode(onLicenseIntroduced,
-                            "License", "XXXX-XXXX-XXXX", licenseFormatValidator,
-                            "Introduce your license", "Invalid license format", Platform::exit
-                    );
-                });
+                Platform.runLater(() -> new RequestTextDialogController(
+                                onLicenseIntroduced,
+                                "License", "XXXX-XXXX-XXXX", licenseFormatValidator,
+                                "Introduce your license", "Invalid license format", Platform::exit
+                        ).instantiate()
+                );
             }
             else
             {
@@ -69,10 +68,10 @@ public class LicenseValidator
                     {
                         Platform.runLater(() ->
                         {
-                            InformationTextDialogController.loadAttachedNode(
+                            new InformationTextDialogController(
                                     "An error ocurred while validating your license. " +
                                             "Check your internet connection and try again."
-                            );
+                            ).instantiate(true);
 
                             Platform.exit();
                         });

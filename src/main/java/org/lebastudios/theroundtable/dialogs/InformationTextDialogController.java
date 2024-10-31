@@ -4,36 +4,29 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
+import org.lebastudios.theroundtable.controllers.StageController;
 import org.lebastudios.theroundtable.locale.LangBundleLoader;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
+import org.lebastudios.theroundtable.ui.StageBuilder;
 
-public class InformationTextDialogController
+import java.net.URL;
+
+public class InformationTextDialogController extends StageController<InformationTextDialogController>
 {
     private final String informationText;
     @FXML private Label textLabel;
-
-
+    
     public InformationTextDialogController(String informationText)
     {
         this.informationText = informationText;
     }
 
-    @SneakyThrows
-    public static void loadAttachedNode(String informationText)
-    {
-        var loader = new FXMLLoader(InformationTextDialogController.class.getResource("informationTextDialog.fxml"));
-
-        loader.setController(new InformationTextDialogController(informationText));
-        LangBundleLoader.loadLang(loader, Launcher.class);
-
-        TheRoundTableApplication.showAndWaitInStage(loader.load(), LangFileLoader.getTranslation("title.infodialog"));
-    }
-
-    public void initialize()
+    @FXML @Override protected void initialize()
     {
         textLabel.setText(informationText);
     }
@@ -41,7 +34,30 @@ public class InformationTextDialogController
     @FXML
     private void accept(ActionEvent actionEvent)
     {
-        Stage stage = (Stage) textLabel.getScene().getWindow();
-        stage.close();
+        close();
+    }
+
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return InformationTextDialogController.class.getResource("informationTextDialog.fxml");
+    }
+
+    @Override
+    protected void customizeStageBuilder(StageBuilder stageBuilder)
+    {
+        stageBuilder.setModality(Modality.APPLICATION_MODAL);
+    }
+
+    @Override
+    public String getTitle()
+    {
+        return LangFileLoader.getTranslation("title.infodialog");
     }
 }

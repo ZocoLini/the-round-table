@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" prefWidth="300.0" spacing="15"
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefWidth="300.0" spacing="15" fx:id="root"
       xmlns="http://javafx.com/javafx/17.0.2-ea">
     <padding>
         <Insets bottom="15" left="15" right="15" top="15"/>

@@ -12,7 +12,6 @@ import org.lebastudios.theroundtable.accounts.AccountStageController;
 import org.lebastudios.theroundtable.apparience.ImageLoader;
 import org.lebastudios.theroundtable.config.data.CashRegisterStateData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
-import org.lebastudios.theroundtable.dialogs.ConfirmationTextDialogController;
 import org.lebastudios.theroundtable.dialogs.InformationTextDialogController;
 import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 import org.lebastudios.theroundtable.locale.AppLocale;
@@ -80,32 +79,14 @@ public class TheRoundTableApplication extends Application
 
         if (SetupStageController.checkIfStart())
         {
-            showAndWaitInStage(SetupStageController.getParentNode(), "Setup", true, s ->
-            {
-                s.setOnCloseRequest(e ->
-                {
-                    ConfirmationTextDialogController.loadAttachedNode(
-                            LangFileLoader.getTranslation("textblock.closingsetup"),
-                            response ->
-                            {
-                                if (response) System.exit(0);
-                            }
-                    );
-                    e.consume();
-                });
-                s.getIcons().add(ImageLoader.getIcon("the-round-table-logo.png"));
-            });
+            new SetupStageController().instantiate(true);
         }
 
-        showAndWaitInStage(AccountStageController.getParentNode(), "Login", true, s ->
-        {
-            s.setOnCloseRequest(e -> System.exit(0));
-            s.getIcons().add(ImageLoader.getIcon("the-round-table-logo.png"));
-        });
+        new AccountStageController().instantiate(true);
         
         PluginLoader.loadPlugins();
         
-        Scene mainScene = createScene(MainStageController.getParentNode());
+        Scene mainScene = new SceneBuilder(new MainStageController().getParent()).build();
         stage.setTitle("The Round Table");
         stage.getIcons().add(ImageLoader.getIcon("the-round-table-logo.png"));
         stage.setMinWidth(720);
@@ -147,46 +128,14 @@ public class TheRoundTableApplication extends Application
         var cashRegisterState = new JSONFile<>(CashRegisterStateData.class).get();
         if (cashRegisterState.open)
         {
-            InformationTextDialogController.loadAttachedNode(
+            new InformationTextDialogController(
                     LangFileLoader.getTranslation("textblock.needtoclosethecashregister")
-            );
+            ).instantiate();
             event.consume();
         }
         else
         {
             AppLifeCicleEvents.OnAppCloseRequest.invoke();
         }
-    }
-
-    public static Scene createScene(Parent root)
-    {
-        return new SceneBuilder(root).build();
-    }
-
-    public static Stage showAndWaitInStage(Parent root, String title, boolean resizeable, Consumer<Stage> stageConsumer)
-    {
-        Stage stage = new StageBuilder(root)
-                .setTitle(title)
-                .setModality(Modality.APPLICATION_MODAL)
-                .setResizeable(resizeable)
-                .setIconName("the-round-table-logo.png")
-                .build();
-
-        stageConsumer.accept(stage);
-
-        stage.showAndWait();
-
-        return stage;
-    }
-
-    public static Stage showAndWaitInStage(Parent root, String title, boolean resizeable)
-    {
-        return showAndWaitInStage(root, title, resizeable, stage ->
-        {});
-    }
-
-    public static Stage showAndWaitInStage(Parent root, String title)
-    {
-        return showAndWaitInStage(root, title, false);
     }
 }

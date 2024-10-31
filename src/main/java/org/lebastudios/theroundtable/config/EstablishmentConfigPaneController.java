@@ -1,10 +1,12 @@
 package org.lebastudios.theroundtable.config;
 
+import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import lombok.SneakyThrows;
+import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.apparience.ImageLoader;
 import org.lebastudios.theroundtable.config.data.EstablishmentConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
@@ -12,6 +14,7 @@ import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URL;
 
 public class EstablishmentConfigPaneController extends SettingsPaneController
 {
@@ -49,7 +52,7 @@ public class EstablishmentConfigPaneController extends SettingsPaneController
     }
 
     @Override
-    public void initialize()
+    @FXML protected void initialize()
     {
         var establishmentData = new JSONFile<>(EstablishmentConfigData.class);
 
@@ -96,5 +99,23 @@ public class EstablishmentConfigPaneController extends SettingsPaneController
 
         establishmentLogo.setImage(image);
         this.imageFile = imageFile;
+    }
+
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    public boolean hasFXMLControllerDefined()
+    {
+        return true;
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return AboutConfigPaneController.class.getResource("establishmentConfigPane.fxml");
     }
 }

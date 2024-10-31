@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
+import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.config.data.DatabaseConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
@@ -15,6 +16,7 @@ import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.dialogs.InformationTextDialogController;
 
 import java.io.File;
+import java.net.URL;
 import java.util.Arrays;
 
 public class DatabaseConfigPaneController extends SettingsPaneController
@@ -26,7 +28,7 @@ public class DatabaseConfigPaneController extends SettingsPaneController
     @FXML private Label databasesBackupDirectory;
 
     @Override
-    public void initialize()
+    @FXML protected void initialize()
     {
         var data = new JSONFile<>(DatabaseConfigData.class).get();
 
@@ -54,7 +56,7 @@ public class DatabaseConfigPaneController extends SettingsPaneController
         }
         catch (Exception e)
         {
-            new InformationTextDialogController("ERROR: " + e.getMessage()).initialize();
+            new InformationTextDialogController("ERROR: " + e.getMessage()).instantiate();
             return;
         }
 
@@ -143,7 +145,7 @@ public class DatabaseConfigPaneController extends SettingsPaneController
     @FXML
     private void selectDatabasesBackupDirectory(ActionEvent actionEvent)
     {
-        File path = getDirectoryChooser("Select Backup Directory").showDialog(root.getScene().getWindow());
+        File path = getDirectoryChooser("Select Backup Directory").showDialog(getStage());
         if (path == null) return;
 
         databasesBackupDirectory.setText(path.getAbsolutePath());
@@ -152,7 +154,7 @@ public class DatabaseConfigPaneController extends SettingsPaneController
     @FXML
     private void selectDatabasesDirectory(ActionEvent actionEvent)
     {
-        File path = getDirectoryChooser("Select Databases Directory").showDialog(root.getScene().getWindow());
+        File path = getDirectoryChooser("Select Databases Directory").showDialog(getStage());
         if (path == null) return;
 
         databasesDirectory.setText(path.getAbsolutePath());
@@ -164,5 +166,23 @@ public class DatabaseConfigPaneController extends SettingsPaneController
         directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         directoryChooser.setTitle(title);
         return directoryChooser;
+    }
+
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    public boolean hasFXMLControllerDefined()
+    {
+        return true;
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return AboutConfigPaneController.class.getResource("databaseConfigPane.fxml");
     }
 }

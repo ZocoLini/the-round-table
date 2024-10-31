@@ -11,12 +11,11 @@
             fx:controller="org.lebastudios.theroundtable.MainStageController">
     <left>
         <VBox>
-            <VBox spacing="10" fx:id="rootTools" alignment="TOP_CENTER">
+            <VBox spacing="10" alignment="TOP_CENTER">
                 <padding>
                     <Insets top="5" right="5" bottom="5" left="5"/>
                 </padding>
 
-                <!-- <IconButton onAction="#openAccountStage" mnemonicParsing="false" iconName="account.png"/> -->
                 <IconButton onAction="#openSettingsStage" mnemonicParsing="false" iconName="settings.png"/>
                 <IconButton fx:id="pluginsButton" onAction="#openPluginsStage" mnemonicParsing="false" iconName="plugins.png"/>
             </VBox>

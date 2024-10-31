@@ -4,16 +4,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
+import org.lebastudios.theroundtable.controllers.StageController;
 import org.lebastudios.theroundtable.locale.LangBundleLoader;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
+import org.lebastudios.theroundtable.ui.StageBuilder;
 
+import java.net.URL;
 import java.util.function.Consumer;
 
-public class ConfirmationTextDialogController
+public class ConfirmationTextDialogController extends StageController<ConfirmationTextDialogController>
 {
     private final String informationText;
     private final Consumer<Boolean> action;
@@ -25,19 +29,7 @@ public class ConfirmationTextDialogController
         this.action = action;
     }
 
-    @SneakyThrows
-    public static void loadAttachedNode(String informationText, Consumer<Boolean> action)
-    {
-        var loader = new FXMLLoader(ConfirmationTextDialogController.class.getResource("confirmationTextDialog.fxml"));
-
-        loader.setController(new ConfirmationTextDialogController(informationText, action));
-        LangBundleLoader.loadLang(loader, Launcher.class);
-
-        TheRoundTableApplication.showAndWaitInStage(loader.load(),
-                LangFileLoader.getTranslation("title.confirmdialog"));
-    }
-
-    public void initialize()
+    @FXML @Override protected void initialize()
     {
         textLabel.setText(informationText);
     }
@@ -46,8 +38,7 @@ public class ConfirmationTextDialogController
     private void accept(ActionEvent actionEvent)
     {
         action.accept(true);
-        Stage stage = (Stage) textLabel.getScene().getWindow();
-        stage.close();
+        close();
     }
 
     public void cancel(ActionEvent actionEvent)
@@ -55,5 +46,29 @@ public class ConfirmationTextDialogController
         action.accept(false);
         Stage stage = (Stage) textLabel.getScene().getWindow();
         stage.close();
+    }
+
+    @Override
+    public Class<?> getBundleClass()
+    {
+        return Launcher.class;
+    }
+
+    @Override
+    public URL getFXML()
+    {
+        return ConfirmationTextDialogController.class.getResource("confirmationTextDialog.fxml");
+    }
+
+    @Override
+    protected void customizeStageBuilder(StageBuilder stageBuilder)
+    {
+        stageBuilder.setModality(Modality.APPLICATION_MODAL);
+    }
+
+    @Override
+    public String getTitle()
+    {
+        return LangFileLoader.getTranslation("title.confirmdialog");
     }
 }

@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import lombok.Getter;
+import javafx.stage.Stage;
 import org.lebastudios.theroundtable.locale.LangBundleLoader;
 
 import java.io.IOException;
@@ -16,7 +16,9 @@ public abstract class Controller<T extends Controller<T>>
     private T controller;
     private Thread loadingRoot;
     
-    public final Node getRoot()
+    @FXML protected void initialize() {}
+    
+    public Node getRoot()
     {
         if (loadingRoot != null)
         {
@@ -28,6 +30,11 @@ public abstract class Controller<T extends Controller<T>>
         }
         
         if (root == null) loadFXML();
+        
+        if (root == null)
+        {
+            throw new IllegalStateException("FXML root is null after loading. Check if the fx:id of the root node is correct.");
+        }
         
         return this.root;
     }
@@ -84,11 +91,17 @@ public abstract class Controller<T extends Controller<T>>
         return (Parent) getRoot();
     }
 
+    public final Stage getStage()
+    {
+        return (Stage) getRoot().getScene().getWindow();
+    }
+    
     public abstract Class<?> getBundleClass();
     
     public abstract URL getFXML();
     
-    public final FXMLLoader getFXMLLoader()
+    public final FXMLLoader 
+    getFXMLLoader()
     {
         return new FXMLLoader(getFXML());
     }

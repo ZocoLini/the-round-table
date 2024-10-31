@@ -2,17 +2,25 @@ package org.lebastudios.theroundtable.setup;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import org.lebastudios.theroundtable.Launcher;
+import org.lebastudios.theroundtable.controllers.PaneController;
 
-public abstract class SetupPaneController
+public abstract class SetupPaneController extends PaneController<SetupPaneController>
 {
-    @FXML protected Node root;
-
     public abstract void apply();
 
     public abstract boolean validateData();
-
-    public final Node getRoot()
+    
+    protected Node titleNode;
+    
+    public SetupPaneController(Node titleNode)
     {
-        return root;
+        this.titleNode = titleNode;
+    }
+    
+    @Override
+    public final Class<?> getBundleClass()
+    {
+        return Launcher.class;
     }
 }
