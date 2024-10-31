@@ -1,9 +1,7 @@
 package org.lebastudios.theroundtable;
 
 import javafx.application.Application;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import lombok.SneakyThrows;
@@ -20,12 +18,10 @@ import org.lebastudios.theroundtable.locale.LangLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 import org.lebastudios.theroundtable.setup.SetupStageController;
 import org.lebastudios.theroundtable.ui.SceneBuilder;
-import org.lebastudios.theroundtable.ui.StageBuilder;
 import org.lebastudios.theroundtable.ui.TaskManager;
 import org.lebastudios.theroundtable.updates.UpdateAppJar;
 
 import java.io.File;
-import java.util.function.Consumer;
 
 public class TheRoundTableApplication extends Application
 {

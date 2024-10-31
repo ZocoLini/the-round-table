@@ -2,17 +2,12 @@ package org.lebastudios.theroundtable.dialogs;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
-import javafx.stage.Stage;
-import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
-import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.controllers.StageController;
-import org.lebastudios.theroundtable.locale.LangBundleLoader;
 import org.lebastudios.theroundtable.ui.StageBuilder;
 
 import java.net.URL;

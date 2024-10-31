@@ -1,8 +1,5 @@
 package org.lebastudios.theroundtable.config;
 
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.stage.Stage;
 import org.lebastudios.theroundtable.controllers.PaneController;
 
 public abstract class SettingsPaneController extends PaneController<SettingsPaneController>

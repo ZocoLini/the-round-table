@@ -2,9 +2,7 @@ package org.lebastudios.theroundtable.accounts;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.BorderPane;
@@ -17,7 +15,6 @@ import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.controllers.StageController;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Account;
-import org.lebastudios.theroundtable.locale.LangBundleLoader;
 import org.lebastudios.theroundtable.ui.StageBuilder;
 
 import java.net.URL;

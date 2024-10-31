@@ -1,6 +1,5 @@
 package org.lebastudios.theroundtable.database;
 
-import javafx.fxml.FXML;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.AppTask;
 import org.lebastudios.theroundtable.Zip;
