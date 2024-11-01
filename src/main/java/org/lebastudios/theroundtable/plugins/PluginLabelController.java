@@ -16,7 +16,7 @@ import org.lebastudios.theroundtable.ui.IconButton;
 import org.lebastudios.theroundtable.ui.IconView;
 
 import java.io.File;
-import java.net.URL;
+import java.util.function.Consumer;
 
 public class PluginLabelController extends PaneController<PluginLabelController>
 {
@@ -27,10 +27,13 @@ public class PluginLabelController extends PaneController<PluginLabelController>
     @FXML private IconButton unistallButton;
     @FXML private HBox root;
     private PluginData pluginData;
+    
+    private final Consumer<PluginData> onLabelClick;
 
-    public PluginLabelController(PluginData pluginData)
+    public PluginLabelController(PluginData pluginData, Consumer<PluginData> onLabelClick)
     {
         this.pluginData = pluginData;
+        this.onLabelClick = onLabelClick;
     }
 
     @Override
@@ -38,13 +41,7 @@ public class PluginLabelController extends PaneController<PluginLabelController>
     {
         return Launcher.class;
     }
-
-    @Override
-    public URL getFXML()
-    {
-        return PluginLabelController.class.getResource("pluginLabel.fxml");
-    }
-
+    
     @FXML @Override protected void initialize()
     {
         if (pluginData == null)
@@ -53,8 +50,10 @@ public class PluginLabelController extends PaneController<PluginLabelController>
             pluginData.pluginName = "Error";
             pluginData.pluginDescription = "Error";
             pluginData.pluginIcon = "error";
-
+            return;
         }
+        
+        root.setOnMouseClicked(_ -> onLabelClick.accept(pluginData));
 
         pluginIcon.setIconName(pluginData.pluginIcon + ".png");
         pluginName.setText(pluginData.pluginName);
@@ -72,7 +71,7 @@ public class PluginLabelController extends PaneController<PluginLabelController>
             actionButton.setText("Install");
         }
     }
-
+    
     @FXML
     private void onAction()
     {

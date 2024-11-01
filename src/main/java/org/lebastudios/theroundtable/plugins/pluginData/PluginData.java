@@ -17,7 +17,7 @@ public class PluginData
     @Override
     public int hashCode()
     {
-        return Objects.hashCode(pluginName);
+        return Objects.hashCode(pluginId);
     }
 
     @Override
@@ -26,6 +26,6 @@ public class PluginData
         if (this == o) return true;
         if (!(o instanceof PluginData that)) return false;
 
-        return Objects.equals(pluginName, that.pluginName);
+        return Objects.equals(pluginId, that.pluginId);
     }
 }

@@ -15,9 +15,10 @@ public abstract class Controller<T extends Controller<T>>
     @FXML private Node root;
     private T controller;
     private Thread loadingRoot;
-    
-    @FXML protected void initialize() {}
-    
+
+    @FXML
+    protected void initialize() {}
+
     public Node getRoot()
     {
         if (loadingRoot != null)
@@ -28,14 +29,15 @@ public abstract class Controller<T extends Controller<T>>
             }
             catch (InterruptedException _) {}
         }
-        
+
         if (root == null) loadFXML();
-        
+
         if (root == null)
         {
-            throw new IllegalStateException("FXML root is null after loading. Check if the fx:id of the root node is correct.");
+            throw new IllegalStateException(
+                    "FXML root is null after loading. Check if the fx:id of the root node is correct.");
         }
-        
+
         return this.root;
     }
 
@@ -47,24 +49,24 @@ public abstract class Controller<T extends Controller<T>>
             loadingRoot = null;
         });
         loadingThread.start();
-        
+
         loadingRoot = loadingThread;
     }
-    
+
     public final void loadFXML()
     {
         if (root != null) return;
-        
+
         final var fxmlLoader = getFXMLLoader();
         try
         {
             LangBundleLoader.loadLang(fxmlLoader, getBundleClass());
-            
-            if (!hasFXMLControllerDefined()) 
+
+            if (!hasFXMLControllerDefined())
             {
                 fxmlLoader.setController(this);
             }
-            
+
             this.root = fxmlLoader.load();
         }
         catch (IOException e)
@@ -75,17 +77,17 @@ public abstract class Controller<T extends Controller<T>>
 
         this.controller = fxmlLoader.getController();
     }
-    
+
     public final T getController()
     {
         return controller == null ? (T) this : controller;
     }
-    
+
     public boolean hasFXMLControllerDefined()
     {
         return false;
     }
-    
+
     public final Parent getParent()
     {
         return (Parent) getRoot();
@@ -95,13 +97,18 @@ public abstract class Controller<T extends Controller<T>>
     {
         return (Stage) getRoot().getScene().getWindow();
     }
-    
+
     public abstract Class<?> getBundleClass();
-    
-    public abstract URL getFXML();
-    
-    public final FXMLLoader 
-    getFXMLLoader()
+
+    public URL getFXML()
+    {
+        Class<?> clazz = getClass();
+        String fxmlNameLowerCamelCase = clazz.getSimpleName().substring(0, 1).toLowerCase() + clazz.getSimpleName().substring(1);
+        String fxmlNameWithoutController = fxmlNameLowerCamelCase.replace("Controller", "");
+        return clazz.getResource(fxmlNameWithoutController + ".fxml");
+    }
+
+    public final FXMLLoader getFXMLLoader()
     {
         return new FXMLLoader(getFXML());
     }

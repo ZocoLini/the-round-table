@@ -156,16 +156,16 @@ public class PluginLoader
 
     public static void removePlugin(PluginData pluginData)
     {
-        pluginsInstalled.remove(pluginData.pluginName);
+        pluginsInstalled.remove(pluginData.pluginId);
     }
 
     public static boolean isPluginInstalled(PluginData pluginData)
     {
-        return pluginsInstalled.containsKey(pluginData.pluginName);
+        return pluginsInstalled.containsKey(pluginData.pluginId);
     }
 
     public static boolean isPluginLoaded(PluginData pluginData)
     {
-        return pluginsLoaded.containsKey(pluginData.pluginName);
+        return pluginsLoaded.containsKey(pluginData.pluginId);
     }
 }

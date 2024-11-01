@@ -5,14 +5,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.communications.ApiRequests;
 import org.lebastudios.theroundtable.controllers.StageController;
+import org.lebastudios.theroundtable.plugins.pluginData.PluginData;
 import org.lebastudios.theroundtable.ui.StageBuilder;
-
-import java.net.URL;
 
 public class PluginsStageController extends StageController<PluginsStageController>
 {
@@ -20,8 +20,7 @@ public class PluginsStageController extends StageController<PluginsStageControll
     @FXML private Tab availablePluginsTab;
     @FXML private VBox availablePlugins;
     @FXML private VBox installedPlugins;
-    @FXML private BorderPane pluginViewer; // TODO: Visulize the plugin info here
-    
+
     @Override
     public Class<?> getBundleClass()
     {
@@ -32,12 +31,6 @@ public class PluginsStageController extends StageController<PluginsStageControll
     public boolean hasFXMLControllerDefined()
     {
         return true;
-    }
-
-    @Override
-    public URL getFXML()
-    {
-        return PluginsStageController.class.getResource("pluginsStage.fxml");
     }
 
     @Override
@@ -52,7 +45,9 @@ public class PluginsStageController extends StageController<PluginsStageControll
         stageBuilder.setModality(Modality.APPLICATION_MODAL);
     }
 
-    @FXML @Override protected void initialize()
+    @FXML
+    @Override
+    protected void initialize()
     {
         this.instantiateInstalledPlugins();
         new Thread(this::instantiateAvailablePlugins).start();
@@ -65,7 +60,10 @@ public class PluginsStageController extends StageController<PluginsStageControll
     {
         for (var plugin : PluginLoader.getInstalledPlugins())
         {
-            installedPlugins.getChildren().add(new PluginLabelController(plugin.getPluginData()).getRoot());
+            installedPlugins.getChildren().add(
+                    new PluginLabelController(plugin.getPluginData(), this::showPluginViewer)
+                            .getRoot()
+            );
         }
     }
 
@@ -83,8 +81,21 @@ public class PluginsStageController extends StageController<PluginsStageControll
         {
             for (var pluginData : pluginsData)
             {
-                availablePlugins.getChildren().add(new PluginLabelController(pluginData).getRoot());
+                availablePlugins.getChildren().add(
+                        new PluginLabelController(pluginData, this::showPluginViewer)
+                                .getRoot()
+                );
             }
         });
+    }
+
+    private void showPluginViewer(PluginData pluginData)
+    {
+        final var root = (HBox) getRoot();
+        
+        if (root.getChildren().size() > 1) root.getChildren().removeLast();
+        
+        root.getChildren().add(new PluginViewerPaneController(pluginData).getRoot());
+        getStage().sizeToScene();
     }
 }

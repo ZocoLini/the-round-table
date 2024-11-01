@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:id="root" spacing="5" styleClass="border-round"
+      xmlns="http://javafx.com/javafx" maxWidth="300">
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
+    
+    <HBox fx:id="iconViewContainer" maxWidth="Infinity" alignment="CENTER"/>
+
+    <Label fx:id="pluginNameLabel" maxWidth="Infinity" textAlignment="CENTER" alignment="CENTER" wrapText="true"
+           style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+    
+    <HBox maxWidth="Infinity" alignment="CENTER">
+        <Label style="-fx-font-size: 10;" text="ID:  "/>
+        <Label style="-fx-font-size: 10;" fx:id="pluginIdLabel" maxWidth="Infinity" alignment="CENTER" wrapText="true"/>
+    </HBox>
+    
+    <Label fx:id="pluginDescriptionLabel" maxWidth="Infinity" textAlignment="CENTER" alignment="CENTER" wrapText="true"/>
+
+    <VBox spacing="5">
+        <padding>
+            <Insets left="15"/>
+        </padding>
+        <HBox>
+            <Label style="-fx-font-size: 10;" text="Vendor:  "/>
+            <Label style="-fx-font-size: 10;" fx:id="pluginVendorLabel" maxWidth="Infinity" alignment="CENTER" wrapText="true"/>
+        </HBox>
+        <HBox>
+            <Label style="-fx-font-size: 10;" text="Vendor web:  "/>
+            <Label style="-fx-font-size: 10;" fx:id="pluginVendorUrlLabel" maxWidth="Infinity" alignment="CENTER" wrapText="true"/>
+        </HBox>
+        <HBox>
+            <Label style="-fx-font-size: 10;" text="Required app version:  "/>
+            <Label style="-fx-font-size: 10;" fx:id="pluginRequiredCoreVersionLabel" maxWidth="Infinity" alignment="CENTER" wrapText="true"/>
+        </HBox>
+    </VBox>
+    
+    <TitledPane fx:id="dependenciesPaneContainer" text="%word.dependencies" style="-fx-font-size: 13;" maxWidth="Infinity" expanded="false">
+        <VBox fx:id="dependenciesPane" />
+    </TitledPane>
+    
+    <Label textAlignment="RIGHT" maxWidth="Infinity" fx:id="pluginVersionLabel" alignment="CENTER_RIGHT" />
+</VBox>

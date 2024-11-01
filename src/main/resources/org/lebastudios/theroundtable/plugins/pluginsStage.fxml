@@ -3,20 +3,17 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<HBox xmlns:fx="http://javafx.com/fxml"
+<HBox xmlns:fx="http://javafx.com/fxml" fx:id="root"
       xmlns="http://javafx.com/javafx"
       fx:controller="org.lebastudios.theroundtable.plugins.PluginsStageController"
-      prefHeight="350" minWidth="450" maxWidth="Infinity">
+      minHeight="350" maxWidth="Infinity" spacing="10">
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
     <TabPane HBox.hgrow="ALWAYS" fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
-        <padding>
-            <Insets top="15" right="15" bottom="15" left="15"/>
-        </padding>
         <Tab text="Installed">
-            <ScrollPane pannable="true">
-                <padding>
-                    <Insets top="15"/>
-                </padding>
-                <VBox spacing="15" fx:id="installedPlugins">
+            <ScrollPane fitToWidth="true" fitToHeight="true" pannable="true">
+                <VBox spacing="5" fx:id="installedPlugins">
                     <padding>
                         <Insets top="15"/>
                     </padding>
@@ -24,11 +21,8 @@
             </ScrollPane>
         </Tab>
         <Tab fx:id="availablePluginsTab" text="Search">
-            <ScrollPane pannable="true">
-                <padding>
-                    <Insets top="15"/>
-                </padding>
-                <VBox spacing="15" fx:id="availablePlugins">
+            <ScrollPane fitToWidth="true" fitToHeight="true" pannable="true">
+                <VBox spacing="5" fx:id="availablePlugins">
                     <padding>
                         <Insets top="15"/>
                     </padding>
@@ -36,6 +30,4 @@
             </ScrollPane>
         </Tab>
     </TabPane>
-
-    <BorderPane fx:id="pluginViewer"/>
 </HBox>
