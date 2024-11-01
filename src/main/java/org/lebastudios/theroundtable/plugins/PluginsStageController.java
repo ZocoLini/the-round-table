@@ -29,6 +29,12 @@ public class PluginsStageController extends StageController<PluginsStageControll
     }
 
     @Override
+    public boolean hasFXMLControllerDefined()
+    {
+        return true;
+    }
+
+    @Override
     public URL getFXML()
     {
         return PluginsStageController.class.getResource("pluginsStage.fxml");
