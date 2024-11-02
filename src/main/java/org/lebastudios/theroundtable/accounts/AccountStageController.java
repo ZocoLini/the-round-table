@@ -1,5 +1,6 @@
 package org.lebastudios.theroundtable.accounts;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -15,6 +16,7 @@ import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.controllers.StageController;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Account;
+import org.lebastudios.theroundtable.ui.LoadingPaneController;
 import org.lebastudios.theroundtable.ui.StageBuilder;
 
 import java.net.URL;
@@ -32,14 +34,19 @@ public class AccountStageController extends StageController<AccountStageControll
 
     @FXML @Override protected void initialize()
     {
-        root.setCenter(accountsBox);
-        
-        Database.getInstance().connectQuery(session ->
+        root.setCenter(new LoadingPaneController().getRoot());
+        new Thread(() ->
         {
-            List<Account> accounts = session.createQuery("from Account", Account.class).list();
+            Database.init();
+            Database.getInstance().connectQuery(session ->
+            {
+                List<Account> accounts = session.createQuery("from Account", Account.class).list();
 
-            accounts.forEach(account -> accountsBox.getChildren().add(generateAccountBox(account)));
-        });
+                accounts.forEach(account -> accountsBox.getChildren().add(generateAccountBox(account)));
+            });
+
+            Platform.runLater(() -> root.setCenter(accountsBox));
+        }).start();
     }
 
     @SneakyThrows

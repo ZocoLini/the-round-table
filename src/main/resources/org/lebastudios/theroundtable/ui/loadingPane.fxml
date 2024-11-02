@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import org.lebastudios.theroundtable.ui.IconView?>
+<VBox maxWidth="Infinity" alignment="CENTER" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.lebastudios.theroundtable.ui.LoadingPaneController">
+    <IconView fx:id="loadingIcon"/>
+</VBox>

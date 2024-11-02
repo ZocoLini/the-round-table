@@ -1,5 +1,6 @@
 package org.lebastudios.theroundtable.setup;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,8 +12,10 @@ import org.lebastudios.theroundtable.config.PrintersConfigPaneController;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.SettingsData;
 import org.lebastudios.theroundtable.controllers.StageController;
+import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.dialogs.ConfirmationTextDialogController;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
+import org.lebastudios.theroundtable.ui.LoadingPaneController;
 import org.lebastudios.theroundtable.ui.StageBuilder;
 import org.lebastudios.theroundtable.ui.TitleBuilder;
 
@@ -121,16 +124,22 @@ public class SetupStageController extends StageController<SetupStageController>
 
         if (currentPane == setupPanes.length)
         {
-            for (var pane : setupPanes)
+            
+            mainPane.setContent(new LoadingPaneController().getRoot());
+            new Thread(() ->
             {
-                pane.apply();
-            }
+                Database.init();
+                for (var pane : setupPanes)
+                {
+                    pane.apply();
+                }
 
-            final var settingsData = new JSONFile<>(SettingsData.class);
-            settingsData.get().setupComplete = true;
-            settingsData.save();
+                final var settingsData = new JSONFile<>(SettingsData.class);
+                settingsData.get().setupComplete = true;
+                settingsData.save();
 
-            close();
+                Platform.runLater(this::close);
+            }).start();
 
             return;
         }

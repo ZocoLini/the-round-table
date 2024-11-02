@@ -17,7 +17,7 @@ public final class DefaultOrderPrinter implements IOrderPrinter
     {
         // Top Label
         new InLinePrinter().concatLeft("", 3)
-                .concatLeft("Qty", 6)
+                .concatLeft(LangFileLoader.getTranslation("word.qty"), 6)
                 .concatLeft(" ")
                 .concatLeft(LangFileLoader.getTranslation("word.product"), 20)
                 .concatRight(LangFileLoader.getTranslation("word.price"), 8, EscPosConst.Justification.Left_Default)

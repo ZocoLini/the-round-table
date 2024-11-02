@@ -14,13 +14,18 @@ import java.util.function.Consumer;
 public class Database
 {
     private static Database instance;
-    private SessionFactory sessionFactory = buildSessionFactory();
+    private SessionFactory sessionFactory;
 
-    private Database()
+    private Database() {}
+
+    public static void init()
     {
-        AppLifeCicleEvents.OnAppCloseRequest.addListener(sessionFactory::close);
+        if (getInstance().sessionFactory != null) return;
+        
+        getInstance().sessionFactory = getInstance().buildSessionFactory();
+        AppLifeCicleEvents.OnAppCloseRequest.addListener(() -> getInstance().sessionFactory.close());
     }
-
+    
     public static Database getInstance()
     {
         if (instance == null) instance = new Database();
@@ -78,6 +83,8 @@ public class Database
 
     public void connectTransaction(Consumer<Session> action)
     {
+        if (sessionFactory == null) throw new IllegalStateException("Database not initialized");
+        
         // Ejemplo de uso de la sesión para interactuar con la base de datos
         try (Session session = sessionFactory.openSession())
         {
@@ -96,6 +103,8 @@ public class Database
 
     public void connectQuery(Consumer<Session> action)
     {
+        if (sessionFactory == null) throw new IllegalStateException("Database not initialized");
+
         // Ejemplo de uso de la sesión para interactuar con la base de datos
         try (Session session = sessionFactory.openSession())
         {

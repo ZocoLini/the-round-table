@@ -73,20 +73,16 @@ public class TheRoundTableApplication extends Application
     {
         LangLoader.loadLang(Launcher.class, AppLocale.getActualLocale());
 
-        if (SetupStageController.checkIfStart())
-        {
-            new SetupStageController().instantiate(true);
-        }
+        if (SetupStageController.checkIfStart()) new SetupStageController().instantiate(true);
 
         new AccountStageController().instantiate(true);
         
         PluginLoader.loadPlugins();
         
-        Scene mainScene = new SceneBuilder(new MainStageController().getParent()).build();
         stage.setTitle("The Round Table");
         stage.getIcons().add(ImageLoader.getIcon("the-round-table-logo.png"));
-        stage.setMinWidth(720);
-        stage.setMinHeight(480);
+        
+        Scene mainScene = new SceneBuilder(new MainStageController().getParent()).build();
         stage.setScene(mainScene);
         stage.show();
 

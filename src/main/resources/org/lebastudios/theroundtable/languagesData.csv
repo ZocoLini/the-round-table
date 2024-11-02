@@ -50,3 +50,4 @@ setup.error.invalidpassword,Password must be at least 8 characters long,La contr
 setup.error.invalidname,Username must be at least 3 characters long,El nombre debe tener 3 caracteres o más
 setup.error.passwordmatch,Passwords do not match,Las contraseñas no coinciden
 word.over,Over,Sobre
+word.qty,Qty,Cant
