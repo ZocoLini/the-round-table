@@ -35,7 +35,7 @@ public class TheRoundTableApplication extends Application
         {
             var properties = new java.util.Properties();
             properties.load(TheRoundTableApplication.class.getResourceAsStream(
-                    "/META-INF/maven/org.lebastudios/the-round-table/pom.properties"));
+                    "/META-INF/maven/org.lebastudios.theroundtable/desktop-app/pom.properties"));
             APP_VERSION = properties.getProperty("version");
         }
         catch (Exception e)

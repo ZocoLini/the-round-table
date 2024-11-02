@@ -52,7 +52,7 @@ public class ApiRequests
     public static void getLastAppVersion()
     {
         downloadFile(
-                BASE_URL + "/update/the-round-table.jar",
+                BASE_URL + "/update/desktop-app.jar",
                 TheRoundTableApplication.getAppDirectory() + "/bin",
                 "Downloading app update"
         );

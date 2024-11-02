@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.config.DatabaseConfigPaneController;
 import org.lebastudios.theroundtable.config.EstablishmentConfigPaneController;
@@ -102,6 +103,7 @@ public class SetupStageController extends StageController<SetupStageController>
     @FXML
     private void nextButtonAction(ActionEvent actionEvent)
     {
+        if (currentPane > setupPanes.length - 1) return;
         if (currentPane >= 0 && !setupPanes[currentPane].getController().validateData()) return;
 
         currentPane++;
@@ -124,8 +126,9 @@ public class SetupStageController extends StageController<SetupStageController>
 
         if (currentPane == setupPanes.length)
         {
-            
+            ((BorderPane) getRoot()).getBottom().setVisible(false);
             mainPane.setContent(new LoadingPaneController().getRoot());
+            
             new Thread(() ->
             {
                 Database.init();

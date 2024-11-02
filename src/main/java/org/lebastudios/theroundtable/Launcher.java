@@ -18,7 +18,7 @@ public class Launcher
     {
         // Re-construct the command to restart the application
         String javaBin = TheRoundTableApplication.getAppDirectory() + "/jdk/bin/java";
-        File jarFile = new File(TheRoundTableApplication.getAppDirectory() + "/bin/the-round-table.jar");
+        File jarFile = new File(TheRoundTableApplication.getAppDirectory() + "/bin/desktop-app.jar");
         ProcessBuilder builder = new ProcessBuilder(javaBin, "-jar", jarFile.getPath());
         builder.inheritIO();
         builder.start();
