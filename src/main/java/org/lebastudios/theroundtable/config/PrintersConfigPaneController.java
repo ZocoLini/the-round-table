@@ -19,21 +19,6 @@ public class PrintersConfigPaneController extends SettingsPaneController
     @FXML private ChoiceBox<String> defaultPrinter;
 
     @Override
-    public void apply()
-    {
-        var printerData = new JSONFile<>(PrintersConfigData.class);
-
-        printerData.get().defaultPrinter = defaultPrinter.getValue();
-
-        printerData.get().hideTaxesDesglose = hideTaxesDesglose.isSelected();
-        printerData.get().hidePaymentInfo = hidePaymentInfo.isSelected();
-        printerData.get().hideReceiptData = hideReceiptData.isSelected();
-        printerData.get().hideEstablishmentLogo = hideEstablishmentLogo.isSelected();
-
-        printerData.save();
-    }
-
-    @Override
     @FXML protected void initialize()
     {
         var printerData = new JSONFile<>(PrintersConfigData.class).get();
@@ -57,6 +42,21 @@ public class PrintersConfigPaneController extends SettingsPaneController
         hideTaxesDesglose.setSelected(printerData.hideTaxesDesglose);
         hidePaymentInfo.setSelected(printerData.hidePaymentInfo);
         hideEstablishmentLogo.setSelected(printerData.hideEstablishmentLogo);
+    }
+
+    @Override
+    public void apply()
+    {
+        var printerData = new JSONFile<>(PrintersConfigData.class);
+
+        printerData.get().defaultPrinter = defaultPrinter.getValue();
+
+        printerData.get().hideTaxesDesglose = hideTaxesDesglose.isSelected();
+        printerData.get().hidePaymentInfo = hidePaymentInfo.isSelected();
+        printerData.get().hideReceiptData = hideReceiptData.isSelected();
+        printerData.get().hideEstablishmentLogo = hideEstablishmentLogo.isSelected();
+
+        printerData.save();
     }
 
     @Override

@@ -16,10 +16,10 @@ public final class DefaultOrderPrinter implements IOrderPrinter
     public EscPos print(EscPos escpos, Order order) throws IOException
     {
         // Top Label
-        new InLinePrinter().concatLeft("", 3)
+        new InLinePrinter()
                 .concatLeft(LangFileLoader.getTranslation("word.qty"), 6)
                 .concatLeft(" ")
-                .concatLeft(LangFileLoader.getTranslation("word.product"), 20)
+                .concatLeft(LangFileLoader.getTranslation("word.product"))
                 .concatRight(LangFileLoader.getTranslation("word.price"), 8, EscPosConst.Justification.Left_Default)
                 .concatRight(LangFileLoader.getTranslation("word.import"), 10, EscPosConst.Justification.Left_Default)
                 .print(escpos);
@@ -33,10 +33,10 @@ public final class DefaultOrderPrinter implements IOrderPrinter
             var productQty = entry.getValue().toString();
             var productName = entry.getKey().getName();
 
-            new InLinePrinter().concatLeft("", 3)
+            new InLinePrinter()
                     .concatLeft(productQty, 6)
                     .concatLeft(" ")
-                    .concatLeft(productName, 20)
+                    .concatLeft(productName)
                     .concatRight(price, 8, EscPosConst.Justification.Left_Default)
                     .concatRight(total, 10, EscPosConst.Justification.Left_Default).print(escpos);
         }

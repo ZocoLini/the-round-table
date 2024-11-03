@@ -9,11 +9,11 @@ public class DatabaseConfigData implements FileRepresentator
 {
     public String establishmentDatabaseName = "establishment";
     public String databaseFolder =
-            TheRoundTableApplication.getUserDirectory() + File.separator + "databases" + File.separator;
+            TheRoundTableApplication.getUserDirectory() + File.separator + "databases";
     public boolean enableBackups = false;
     public int numMaxBackups = 5;
     public String backupFolder =
-            TheRoundTableApplication.getUserDirectory() + File.separator + "trt-db-backups" + File.separator;
+            TheRoundTableApplication.getUserDirectory() + File.separator + "trt-db-backups";
 
     @Override
     public File getFile()

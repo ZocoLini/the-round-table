@@ -14,7 +14,7 @@ public class LoadingPaneController extends PaneController<LoadingPaneController>
     protected void initialize()
     {
         loadingIcon.setIconName("loading.png");
-        loadingIcon.setIconSize(75);
+        loadingIcon.setIconSize(35);
 
         RotateTransition rotate = new RotateTransition(Duration.seconds(3), loadingIcon);
         rotate.setByAngle(360);

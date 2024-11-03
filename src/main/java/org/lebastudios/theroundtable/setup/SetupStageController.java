@@ -128,10 +128,9 @@ public class SetupStageController extends StageController<SetupStageController>
         {
             ((BorderPane) getRoot()).getBottom().setVisible(false);
             mainPane.setContent(new LoadingPaneController().getRoot());
-            
+
             new Thread(() ->
             {
-                Database.init();
                 for (var pane : setupPanes)
                 {
                     pane.apply();
@@ -143,7 +142,7 @@ public class SetupStageController extends StageController<SetupStageController>
 
                 Platform.runLater(this::close);
             }).start();
-
+            
             return;
         }
 

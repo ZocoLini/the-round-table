@@ -3,6 +3,8 @@ package org.lebastudios.theroundtable.ui;
 import javafx.scene.image.ImageView;
 import org.lebastudios.theroundtable.apparience.ImageLoader;
 
+import java.awt.*;
+
 public class IconView extends ImageView
 {
     private static final int ICON_SIZE = 32;
@@ -10,17 +12,17 @@ public class IconView extends ImageView
     private String iconName;
     private int iconSize = ICON_SIZE;
 
-    public IconView()
-    {
-        this("");
-    }
-
     public IconView(String iconName)
     {
         super(ImageLoader.getIcon(iconName));
         setSize();
-
+        
         this.iconName = iconName;
+    }
+
+    public IconView()
+    {
+        this("");
     }
 
     private void setSize()

@@ -102,6 +102,8 @@ public class DatabaseConfigPaneController extends SettingsPaneController
 
             File databaseFile = Database.getDatabaseFile();
             
+            if (!databaseFile.exists()) return;
+            
             databaseFile.renameTo(new File(newDirectory.getAbsolutePath(), databaseFile.getName()));
 
             data.databaseFolder = databasesDirectory.getText();
@@ -110,7 +112,7 @@ public class DatabaseConfigPaneController extends SettingsPaneController
             {
                 if (oldDirectory.list().length == 0) oldDirectory.delete();
             }
-            catch (Exception exception) {}
+            catch (Exception ignore) {}
             
             Database.getInstance().reloadDatabase();
         }
@@ -128,6 +130,8 @@ public class DatabaseConfigPaneController extends SettingsPaneController
                 throw new RuntimeException("Failed to create new backup directory.");
             }
 
+            if (!oldDirectory.exists()) return;
+            
             Arrays.stream(oldDirectory.listFiles())
                     .filter(file -> file.isFile() && file.getName().endsWith(".zip"))
                     .forEach(file -> file.renameTo(new File(newDirectory.getAbsolutePath(), file.getName())));

@@ -11,7 +11,7 @@
     
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
-        <ColumnConstraints />
+        <ColumnConstraints prefWidth="275" />
     </columnConstraints>
     
     <rowConstraints>
@@ -26,22 +26,22 @@
     </rowConstraints>
     
     <Label maxWidth="Infinity" text="%word.name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-    <TextField fx:id="establishmentName" prefWidth="350" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+    <TextField fx:id="establishmentName" GridPane.columnIndex="1" GridPane.rowIndex="0" />
     
     <Label maxWidth="Infinity" text="%phrase.establishmentid" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-    <TextField fx:id="establishmentId" prefWidth="350" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <TextField fx:id="establishmentId" GridPane.columnIndex="1" GridPane.rowIndex="1" />
     
     <Label maxWidth="Infinity" text="%word.phone" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-    <TextField fx:id="establishmentPhone" prefWidth="350" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    <TextField fx:id="establishmentPhone" GridPane.columnIndex="1" GridPane.rowIndex="2" />
     
     <Label maxWidth="Infinity" text="%word.address" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-    <TextField fx:id="establishmentAddress" prefWidth="350" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+    <TextField fx:id="establishmentAddress" GridPane.columnIndex="1" GridPane.rowIndex="3" />
     
     <Label maxWidth="Infinity" text="%word.city" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-    <TextField fx:id="establishmentCity" prefWidth="350" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    <TextField fx:id="establishmentCity" GridPane.columnIndex="1" GridPane.rowIndex="4" />
     
     <Label maxWidth="Infinity" text="%word.zipcode" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-    <TextField fx:id="establishmentZipCode" prefWidth="350" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+    <TextField fx:id="establishmentZipCode" GridPane.columnIndex="1" GridPane.rowIndex="5" />
     
     <Label alignment="CENTER" maxWidth="Infinity" text="%word.establishmentlogo" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="6" />
     <HBox GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="7" alignment="CENTER">

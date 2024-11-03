@@ -44,8 +44,8 @@ public class AccountSetupPaneController extends SetupPaneController
                 LocalPasswordValidator.hashPassword(passwordField.getText()), 
                 Account.AccountType.ROOT);
 
-        Database.getInstance().connectTransaction(session ->
-                session.persist(account));
+        Database.init();
+        Database.getInstance().connectTransaction(session -> session.persist(account));
     }
 
     @Override

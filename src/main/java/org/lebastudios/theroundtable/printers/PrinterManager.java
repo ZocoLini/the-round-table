@@ -8,12 +8,14 @@ import org.lebastudios.theroundtable.config.data.PrintersConfigData;
 
 import javax.print.PrintService;
 
+@Setter
+@Getter
 public class PrinterManager
 {
     private static PrinterManager instance;
-    @Getter @Setter private IPrinter headerPrinter = new DefaultHeaderPrinter();
-    @Getter @Setter private IOrderPrinter orderPrinter = new DefaultOrderPrinter();
-    @Getter @Setter private IPrinter footerPrinter = new DefaultFooterPrinter();
+    private IPrinter headerPrinter = new DefaultHeaderPrinter();
+    private IOrderPrinter orderPrinter = new DefaultOrderPrinter();
+    private IPrinter footerPrinter = new DefaultFooterPrinter();
 
     private PrinterManager() {}
 
