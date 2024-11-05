@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.events.DatabaseEntitiesEvents;
+import org.lebastudios.theroundtable.maths.BigDecimalOperations;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -74,7 +75,7 @@ public class Product
 
     public BigDecimal getNotTaxedPrice()
     {
-        return taxesIncluded ? price.divide(taxes.add(BigDecimal.ONE), 2, RoundingMode.FLOOR) : price;
+        return taxesIncluded ? BigDecimalOperations.divide(price, taxes.add(BigDecimal.ONE)) : price;
     }
 
     @Override

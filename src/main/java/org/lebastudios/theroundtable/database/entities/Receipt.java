@@ -51,7 +51,7 @@ public class Receipt
     @OneToMany(mappedBy = "receipt", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Product_Receipt> products;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "TRANSACTION_ID", referencedColumnName = "ID")
     private Transaction transaction;
 
