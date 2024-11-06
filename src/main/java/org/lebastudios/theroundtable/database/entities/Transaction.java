@@ -29,9 +29,19 @@ public class Transaction
     private BigDecimal amount;
 
     @Column(name = "DESCRIPTION", nullable = false, length = 99999)
-    private String description;
+    private String description = "";
 
     @OneToOne
     @JoinColumn(name = "RECEIPT_ID", referencedColumnName = "ID")
     private Receipt receipt;
+    
+    public String getDescription()
+    {
+        if (description == null || description.isBlank()) 
+        {
+            return "Transaction #" + id;
+        }
+        
+        return description;
+    }
 }
