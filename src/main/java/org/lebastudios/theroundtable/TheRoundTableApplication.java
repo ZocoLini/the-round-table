@@ -22,43 +22,36 @@ import org.lebastudios.theroundtable.ui.TaskManager;
 import org.lebastudios.theroundtable.updates.UpdateAppJar;
 
 import java.io.File;
+import java.util.Properties;
 
 public class TheRoundTableApplication extends Application
 {
-    private static String APP_VERSION;
-
     public static String getAppVersion()
     {
-        if (APP_VERSION != null) return APP_VERSION;
-
-        try
+        try (final var pomResource = Launcher.class.getResourceAsStream(
+                Environment.isDev()
+                        ? "/../../../pom.xml"
+                        : "/META-INF/maven/org.lebastudios.theroundtable/desktop-app/pom.properties")
+        )
         {
-            var properties = new java.util.Properties();
-            properties.load(TheRoundTableApplication.class.getResourceAsStream(
-                    "/META-INF/maven/org.lebastudios.theroundtable/desktop-app/pom.properties"));
-            APP_VERSION = properties.getProperty("version");
+            var properties = new Properties();
+
+            properties.load(pomResource);
+
+            return properties.getProperty("version");
         }
         catch (Exception e)
         {
-            APP_VERSION = "?";
+            System.err.println("Version couldn't be laded: " + e.getMessage());
+            return "2.0.1";
         }
-
-        return APP_VERSION;
     }
-
-    private static String userDirectory;
 
     public static String getUserDirectory()
     {
-        if (userDirectory != null) return userDirectory;
-
-        String enviroment = System.getenv("ENVIRONMENT");
-        if (enviroment != null
-                && enviroment.equals("dev"))
-        {userDirectory = System.getProperty("user.home") + File.separator + ".round-table-dev";}
-        else {userDirectory = System.getProperty("user.home") + File.separator + ".round-table";}
-
-        return userDirectory;
+        return System.getProperty("user.home") + File.separator + (Environment.isDev()
+                ? ".round-table-dev"
+                : ".round-table");
     }
 
     public static String getAppDirectory()
@@ -76,17 +69,17 @@ public class TheRoundTableApplication extends Application
         if (SetupStageController.checkIfStart()) new SetupStageController().instantiate(true);
 
         new AccountStageController().instantiate(true);
-        
+
         PluginLoader.loadPlugins();
-        
+
         stage.setTitle("The Round Table");
         stage.getIcons().add(ImageLoader.getIcon("the-round-table-logo.png"));
-        
+
         Scene mainScene = new SceneBuilder(new MainStageController().getParent()).build();
         stage.setScene(mainScene);
         stage.show();
 
-        if (AccountManager.getInstance().isAccountAdmin()) 
+        if (AccountManager.getInstance().isAccountAdmin())
         {
             TaskManager.getInstance().startNewTaskWithProgressBar(createCheckingForUpdateTask());
         }
