@@ -1,10 +1,7 @@
 package org.lebastudios.theroundtable.database.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.events.DatabaseEntitiesEvents;
 

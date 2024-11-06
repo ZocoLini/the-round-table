@@ -18,4 +18,5 @@ rm installer.sh
 mv theroundtable/theroundtable.desktop /usr/share/applications/the-round-table.desktop
 mv theroundtable /opt/theroundtable
 
+# Want to remove this line
 chmod 777 -R /opt/theroundtable
