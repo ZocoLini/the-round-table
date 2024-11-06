@@ -31,8 +31,8 @@ public class Transaction
     @Column(name = "DESCRIPTION", nullable = false, length = 99999)
     private String description = "";
 
-    @OneToOne
-    @JoinColumn(name = "RECEIPT_ID", referencedColumnName = "ID")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "RECEIPT_ID")
     private Receipt receipt;
     
     public String getDescription()

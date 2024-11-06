@@ -72,10 +72,10 @@ public class Product
     {
         return taxesIncluded ? price : price.add(price.multiply(taxes));
     }
-
+    
     public BigDecimal getNotTaxedPrice()
     {
-        return taxesIncluded ? BigDecimalOperations.divide(price, taxes.add(BigDecimal.ONE)) : price;
+        return taxesIncluded ? BigDecimalOperations.dividePrecise(price, taxes.add(BigDecimal.ONE)) : price;
     }
 
     @Override

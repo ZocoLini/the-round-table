@@ -6,7 +6,6 @@ import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -56,11 +55,6 @@ public class Order
         }
 
         products.put(product, products.getOrDefault(product, BigDecimal.ZERO).add(quantity));
-    }
-
-    public String getTotalStringRepresentation()
-    {
-        return String.format("%.2f", getTotal().setScale(2, RoundingMode.HALF_UP)) + " €";
     }
 
     public BigDecimal getTotal()

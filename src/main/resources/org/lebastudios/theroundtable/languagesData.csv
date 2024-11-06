@@ -10,7 +10,7 @@ word.general,General,General
 word.database,Database,Base de Datos
 word.about,About,Información
 title.settingsstage,Ajustes,Ajustes
-ticket.footerbye,We expect you comming back,Esperamos que vuelvas pronto
+ticket.footerbye,Thank you for visiting,Gracias por su visita 
 word.product,Product,Producto
 word.price,Price,Precio
 word.import,Import,Importe
@@ -22,9 +22,9 @@ word.client,Client,Cliente
 phrase.generalpublicclient,General Public,Contado
 phrase.attendedby,Attended by: ,Atendido por 
 phrase.taxesincluded,Taxes Included,Impuestos incluidos
-phrase.paymentmethod,Payment Method: ,Metodo de pago: 
+word.method,Method,Metodo
 word.cange,Change,Cambio
-phrase.paymentamount,Paymente Amount,Cantidad pagada
+word.amount,Amount,Cantidad
 word.iva,Taxes,IVA
 word.quote,QUOTE,CUOTA
 textblock.confrestart,Need to restart the application to apply some changues. Do you want to do it now??,Es necesario reiniciar para aplicar los cambios. ¿Desea hacerlo ahora?

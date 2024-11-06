@@ -48,7 +48,7 @@ public class DefaultReceiptPrinter implements IReceiptPrinter
                 {
                     escpos.writeLF(LangFileLoader.getTranslation("word.client")
                             + ": " + receipt.getClientString());
-                    
+
                     escpos.writeLF(LangFileLoader.getTranslation("phrase.attendedby")
                             + receipt.getAttendantName());
                 }
@@ -74,6 +74,7 @@ public class DefaultReceiptPrinter implements IReceiptPrinter
                         taxes.getOrDefault(product.getTaxes(), BigDecimal.ZERO).add(qty.multiply(product.getPrice())));
             });
 
+            new LineFiller("-").print(escpos);
             taxes.forEach((percen, total) ->
             {
                 try
@@ -85,29 +86,20 @@ public class DefaultReceiptPrinter implements IReceiptPrinter
                     throw new RuntimeException(e);
                 }
             });
-
+            new LineFiller("-").print(escpos);
             escpos.feed(1);
         }
 
         // Payment Info
         if (!printerConfig.hidePaymentInfo)
         {
-            escpos.writeLF(Styles.CENTERED,
-                    LangFileLoader.getTranslation("phrase.paymentmethod")
-                            + receipt.getPaymentMethod());
-
-            new InLinePrinter().concatLeft("", 6)
-                    .concatLeft(LangFileLoader.getTranslation("phrase.paymentamount"), 18)
-                    .concatRight(LangFileLoader.getTranslation("word.change"), 18)
-                    .concatRight("", 6).print(escpos);
-
-            new InLinePrinter().concatLeft("", 6)
-                    .concatLeft(BigDecimalOperations.toString(receipt.getPaymentAmount()), 18)
-                    .concatRight(
-                            order.getTotal().subtract(receipt.getPaymentAmount()).abs().setScale(2, RoundingMode.FLOOR)
-                                    .toString(),
-                            18).concatRight("", 6)
-                    .print(escpos);
+            escpos.writeLF(LangFileLoader.getTranslation("word.method") + ": "
+                    + receipt.getPaymentMethod() + " "
+                    + LangFileLoader.getTranslation("word.amount") + ": "
+                    + BigDecimalOperations.toString(receipt.getPaymentAmount()) + " "
+                    + LangFileLoader.getTranslation("word.change") + ": " +
+                    BigDecimalOperations.toString(receipt.getPaymentAmount().subtract(order.getTotal()))
+            );
 
             escpos.feed(1);
         }
@@ -120,7 +112,6 @@ public class DefaultReceiptPrinter implements IReceiptPrinter
     }
 
     /**
-     * 
      * @param escpos
      * @param percentage beetween 0 and 1
      * @param total with taxes
@@ -130,7 +121,7 @@ public class DefaultReceiptPrinter implements IReceiptPrinter
         var percentageOver100 = percentage.multiply(new BigDecimal(100));
         var base = BigDecimalOperations.divide(total, percentage.add(BigDecimal.ONE));
         var taxes = total.subtract(base);
-        
+
         new InLinePrinter().concatLeft(BigDecimalOperations.toString(percentageOver100), 6)
                 .concatLeft(" % " + LangFileLoader.getTranslation("word.iva") + " ")
                 .concatLeft(LangFileLoader.getTranslation("word.over"))

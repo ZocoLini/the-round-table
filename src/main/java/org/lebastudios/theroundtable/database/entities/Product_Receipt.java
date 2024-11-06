@@ -44,13 +44,21 @@ public class Product_Receipt
     @Column(name = "TAXES_INCLUDED", nullable = false)
     private Boolean taxesIncluded = true;
     
+    public Product_Receipt(Product product, BigDecimal quantity)
+    {
+        this.quantity = quantity;
+        setProduct(product);
+    }
+    
     public void setProduct(Product product)
     {
+        if (quantity == null) throw new IllegalStateException("Quantity should be set before setting the product.");
+        
         productName = product.getName();
-        productValue = product.getPrice();
+        taxesIncluded = product.getTaxesIncluded();
+        productValue = taxesIncluded ? product.getPrice() : product.getNotTaxedPrice();
         totalValue = product.getPrice().multiply(quantity);
         taxes = product.getTaxes();
-        taxesIncluded = product.getTaxesIncluded();
     }
     
     public Product getProduct()
