@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.controlsfx.control.Notifications;
@@ -17,6 +18,7 @@ import org.lebastudios.theroundtable.config.data.DatabaseConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.controllers.PaneController;
 import org.lebastudios.theroundtable.database.BackupDB;
+import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 import org.lebastudios.theroundtable.plugins.PluginsStageController;
@@ -40,7 +42,9 @@ public class MainStageController extends PaneController<MainStageController>
     }
 
     @SneakyThrows
-    @FXML @Override protected void initialize()
+    @FXML
+    @Override
+    protected void initialize()
     {
         if (new JSONFile<>(DatabaseConfigData.class).get().enableBackups) BackupDB.getInstance().initialize();
 
@@ -72,7 +76,7 @@ public class MainStageController extends PaneController<MainStageController>
     @FXML
     private void openSettingsStage()
     {
-       new ConfigStageController().instantiate();
+        new ConfigStageController().instantiate();
     }
 
     @FXML

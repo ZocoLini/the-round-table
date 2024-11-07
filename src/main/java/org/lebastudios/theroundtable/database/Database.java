@@ -29,7 +29,12 @@ public class Database
         if (getInstance().sessionFactory != null) return;
 
         getInstance().sessionFactory = getInstance().buildSessionFactory();
-        AppLifeCicleEvents.OnAppCloseRequest.addListener(() -> getInstance().sessionFactory.close());
+        AppLifeCicleEvents.OnAppClose.addListener((windowEvent) ->
+        {
+            if (windowEvent.isConsumed()) return;
+
+            getInstance().sessionFactory.close();
+        });
     }
 
     public static Database getInstance()

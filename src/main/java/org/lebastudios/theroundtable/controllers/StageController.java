@@ -1,5 +1,6 @@
 package org.lebastudios.theroundtable.controllers;
 
+import javafx.stage.Stage;
 import org.lebastudios.theroundtable.ui.SceneBuilder;
 import org.lebastudios.theroundtable.ui.StageBuilder;
 
@@ -11,16 +12,18 @@ public abstract class StageController<T extends Controller<T>> extends Controlle
     {
         StageBuilder stageBuilder = getDefaultStageBuilder();
         
-        acceptController.accept(getController());
         customizeStageBuilder(stageBuilder);
+        Stage stage = stageBuilder.build();
+
+        acceptController.accept(getController());
         
         if (shouldWait) 
         {
-            stageBuilder.build().showAndWait();
+            stage.showAndWait();
         }
         else
         {
-            stageBuilder.build().show();
+            stage.show();
         }
     }
     

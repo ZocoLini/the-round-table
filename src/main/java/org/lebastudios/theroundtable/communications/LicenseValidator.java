@@ -6,6 +6,7 @@ import org.lebastudios.theroundtable.config.data.AccountConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.dialogs.InformationTextDialogController;
 import org.lebastudios.theroundtable.dialogs.RequestTextDialogController;
+import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 import org.lebastudios.theroundtable.ui.TaskManager;
 
 import java.util.function.Consumer;
@@ -73,6 +74,7 @@ public class LicenseValidator
                                             "Check your internet connection and try again."
                             ).instantiate(true);
 
+                            AppLifeCicleEvents.OnAppClose.invoke(null);
                             Platform.exit();
                         });
 
@@ -89,6 +91,7 @@ public class LicenseValidator
     {
         if (tries >= 3)
         {
+            AppLifeCicleEvents.OnAppClose.invoke(null);
             Platform.exit();
             return;
         }

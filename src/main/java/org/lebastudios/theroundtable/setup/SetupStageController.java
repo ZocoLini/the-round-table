@@ -15,6 +15,7 @@ import org.lebastudios.theroundtable.config.data.SettingsData;
 import org.lebastudios.theroundtable.controllers.StageController;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.dialogs.ConfirmationTextDialogController;
+import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
 import org.lebastudios.theroundtable.ui.LoadingPaneController;
 import org.lebastudios.theroundtable.ui.StageBuilder;
@@ -73,7 +74,11 @@ public class SetupStageController extends StageController<SetupStageController>
                             LangFileLoader.getTranslation("textblock.closingsetup"),
                             response ->
                             {
-                                if (response) System.exit(0);
+                                if (response)
+                                {
+                                    AppLifeCicleEvents.OnAppClose.invoke(e);
+                                    System.exit(0);
+                                }
                             }
                     ).instantiate();
                     e.consume();

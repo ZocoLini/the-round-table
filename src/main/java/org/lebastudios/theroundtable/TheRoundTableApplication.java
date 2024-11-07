@@ -1,6 +1,7 @@
 package org.lebastudios.theroundtable;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -84,12 +85,23 @@ public class TheRoundTableApplication extends Application
             TaskManager.getInstance().startNewTaskWithProgressBar(createCheckingForUpdateTask());
         }
 
-        stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, (windowEvent ->
+        stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, e ->
+        {
+            AppLifeCicleEvents.OnAppCloseRequest.invoke(e);
+            
+            if (!e.isConsumed()) 
+            {
+                AppLifeCicleEvents.OnAppClose.invoke(e);
+                Platform.exit();
+            }
+        });
+        
+        AppLifeCicleEvents.OnAppCloseRequest.addListener(windowEvent ->
         {
             if (windowEvent.isConsumed()) return;
 
             checkIfTheCashReghisterIsClosed(windowEvent);
-        }));
+        });
     }
 
     private AppTask createCheckingForUpdateTask()
@@ -108,19 +120,16 @@ public class TheRoundTableApplication extends Application
         };
     }
 
+    // TODO: Should be in the cash register plugin (Use AppLifeEvents)
     private void checkIfTheCashReghisterIsClosed(WindowEvent event)
     {
         var cashRegisterState = new JSONFile<>(CashRegisterStateData.class).get();
         if (cashRegisterState.open)
         {
+            event.consume();
             new InformationTextDialogController(
                     LangFileLoader.getTranslation("textblock.needtoclosethecashregister")
             ).instantiate();
-            event.consume();
-        }
-        else
-        {
-            AppLifeCicleEvents.OnAppCloseRequest.invoke();
         }
     }
 }

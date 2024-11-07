@@ -1,6 +1,7 @@
 package org.lebastudios.theroundtable;
 
 import javafx.application.Application;
+import javafx.stage.WindowEvent;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 
@@ -22,7 +23,7 @@ public class Launcher
         ProcessBuilder builder = new ProcessBuilder(javaBin, "-jar", jarFile.getPath());
         builder.inheritIO();
         builder.start();
-        AppLifeCicleEvents.OnAppCloseRequest.invoke();
+        AppLifeCicleEvents.OnAppCloseRequest.invoke(new WindowEvent(null, WindowEvent.WINDOW_CLOSE_REQUEST));
         System.exit(0);
     }
 }
