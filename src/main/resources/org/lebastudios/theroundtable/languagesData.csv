@@ -17,7 +17,7 @@ word.import,Import,Importe
 word.date,Date,Fecha
 word.time,Time,Hora
 phrase.tablename,Table,Mesa
-phrase.simplifiedreceipt,Simplified Receipt,Recibo simplificado
+phrase.simplifiedreceipt,Simplified Receipt,Factura simplificada
 word.client,Client,Cliente
 phrase.generalpublicclient,General Public,Contado
 phrase.attendedby,Attended by: ,Atendido por 
