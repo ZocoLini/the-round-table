@@ -144,7 +144,11 @@ public class ConfigStageController extends StageController<ConfigStageController
 
     public void swapMainPane(SettingsPaneController controller)
     {
-        mainPane.setContent(controller.getRoot());
+        final var root = controller.getRoot();
+        
+        if (root == null) return;
+        
+        mainPane.setContent(root);
         controller.registerEvents();
         currentPaneController = controller;
     }
@@ -205,7 +209,8 @@ public class ConfigStageController extends StageController<ConfigStageController
     @Override
     protected void customizeStageBuilder(StageBuilder stageBuilder)
     {
-        stageBuilder.setModality(Modality.APPLICATION_MODAL);
+        stageBuilder.setModality(Modality.APPLICATION_MODAL)
+                .setResizeable(true);
     }
 
     @Override

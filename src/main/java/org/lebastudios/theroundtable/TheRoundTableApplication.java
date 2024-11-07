@@ -9,12 +9,8 @@ import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.accounts.AccountManager;
 import org.lebastudios.theroundtable.accounts.AccountStageController;
 import org.lebastudios.theroundtable.apparience.ImageLoader;
-import org.lebastudios.theroundtable.config.data.CashRegisterStateData;
-import org.lebastudios.theroundtable.config.data.JSONFile;
-import org.lebastudios.theroundtable.dialogs.InformationTextDialogController;
 import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 import org.lebastudios.theroundtable.locale.AppLocale;
-import org.lebastudios.theroundtable.locale.LangFileLoader;
 import org.lebastudios.theroundtable.locale.LangLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 import org.lebastudios.theroundtable.setup.SetupStageController;
@@ -95,13 +91,6 @@ public class TheRoundTableApplication extends Application
                 Platform.exit();
             }
         });
-        
-        AppLifeCicleEvents.OnAppCloseRequest.addListener(windowEvent ->
-        {
-            if (windowEvent.isConsumed()) return;
-
-            checkIfTheCashReghisterIsClosed(windowEvent);
-        });
     }
 
     private AppTask createCheckingForUpdateTask()
@@ -118,18 +107,5 @@ public class TheRoundTableApplication extends Application
                 return null;
             }
         };
-    }
-
-    // TODO: Should be in the cash register plugin (Use AppLifeEvents)
-    private void checkIfTheCashReghisterIsClosed(WindowEvent event)
-    {
-        var cashRegisterState = new JSONFile<>(CashRegisterStateData.class).get();
-        if (cashRegisterState.open)
-        {
-            event.consume();
-            new InformationTextDialogController(
-                    LangFileLoader.getTranslation("textblock.needtoclosethecashregister")
-            ).instantiate();
-        }
     }
 }

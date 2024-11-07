@@ -18,6 +18,6 @@ public class DatabaseConfigData implements FileRepresentator
     @Override
     public File getFile()
     {
-        return new File(Settings.getGlobalDir() + "/databaseData.json");
+        return new File(Settings.getGlobalDir() + "/database.json");
     }
 }

@@ -12,6 +12,6 @@ public class PluginsConfigData implements FileRepresentator
     @Override
     public File getFile()
     {
-        return new File(Settings.getGlobalDir() + "/pluginsData.json");
+        return new File(Settings.getGlobalDir() + "/plugins.json");
     }
 }

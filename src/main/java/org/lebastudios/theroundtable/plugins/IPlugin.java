@@ -1,10 +1,14 @@
 package org.lebastudios.theroundtable.plugins;
 
+import com.google.gson.Gson;
 import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
+import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.config.SettingsItem;
 import org.lebastudios.theroundtable.plugins.pluginData.PluginData;
 
+import java.io.File;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,5 +33,16 @@ public interface IPlugin
 
     default List<Class<?>> getPluginEntities() { return new ArrayList<>(); }
     
-    PluginData getPluginData();
+    default File getPluginFolder()
+    {
+        return new File(TheRoundTableApplication.getAppDirectory(), getPluginData().pluginId);
+    }
+    
+    default PluginData getPluginData()
+    {
+        return new Gson().fromJson(
+                new InputStreamReader(this.getClass().getResourceAsStream("pluginData.json")),
+                PluginData.class
+        );
+    }
 }

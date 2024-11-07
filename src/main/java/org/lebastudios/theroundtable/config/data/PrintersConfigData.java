@@ -12,11 +12,8 @@ public class PrintersConfigData implements FileRepresentator
                     ? ""
                     : PrintServiceLookup.lookupDefaultPrintService().getName();
 
-    public boolean hideReceiptData = false;
-    public boolean hideTaxesDesglose = false;
-    public boolean hidePaymentInfo = false;
     public boolean hideEstablishmentLogo = false;
-
+    
     @Override
     public File getFile()
     {

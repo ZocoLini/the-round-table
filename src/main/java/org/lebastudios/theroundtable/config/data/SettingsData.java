@@ -1,6 +1,7 @@
 package org.lebastudios.theroundtable.config.data;
 
 import org.lebastudios.theroundtable.TheRoundTableApplication;
+import org.lebastudios.theroundtable.config.Settings;
 
 import java.io.File;
 
@@ -12,7 +13,7 @@ public class SettingsData implements FileRepresentator
     @Override
     public File getFile()
     {
-        return new File(TheRoundTableApplication.getUserDirectory() + "/settings.json");
+        return new File(Settings.getGlobalDir() + "/general-settings.json");
     }
 
     public static class ProxyData

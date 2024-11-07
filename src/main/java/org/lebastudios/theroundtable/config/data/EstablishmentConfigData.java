@@ -17,6 +17,6 @@ public class EstablishmentConfigData implements FileRepresentator
     @Override
     public File getFile()
     {
-        return new File(Settings.getGlobalDir() + "/establishmentData.json");
+        return new File(Settings.getGlobalDir() + "/establishment.json");
     }
 }

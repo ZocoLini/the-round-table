@@ -13,9 +13,6 @@ import java.net.URL;
 public class PrintersConfigPaneController extends SettingsPaneController
 {
     @FXML private CheckBox hideEstablishmentLogo;
-    @FXML private CheckBox hideReceiptData;
-    @FXML private CheckBox hideTaxesDesglose;
-    @FXML private CheckBox hidePaymentInfo;
     @FXML private ChoiceBox<String> defaultPrinter;
 
     @Override
@@ -37,10 +34,7 @@ public class PrintersConfigPaneController extends SettingsPaneController
         {
             defaultPrinter.setValue("");
         }
-
-        hideReceiptData.setSelected(printerData.hideReceiptData);
-        hideTaxesDesglose.setSelected(printerData.hideTaxesDesglose);
-        hidePaymentInfo.setSelected(printerData.hidePaymentInfo);
+        
         hideEstablishmentLogo.setSelected(printerData.hideEstablishmentLogo);
     }
 
@@ -50,12 +44,7 @@ public class PrintersConfigPaneController extends SettingsPaneController
         var printerData = new JSONFile<>(PrintersConfigData.class);
 
         printerData.get().defaultPrinter = defaultPrinter.getValue();
-
-        printerData.get().hideTaxesDesglose = hideTaxesDesglose.isSelected();
-        printerData.get().hidePaymentInfo = hidePaymentInfo.isSelected();
-        printerData.get().hideReceiptData = hideReceiptData.isSelected();
         printerData.get().hideEstablishmentLogo = hideEstablishmentLogo.isSelected();
-
         printerData.save();
     }
 

@@ -4,20 +4,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns:fx="http://javafx.com/fxml/1"
-      maxWidth="800.0" maxHeight="600" fx:id="root"
+      prefWidth="800.0" maxHeight="600" fx:id="root"
       xmlns="http://javafx.com/javafx/17.0.2-ea"
       fx:controller="org.lebastudios.theroundtable.config.ConfigStageController">
-    <HBox VBox.vgrow="ALWAYS">
+    <SplitPane VBox.vgrow="ALWAYS" dividerPositions="0.25">
         <TreeView style="-fx-background-color: transparent; -fx-border-color: transparent;" 
-                  showRoot="false" minWidth="200" fx:id="configSectionsTreeView">
+                  showRoot="false"  prefWidth="200" fx:id="configSectionsTreeView">
             <TreeItem />
         </TreeView>
 
-        <Separator orientation="VERTICAL"/>
-
-        <VBox VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+        <VBox>
             <ScrollPane fitToWidth="true" fitToHeight="true" pannable="true" VBox.vgrow="ALWAYS"
-                        minWidth="625" minHeight="400" fx:id="mainPane" />
+                        prefWidth="650" prefHeight="400" fx:id="mainPane" />
 
             <HBox spacing="10" alignment="CENTER_RIGHT">
                 <padding>
@@ -28,5 +26,5 @@
                 <Button text="%word.apply" onAction="#apply"/>
             </HBox>
         </VBox>
-    </HBox>
+    </SplitPane>
 </VBox>
