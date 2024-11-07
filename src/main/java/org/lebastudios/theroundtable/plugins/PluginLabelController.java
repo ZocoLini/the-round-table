@@ -92,9 +92,7 @@ public class PluginLabelController extends PaneController<PluginLabelController>
         var pluginFile =
                 new File(new JSONFile<>(PluginsConfigData.class).get().pluginsFolder + pluginData.pluginId + ".jar");
 
-        if (pluginFile.exists()
-                && pluginFile.isFile()
-                && pluginFile.delete())
+        if (pluginFile.exists() && pluginFile.isFile() && pluginFile.delete())
         {
             root.getChildren().remove(unistallButton);
             PluginLoader.removePlugin(pluginData);

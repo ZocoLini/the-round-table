@@ -2,10 +2,12 @@ package org.lebastudios.theroundtable.plugins;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
+import lombok.Getter;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.config.SettingsItem;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PluginsConfigData;
+import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.locale.AppLocale;
 import org.lebastudios.theroundtable.locale.LangLoader;
 import org.lebastudios.theroundtable.plugins.pluginData.PluginData;
@@ -19,32 +21,34 @@ public class PluginLoader
 {
     private static final Map<String, IPlugin> pluginsLoaded = new HashMap<>();
     private static final Map<String, IPlugin> pluginsInstalled = new HashMap<>();
+    @Getter private static URLClassLoader pluginsClassLoader = new URLClassLoader(new URL[0]);
 
     public static void loadPlugins()
     {
-        File[] jars = new File(new JSONFile<>(PluginsConfigData.class).get().pluginsFolder).listFiles(
-                (dir, name) -> name.endsWith(".jar"));
+        File[] jars = new File(new JSONFile<>(PluginsConfigData.class).get().pluginsFolder)
+                .listFiles((_, name) -> name.endsWith(".jar"));
         if (jars == null) return;
 
-        for (File jar : jars)
+        try
         {
-            try
-            {
-                URL jarUrl = jar.toURI().toURL();
-                URLClassLoader classLoader = new URLClassLoader(new URL[]{jarUrl}, PluginLoader.class.getClassLoader());
+            pluginsClassLoader = new URLClassLoader(
+                    Arrays.stream(jars).map(File::toURI).map(uri -> {
+                        try {return uri.toURL();}
+                        catch (Exception e) {return null;}
+                    }).filter(Objects::nonNull).toArray(URL[]::new),
+            PluginLoader.class.getClassLoader());
+            
+            ServiceLoader<IPlugin> serviceLoader = ServiceLoader.load(IPlugin.class, pluginsClassLoader);
 
-                ServiceLoader<IPlugin> serviceLoader = ServiceLoader.load(IPlugin.class, classLoader);
-
-                for (var plugin : serviceLoader)
-                {
-                    var pluginData = plugin.getPluginData();
-                    pluginsInstalled.put(pluginData.pluginId, plugin);
-                }
-            }
-            catch (Exception e)
+            for (var plugin : serviceLoader)
             {
-                System.err.println("Error loading plugin: " + jar.getName() + " " + e.getMessage());
+                var pluginData = plugin.getPluginData();
+                pluginsInstalled.put(pluginData.pluginId, plugin);
             }
+        }
+        catch (Exception e)
+        {
+            System.err.println("Error loading plugins: " + e.getMessage());
         }
 
         // Load all plugins that can be loaded
@@ -59,14 +63,32 @@ public class PluginLoader
                 
                 if (pluginsLoaded.containsKey(pluginData.pluginId)) continue;
                 if (!canBePluginLoaded(plugin)) continue;
-
-                pluginsLoaded.put(plugin.getPluginData().pluginId, plugin);
+                
                 keepTryingToLoad = true;
                 loadPlugin(plugin);
             }
         }
+
+        Database.getInstance().reloadDatabase();
     }
 
+    public static void loadPlugin(IPlugin plugin)
+    {
+        // Add plugin to loaded plugins collection
+        pluginsLoaded.put(plugin.getPluginData().pluginId, plugin);
+        
+        // Load plugin translations
+        LangLoader.loadLang(plugin.getClass(), AppLocale.getActualLocale());
+
+        // Initialize the plugin
+        plugin.initialize();
+    }
+
+    public static void unloadPlugin(IPlugin plugin)
+    {
+
+    }
+    
     public static boolean canBePluginLoaded(IPlugin plugin)
     {
         // TODO: Make a better version comparator
@@ -119,7 +141,7 @@ public class PluginLoader
 
         return items;
     }
-
+    
     public static List<Object> getRessourcesObjects()
     {
         List<Object> classes = new ArrayList<>();
@@ -130,18 +152,14 @@ public class PluginLoader
         return classes;
     }
 
-    public static void loadPlugin(IPlugin plugin)
+    public static List<Class<?>> getPluginEntities()
     {
-        // Load plugin translations
-        LangLoader.loadLang(plugin.getClass(), AppLocale.getActualLocale());
-        
-        // Initialize the plugin
-        plugin.initialize();
-    }
-    
-    public static void unloadPlugin(IPlugin plugin)
-    {
-        
+        List<Class<?>> pluginEntities = new ArrayList<>();
+        for (IPlugin plugin : pluginsLoaded.values())
+        {
+            pluginEntities.addAll(plugin.getPluginEntities());
+        }
+        return pluginEntities;
     }
     
     public static Collection<IPlugin> getLoadedPlugins()

@@ -27,5 +27,7 @@ public interface IPlugin
         return null;
     }
 
+    default List<Class<?>> getPluginEntities() { return new ArrayList<>(); }
+    
     PluginData getPluginData();
 }

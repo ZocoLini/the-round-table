@@ -73,7 +73,7 @@ public class PluginsStageController extends StageController<PluginsStageControll
 
         if (pluginsData == null)
         {
-            tabPane.getTabs().remove(availablePluginsTab);
+            Platform.runLater(() -> tabPane.getTabs().remove(availablePluginsTab));
             return;
         }
 
