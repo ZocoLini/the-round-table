@@ -8,13 +8,11 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.lebastudios.theroundtable.config.data.DatabaseConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
-import org.lebastudios.theroundtable.database.entities.*;
+import org.lebastudios.theroundtable.plugincashregister.entities.*;
 import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Consumer;
 
 public class Database
@@ -74,13 +72,7 @@ public class Database
                     "hibernate.connection.url", "jdbc:sqlite:" + databaseFile.getAbsolutePath()
             );
 
-            config.addAnnotatedClass(Category.class)
-                    .addAnnotatedClass(Product.class)
-                    .addAnnotatedClass(SubCategory.class)
-                    .addAnnotatedClass(Receipt.class)
-                    .addAnnotatedClass(Product_Receipt.class)
-                    .addAnnotatedClass(Transaction.class)
-                    .addAnnotatedClass(Account.class);
+            config.addAnnotatedClass(Account.class);
 
             // Loading all the plugin entities to the Hibernate configuration from the Plugins
             PluginLoader.getPluginEntities().forEach(config::addAnnotatedClass);

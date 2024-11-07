@@ -5,14 +5,13 @@ import com.github.anastaciocintra.escpos.EscPosConst;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PrintersConfigData;
 import org.lebastudios.theroundtable.database.Database;
-import org.lebastudios.theroundtable.database.entities.Order;
-import org.lebastudios.theroundtable.database.entities.Receipt;
+import org.lebastudios.theroundtable.plugincashregister.entities.Order;
+import org.lebastudios.theroundtable.plugincashregister.entities.Receipt;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
 import org.lebastudios.theroundtable.maths.BigDecimalOperations;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.temporal.ChronoUnit;
 import java.util.TreeMap;
 

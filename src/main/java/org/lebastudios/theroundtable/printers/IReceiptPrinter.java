@@ -1,8 +1,8 @@
 package org.lebastudios.theroundtable.printers;
 
 import com.github.anastaciocintra.escpos.EscPos;
-import org.lebastudios.theroundtable.database.entities.Order;
-import org.lebastudios.theroundtable.database.entities.Receipt;
+import org.lebastudios.theroundtable.plugincashregister.entities.Order;
+import org.lebastudios.theroundtable.plugincashregister.entities.Receipt;
 
 import java.io.IOException;
 

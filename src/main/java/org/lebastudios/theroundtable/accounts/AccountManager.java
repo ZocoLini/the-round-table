@@ -1,7 +1,7 @@
 package org.lebastudios.theroundtable.accounts;
 
 import lombok.Getter;
-import org.lebastudios.theroundtable.database.entities.Account;
+import org.lebastudios.theroundtable.plugincashregister.entities.Account;
 import org.lebastudios.theroundtable.events.UserEvents;
 
 @Getter

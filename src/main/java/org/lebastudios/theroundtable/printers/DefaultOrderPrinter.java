@@ -3,7 +3,7 @@ package org.lebastudios.theroundtable.printers;
 import com.github.anastaciocintra.escpos.EscPos;
 import com.github.anastaciocintra.escpos.EscPosConst;
 import com.github.anastaciocintra.escpos.Style;
-import org.lebastudios.theroundtable.database.entities.Order;
+import org.lebastudios.theroundtable.plugincashregister.entities.Order;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
 import org.lebastudios.theroundtable.maths.BigDecimalOperations;
 

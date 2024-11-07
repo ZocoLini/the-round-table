@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import lombok.Getter;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.controllers.PaneController;
-import org.lebastudios.theroundtable.database.entities.Account;
+import org.lebastudios.theroundtable.plugincashregister.entities.Account;
 import org.lebastudios.theroundtable.ui.IconView;
 
 import java.net.URL;

@@ -1,7 +1,6 @@
-package org.lebastudios.theroundtable.database.entities;
+package org.lebastudios.theroundtable.plugincashregister;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.lebastudios.theroundtable.maths.BigDecimalOperations;
 

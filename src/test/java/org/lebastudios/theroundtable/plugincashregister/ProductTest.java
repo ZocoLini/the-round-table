@@ -1,11 +1,9 @@
-package org.lebastudios.theroundtable.database.entities;
+package org.lebastudios.theroundtable.plugincashregister;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ProductTest
 {

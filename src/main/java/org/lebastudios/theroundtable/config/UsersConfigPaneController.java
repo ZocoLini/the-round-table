@@ -16,7 +16,7 @@ import org.lebastudios.theroundtable.accounts.AccountCreatorController;
 import org.lebastudios.theroundtable.accounts.AccountManager;
 import org.lebastudios.theroundtable.accounts.ChangePasswordStageController;
 import org.lebastudios.theroundtable.database.Database;
-import org.lebastudios.theroundtable.database.entities.Account;
+import org.lebastudios.theroundtable.plugincashregister.entities.Account;
 import org.lebastudios.theroundtable.dialogs.InformationTextDialogController;
 import org.lebastudios.theroundtable.ui.IconButton;
 import org.lebastudios.theroundtable.ui.IconView;

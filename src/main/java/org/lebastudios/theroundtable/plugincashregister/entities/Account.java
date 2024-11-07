@@ -1,10 +1,9 @@
-package org.lebastudios.theroundtable.database.entities;
+package org.lebastudios.theroundtable.plugincashregister.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 import java.util.Objects;
@@ -12,9 +11,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Entity
-@Table(name = "ACCOUNT")
+@Table(name = "core_account")
 public class Account
 {
     public Account(String name, String password, AccountType type)
@@ -25,21 +23,21 @@ public class Account
     }
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "TYPE", nullable = false)
+    @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     private AccountType type = AccountType.CASHIER;
 
-    @Column(name = "CHANGE_PASSWORD_ON_NEXT_LOGIN", nullable = false)
+    @Column(name = "changue_password_on_next_login", nullable = false)
     private boolean changePasswordOnNextLogin = false;
 
     public boolean hasAuthorityOver(Account account)
