@@ -12,7 +12,7 @@ import org.lebastudios.theroundtable.config.data.PrintersConfigData;
 import java.io.File;
 import java.io.IOException;
 
-public final class DefaultHeaderPrinter implements IPrinter
+final class DefaultHeaderPrinter implements IPrinter
 {
     @Override
     public EscPos print(EscPos escpos) throws IOException

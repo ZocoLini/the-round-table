@@ -7,7 +7,7 @@ import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 import java.io.IOException;
 
-public final class DefaultFooterPrinter implements IPrinter
+final class DefaultFooterPrinter implements IPrinter
 {
     @Override
     public EscPos print(EscPos escpos) throws IOException
