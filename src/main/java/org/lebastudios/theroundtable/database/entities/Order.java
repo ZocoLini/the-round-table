@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.Setter;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
+import org.lebastudios.theroundtable.maths.BigDecimalOperations;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -69,6 +70,15 @@ public class Order
         return total;
     }
 
+    /**
+     * This Method always returns getTotal() + €. The currency should be decided at runtime.
+     */
+    @Deprecated
+    public String getTotalStringRepresentation()
+    {
+        return BigDecimalOperations.toString(getTotal()) + " €";
+    }
+    
     public BigDecimal getTotalWithoutTaxes()
     {
         BigDecimal total = BigDecimal.ZERO;

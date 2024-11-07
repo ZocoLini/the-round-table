@@ -21,11 +21,16 @@ public class Database
     public static void init()
     {
         if (getInstance().sessionFactory != null) return;
-        
+
         getInstance().sessionFactory = getInstance().buildSessionFactory();
-        AppLifeCicleEvents.OnAppCloseRequest.addListener(() -> getInstance().sessionFactory.close());
+        AppLifeCicleEvents.OnAppClose.addListener((windowEvent) ->
+        {
+            if (windowEvent.isConsumed()) return;
+
+            getInstance().sessionFactory.close();
+        });
     }
-    
+
     public static Database getInstance()
     {
         if (instance == null) instance = new Database();
@@ -42,13 +47,13 @@ public class Database
                 databaseConfigData.establishmentDatabaseName + ".sqlite"
         );
     }
-    
+
     public void reloadDatabase()
     {
         sessionFactory.close();
         sessionFactory = buildSessionFactory();
     }
-    
+
     private SessionFactory buildSessionFactory()
     {
         try
@@ -56,9 +61,9 @@ public class Database
             var config = new Configuration();
 
             File databaseFile = getDatabaseFile();
-            
+
             databaseFile.getParentFile().mkdirs();
-            
+
             config.setProperty(
                     "hibernate.connection.url", "jdbc:sqlite:" + databaseFile.getAbsolutePath()
             );
@@ -84,7 +89,7 @@ public class Database
     public void connectTransaction(Consumer<Session> action)
     {
         if (sessionFactory == null) throw new IllegalStateException("Database not initialized");
-        
+
         // Ejemplo de uso de la sesión para interactuar con la base de datos
         try (Session session = sessionFactory.openSession())
         {

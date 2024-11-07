@@ -41,7 +41,7 @@ public class BackupDB
 
         running = true;
 
-        AppLifeCicleEvents.OnAppCloseRequest.addListener(() ->
+        AppLifeCicleEvents.OnAppCloseRequest.addListener((_) ->
         {
             stop();
             realizeBackup();

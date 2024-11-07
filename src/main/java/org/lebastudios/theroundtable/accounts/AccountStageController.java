@@ -10,12 +10,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.controllers.StageController;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.database.entities.Account;
+import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 import org.lebastudios.theroundtable.ui.LoadingPaneController;
 import org.lebastudios.theroundtable.ui.StageBuilder;
 
@@ -102,7 +104,16 @@ public class AccountStageController extends StageController<AccountStageControll
     @Override
     protected void customizeStageBuilder(StageBuilder stageBuilder) 
     {
-        stageBuilder.setStageConsumer(stage -> stage.setOnCloseRequest(e -> System.exit(0)));
+        stageBuilder.setStageConsumer(stage -> stage.setOnCloseRequest(e ->
+        {
+            AppLifeCicleEvents.OnAppCloseRequest.invoke(e);
+            
+            if (!e.isConsumed())
+            {
+                AppLifeCicleEvents.OnAppClose.invoke(e);
+                Platform.exit();
+            }
+        }));
     }
 
     @Override
