@@ -172,7 +172,7 @@ public class PluginLoader
         return pluginsInstalled.values();
     }
 
-    public static void removePlugin(PluginData pluginData)
+    public static void uninstallPlugin(PluginData pluginData)
     {
         pluginsInstalled.remove(pluginData.pluginId);
     }

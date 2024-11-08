@@ -83,7 +83,13 @@ public class PluginLabelController extends PaneController<PluginLabelController>
     private void installPlugin()
     {
         root.getChildren().remove(actionButton);
-        Platform.runLater(() -> ApiRequests.updatePlugin(pluginData));
+        new Thread(() ->
+        {
+            ApiRequests.updatePlugin(pluginData);
+            
+            // TODO: Mark the plugin as installed so the install button doesn't appear before the app restart
+        }).start();
+        
     }
 
     @FXML
@@ -95,7 +101,7 @@ public class PluginLabelController extends PaneController<PluginLabelController>
         if (pluginFile.exists() && pluginFile.isFile() && pluginFile.delete())
         {
             root.getChildren().remove(unistallButton);
-            PluginLoader.removePlugin(pluginData);
+            PluginLoader.uninstallPlugin(pluginData);
 
             Platform.runLater(() -> MainStageController.getInstance().requestRestart());
         }
