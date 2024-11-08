@@ -40,7 +40,7 @@ public class TheRoundTableApplication extends Application
         catch (Exception e)
         {
             System.err.println("Version couldn't be laded: " + e.getMessage());
-            return "2.0.4";
+            return "2.0.7";
         }
     }
 

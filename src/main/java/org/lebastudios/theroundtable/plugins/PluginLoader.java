@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import lombok.Getter;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
+import org.lebastudios.theroundtable.communications.Version;
 import org.lebastudios.theroundtable.config.SettingsItem;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PluginsConfigData;
@@ -91,22 +92,26 @@ public class PluginLoader
     
     public static boolean canBePluginLoaded(IPlugin plugin)
     {
-        // TODO: Make a better version comparator
-        if (plugin.getPluginData().pluginRequiredCoreVersion
-                .compareTo(TheRoundTableApplication.getAppVersion()) > 0) {return false;}
+        Version requiredCoreVersion = new Version(plugin.getPluginData().pluginRequiredCoreVersion);
+        Version actualCoreVersion = new Version(TheRoundTableApplication.getAppVersion());
+        
+        if (actualCoreVersion.isLessThan(requiredCoreVersion)) {return false;}
 
         if (plugin.getPluginData().pluginDependencies == null) return true;
 
         for (var dependency : plugin.getPluginData().pluginDependencies)
         {
             if (!pluginsLoaded.containsKey(dependency.pluginId)) return false;
-            if (pluginsLoaded.get(dependency.pluginId).getPluginData().pluginVersion
-                    .compareTo(dependency.pluginVersion) < 0) {return false;}
+            
+            Version requiredPluginVersion = new Version(dependency.pluginVersion);
+            Version actualPluginVersion = new Version(pluginsLoaded.get(dependency.pluginId).getPluginData().pluginVersion);
+            
+            if (actualPluginVersion.isLessThan(requiredPluginVersion)) {return false;}
         }
 
         return true;
     }
-
+    
     public static List<Button> getLeftButtons()
     {
         List<Button> buttons = new ArrayList<>();
