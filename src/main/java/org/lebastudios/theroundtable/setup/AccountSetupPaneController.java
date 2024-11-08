@@ -8,7 +8,7 @@ import javafx.scene.layout.BorderPane;
 import org.lebastudios.theroundtable.accounts.LocalPasswordValidator;
 import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.database.Database;
-import org.lebastudios.theroundtable.plugincashregister.entities.Account;
+import org.lebastudios.theroundtable.database.entities.Account;;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 import java.net.URL;

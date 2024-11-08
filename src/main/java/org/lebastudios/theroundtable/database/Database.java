@@ -8,7 +8,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.lebastudios.theroundtable.config.data.DatabaseConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
-import org.lebastudios.theroundtable.plugincashregister.entities.*;
+import org.lebastudios.theroundtable.database.entities.Account;
 import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 

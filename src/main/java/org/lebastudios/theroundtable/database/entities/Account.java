@@ -1,4 +1,4 @@
-package org.lebastudios.theroundtable.plugincashregister.entities;
+package org.lebastudios.theroundtable.database.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;

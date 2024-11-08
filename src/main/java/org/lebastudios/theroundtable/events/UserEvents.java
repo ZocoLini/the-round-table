@@ -1,6 +1,6 @@
 package org.lebastudios.theroundtable.events;
 
-import org.lebastudios.theroundtable.plugincashregister.entities.Account;
+import org.lebastudios.theroundtable.database.entities.Account;
 
 public final class UserEvents
 {
