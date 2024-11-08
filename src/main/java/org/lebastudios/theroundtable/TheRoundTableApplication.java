@@ -40,7 +40,7 @@ public class TheRoundTableApplication extends Application
         catch (Exception e)
         {
             System.err.println("Version couldn't be laded: " + e.getMessage());
-            return "2.0.2";
+            return "2.0.4";
         }
     }
 
@@ -86,7 +86,7 @@ public class TheRoundTableApplication extends Application
             if (!e.isConsumed()) 
             {
                 AppLifeCicleEvents.OnAppClose.invoke(e);
-                Platform.exit();
+                System.exit(0);
             }
         });
     }

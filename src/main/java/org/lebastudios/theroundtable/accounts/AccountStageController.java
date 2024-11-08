@@ -110,7 +110,7 @@ public class AccountStageController extends StageController<AccountStageControll
             if (!e.isConsumed())
             {
                 AppLifeCicleEvents.OnAppClose.invoke(e);
-                Platform.exit();
+                System.exit(0);
             }
         }));
     }

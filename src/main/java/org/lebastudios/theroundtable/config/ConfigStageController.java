@@ -144,9 +144,9 @@ public class ConfigStageController extends StageController<ConfigStageController
 
     public void swapMainPane(SettingsPaneController controller)
     {
-        final var root = controller.getRoot();
+        if (controller == null) return;
         
-        if (root == null) return;
+        final var root = controller.getRoot();
         
         mainPane.setContent(root);
         controller.registerEvents();
