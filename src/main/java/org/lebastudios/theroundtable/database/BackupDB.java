@@ -41,7 +41,7 @@ public class BackupDB
 
         running = true;
 
-        AppLifeCicleEvents.OnAppCloseRequest.addListener((_) ->
+        AppLifeCicleEvents.OnAppClose.addListener((_) ->
         {
             stop();
             realizeBackup();
@@ -115,8 +115,8 @@ public class BackupDB
                 updateProgress(50, 100);
                 
                 File backupFile = new File(
-                        backupFolder.getAbsolutePath(), 
-                        LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + ".zip"
+                        backupFolder.getAbsolutePath(),
+                        (LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + ".zip").replace(":", "-")
                 );
 
                 try

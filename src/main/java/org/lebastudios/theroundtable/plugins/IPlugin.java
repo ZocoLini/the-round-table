@@ -35,7 +35,7 @@ public interface IPlugin
     
     default File getPluginFolder()
     {
-        return new File(TheRoundTableApplication.getAppDirectory(), getPluginData().pluginId);
+        return new File(TheRoundTableApplication.getUserDirectory(), getPluginData().pluginId);
     }
     
     default PluginData getPluginData()

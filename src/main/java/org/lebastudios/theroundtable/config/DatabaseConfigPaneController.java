@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import org.lebastudios.theroundtable.Launcher;
+import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.apparience.UIEffects;
 import org.lebastudios.theroundtable.config.data.DatabaseConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
@@ -167,7 +168,7 @@ public class DatabaseConfigPaneController extends SettingsPaneController
     private DirectoryChooser getDirectoryChooser(String title)
     {
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        directoryChooser.setInitialDirectory(new File(TheRoundTableApplication.getUserDirectory()));
         directoryChooser.setTitle(title);
         return directoryChooser;
     }

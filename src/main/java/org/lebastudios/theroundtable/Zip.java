@@ -31,6 +31,10 @@ public class Zip
                 catch (Exception _) {}
             }
         }
-        catch (IOException _) {throw new RuntimeException("Failed to create zip file.");}
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to create zip file.");
+        }
     }
 }

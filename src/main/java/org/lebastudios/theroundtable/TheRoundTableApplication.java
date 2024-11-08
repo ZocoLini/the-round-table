@@ -46,9 +46,7 @@ public class TheRoundTableApplication extends Application
 
     public static String getUserDirectory()
     {
-        return System.getProperty("user.home") + File.separator + (Environment.isDev()
-                ? ".round-table-dev"
-                : ".round-table");
+        return Environment.homeDir();
     }
 
     public static String getAppDirectory()
