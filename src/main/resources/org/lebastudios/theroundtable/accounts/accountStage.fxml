@@ -14,7 +14,7 @@
         <VBox alignment="CENTER" maxWidth="250" spacing="15" fx:id="passwordBox">
             <Label maxWidth="Infinity" text="%word.password" />
             <PasswordField fx:id="passwordField" />
-            <HBox alignment="CENTER_RIGHT" spacing="15">
+            <HBox alignment="CENTER_RIGHT" spacing="10">
                 <Button text="%word.cancel" onAction="#cancelPassword" />
                 <Button defaultButton="true" text="%word.accept" onAction="#submitPassword" />
             </HBox>

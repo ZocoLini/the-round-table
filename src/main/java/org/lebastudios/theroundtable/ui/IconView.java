@@ -1,10 +1,12 @@
 package org.lebastudios.theroundtable.ui;
 
 import javafx.scene.image.ImageView;
+import lombok.Getter;
 import org.lebastudios.theroundtable.apparience.ImageLoader;
 
 import java.awt.*;
 
+@Getter
 public class IconView extends ImageView
 {
     private static final int ICON_SIZE = 32;
