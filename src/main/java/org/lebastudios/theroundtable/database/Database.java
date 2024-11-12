@@ -9,7 +9,9 @@ import org.hibernate.cfg.Configuration;
 import org.lebastudios.theroundtable.config.data.DatabaseConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.database.entities.Account;
+import org.lebastudios.theroundtable.database.entities.DatabaseVersion;
 import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
+import org.lebastudios.theroundtable.events.DatabaseEvents;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 
 import java.io.File;
@@ -20,14 +22,23 @@ public class Database
     private static Database instance;
     private SessionFactory sessionFactory;
 
-    private Database() {}
+    private Database()
+    {
+        DatabaseEvents.onDatabaseInit.addListener(() -> DatabaseUpdater.getInstance().callToUpdate());
+    }
 
     public static void init()
     {
         if (getInstance().sessionFactory != null) return;
 
         getInstance().sessionFactory = getInstance().buildSessionFactory();
-        AppLifeCicleEvents.OnAppClose.addListener((_) -> getInstance().sessionFactory.close());
+        DatabaseEvents.onDatabaseInit.invoke();
+
+        AppLifeCicleEvents.OnAppClose.addListener((_) ->
+        {
+            getInstance().sessionFactory.close();
+            DatabaseEvents.onDatabaseClose.invoke();
+        });
     }
 
     public static Database getInstance()
@@ -42,15 +53,17 @@ public class Database
         DatabaseConfigData databaseConfigData = new JSONFile<>(DatabaseConfigData.class).get();
 
         return new File(
-                databaseConfigData.databaseFolder,
-                databaseConfigData.establishmentDatabaseName + ".sqlite"
+                databaseConfigData.databaseFolder, databaseConfigData.establishmentDatabaseName + ".sqlite"
         );
     }
 
     public void reloadDatabase()
     {
         sessionFactory.close();
+        DatabaseEvents.onDatabaseClose.invoke();
+
         sessionFactory = buildSessionFactory();
+        DatabaseEvents.onDatabaseInit.invoke();
     }
 
     private SessionFactory buildSessionFactory()
@@ -67,7 +80,8 @@ public class Database
                     "hibernate.connection.url", "jdbc:sqlite:" + databaseFile.getAbsolutePath()
             );
 
-            config.addAnnotatedClass(Account.class);
+            config.addAnnotatedClass(Account.class)
+                    .addAnnotatedClass(DatabaseVersion.class);
 
             // Loading all the plugin entities to the Hibernate configuration from the Plugins
             PluginLoader.getPluginEntities().forEach(config::addAnnotatedClass);

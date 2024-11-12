@@ -3,6 +3,7 @@ package org.lebastudios.theroundtable.plugins;
 import com.google.gson.Gson;
 import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
+import org.hibernate.Session;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.config.SettingsItem;
 import org.lebastudios.theroundtable.plugins.pluginData.PluginData;
@@ -32,6 +33,16 @@ public interface IPlugin
     }
 
     default List<Class<?>> getPluginEntities() { return new ArrayList<>(); }
+    
+    default void onDatabaseUpdate(Session session, int oldVersion, int newVersion) 
+    {
+        
+    }
+    
+    default int getDatabaseVersion()
+    {
+        return 1;
+    }
     
     default File getPluginFolder()
     {
