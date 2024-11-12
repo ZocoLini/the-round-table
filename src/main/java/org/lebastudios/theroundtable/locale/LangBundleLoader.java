@@ -17,16 +17,29 @@ public class LangBundleLoader
 
         return instance;
     }
-    
+
     public static void loadLang(Class<?> pluginClass, Locale locale)
     {
-        getInstance().resourceBundles.put(pluginClass.getPackageName() + ".lang",
-                ResourceBundle.getBundle(
-                        pluginClass.getPackageName() + ".lang", 
-                        locale,
-                        pluginClass.getClassLoader()
-                )
-        );
+        ResourceBundle resourceBundle;
+
+        try
+        {
+            resourceBundle = ResourceBundle.getBundle(
+                    pluginClass.getPackageName() + ".lang",
+                    locale,
+                    pluginClass.getClassLoader()
+            );
+        }
+        catch (MissingResourceException exception)
+        {
+            resourceBundle = ResourceBundle.getBundle(
+                    pluginClass.getPackageName() + ".lang",
+                    Locale.of("en", "US"),
+                    pluginClass.getClassLoader()
+            );
+        }
+
+        getInstance().resourceBundles.put(pluginClass.getPackageName() + ".lang", resourceBundle);
     }
 
     public static void loadLang(FXMLLoader loader, Class<?> clazz)
