@@ -46,6 +46,8 @@ public class BigDecimalField extends HBox
     {
         try
         {
+            if (newValue.isEmpty()) return;
+            
             value = new BigDecimal(newValue);
         }
         catch (NumberFormatException e)
