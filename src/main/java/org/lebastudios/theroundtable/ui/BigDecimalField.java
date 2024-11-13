@@ -30,6 +30,7 @@ public class BigDecimalField extends HBox
         textField = new TextField();
         textField.setMaxWidth(Double.MAX_VALUE);
         textField.setAlignment(Pos.CENTER_RIGHT);
+        textField.setPromptText("0.00");
 
         textField.textProperty().addListener((_, oldValue, newValue) -> onValueChange(oldValue, newValue));
         
@@ -50,7 +51,8 @@ public class BigDecimalField extends HBox
         catch (NumberFormatException e)
         {
             UIEffects.shakeNode(textField);
-            textField.setText(oldValue);
+            
+            textField.setText(oldValue == null ? "" : oldValue);
         }
     }
     
