@@ -39,6 +39,7 @@ public class SearchBox extends HBox
             if (e.getCode() == KeyCode.ENTER)
             {
                 onSearch.accept(searchField.getText());
+                this.setFocused(false);
                 e.consume();
             }
         });
