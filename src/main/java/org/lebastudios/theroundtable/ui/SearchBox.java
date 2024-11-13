@@ -4,6 +4,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +26,7 @@ public class SearchBox extends HBox
         
         this.getStyleClass().addAll(searchField.getStyleClass());
         searchField.getStyleClass().clear();
+        HBox.setHgrow(searchField, Priority.ALWAYS);
         
         searchButton = new IconButton();
         searchButton.setIconName("find.png");
@@ -43,5 +45,15 @@ public class SearchBox extends HBox
                 e.consume();
             }
         });
+    }
+    
+    public String getText()
+    {
+        return searchField.getText();
+    }
+    
+    public void clear()
+    {
+        searchField.clear();
     }
 }
