@@ -11,8 +11,6 @@ public class PrintersConfigData implements FileRepresentator
             PrintServiceLookup.lookupDefaultPrintService() == null
                     ? ""
                     : PrintServiceLookup.lookupDefaultPrintService().getName();
-
-    public boolean hideEstablishmentLogo = false;
     
     @Override
     public File getFile()

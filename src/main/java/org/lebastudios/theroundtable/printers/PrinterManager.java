@@ -13,8 +13,6 @@ import javax.print.PrintService;
 public class PrinterManager
 {
     private static PrinterManager instance;
-    private IPrinter headerPrinter = new DefaultHeaderPrinter();
-    private IPrinter footerPrinter = new DefaultFooterPrinter();
 
     private PrinterManager() {}
 
