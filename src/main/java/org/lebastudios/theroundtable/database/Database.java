@@ -6,6 +6,7 @@ import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.lebastudios.theroundtable.config.data.DatabaseConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.database.entities.Account;
@@ -115,8 +116,10 @@ public class Database
 
             action.accept(session);
 
-            session.flush();
-            session.getTransaction().commit();
+            if (session.getTransaction().getStatus() == TransactionStatus.ACTIVE)
+            {
+                session.getTransaction().commit();
+            }
         }
         catch (Exception e)
         {
