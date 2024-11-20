@@ -7,7 +7,7 @@ public class BigDecimalOperations
 {
     public static BigDecimal divide(BigDecimal dividend, BigDecimal divisor)
     {
-        return dividend.divide(divisor, 2, RoundingMode.FLOOR);
+        return dividend.divide(divisor, 2, RoundingMode.CEILING);
     }
     
     public static BigDecimal dividePrecise(BigDecimal dividend, BigDecimal divisor)
@@ -22,6 +22,6 @@ public class BigDecimalOperations
     
     public static BigDecimal round(BigDecimal value)
     {
-        return value.setScale(2, RoundingMode.FLOOR);
+        return value.setScale(2, RoundingMode.CEILING);
     }
 }

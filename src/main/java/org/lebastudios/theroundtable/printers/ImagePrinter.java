@@ -3,6 +3,7 @@ package org.lebastudios.theroundtable.printers;
 import com.github.anastaciocintra.escpos.EscPos;
 import com.github.anastaciocintra.escpos.image.*;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -30,8 +31,18 @@ public class ImagePrinter implements IPrinter
     @Override
     public EscPos print(EscPos escpos) throws IOException
     {
-        BufferedImage image = ImageIO.read(imgFile);
+        BufferedImage image;
 
+        try
+        {
+            image = ImageIO.read(imgFile);
+        }
+        catch (IIOException exception)
+        {
+            System.err.println("Error reading image file while trying to print it: " + imgFile);
+            return escpos;
+        }
+        
         if (image.getWidth() > Printer80.MAX_IMG_WIDTH)
         {
             BufferedImage scaled = new BufferedImage(

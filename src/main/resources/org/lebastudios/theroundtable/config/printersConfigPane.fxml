@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <GridPane xmlns:fx="http://javafx.com/fxml" fx:id="root" maxWidth="Infinity" maxHeight="Infinity"
-          xmlns="http://javafx.com/javafx" vgap="5" hgap="5"
+          xmlns="http://javafx.com/javafx" vgap="5" hgap="10"
           fx:controller="org.lebastudios.theroundtable.config.PrintersConfigPaneController">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
@@ -13,14 +13,23 @@
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
         <ColumnConstraints />
+        <ColumnConstraints />
     </columnConstraints>
     
     <rowConstraints>
+        <RowConstraints valignment="CENTER" />
         <RowConstraints valignment="CENTER" />
     </rowConstraints>
     
     <Label text="%phrase.defaultprinter" maxWidth="Infinity"
            GridPane.columnIndex="0" GridPane.rowIndex="1" />
     <ChoiceBox minWidth="250" maxWidth="Infinity" fx:id="defaultPrinter" 
-               GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+    
+    <Label text="%phrase.opencashdrawercommand" maxWidth="Infinity"
+           GridPane.columnIndex="0" GridPane.rowIndex="2" />
+    <TextField minWidth="250" maxWidth="Infinity" fx:id="openCashDrawerCommand" 
+               GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    <CheckBox text="%phrase.usecashdrawcommand" fx:id="useOpenCashDrawerDefaultCommand" 
+              GridPane.columnIndex="2" GridPane.rowIndex="2" />
 </GridPane>
