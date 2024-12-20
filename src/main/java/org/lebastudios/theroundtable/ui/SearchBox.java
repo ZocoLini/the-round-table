@@ -1,5 +1,6 @@
 package org.lebastudios.theroundtable.ui;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -14,17 +15,22 @@ public class SearchBox extends HBox
 {
     private final TextField searchField;
     private final IconButton searchButton;
+    private final IconButton resetButton;
     
-    @Setter @Getter private Consumer<String> onSearch = s -> {System.out.println(1243);};
+    @Setter @Getter private Consumer<String> onSearch = s -> {};
     
     public SearchBox()
     {
         super();
         
+        HBox textFieldContainer = new HBox();
+        textFieldContainer.setAlignment(Pos.CENTER_LEFT);
+        textFieldContainer.setSpacing(5);
+        
         searchField = new TextField();
         searchField.setPromptText("Search...");
-        
-        this.getStyleClass().addAll(searchField.getStyleClass());
+
+        textFieldContainer.getStyleClass().addAll(searchField.getStyleClass());
         searchField.getStyleClass().clear();
         HBox.setHgrow(searchField, Priority.ALWAYS);
         
@@ -33,15 +39,21 @@ public class SearchBox extends HBox
         searchButton.setIconSize(16);
         
         searchButton.setOnAction(e -> onSearch.accept(searchField.getText()));
+
+        textFieldContainer.getChildren().addAll(searchField, searchButton);
         
-        this.setSpacing(5);
-        getChildren().addAll(searchField, searchButton);
+        resetButton = new IconButton("exit-outlined.png");
+        resetButton.setIconSize(20);
+        resetButton.setOnAction(e -> clear());
+        
+        this.setSpacing(10);
+        this.setAlignment(Pos.CENTER_LEFT);
+        this.getChildren().addAll(textFieldContainer, resetButton);
         
         this.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
             if (e.getCode() == KeyCode.ENTER)
             {
-                onSearch.accept(searchField.getText());
-                this.setFocused(false);
+                accept();
                 e.consume();
             }
         });
@@ -55,5 +67,13 @@ public class SearchBox extends HBox
     public void clear()
     {
         searchField.clear();
+        
+        accept();
+    }
+    
+    private void accept()
+    {
+        onSearch.accept(this.getText());
+        this.setFocused(false);
     }
 }
