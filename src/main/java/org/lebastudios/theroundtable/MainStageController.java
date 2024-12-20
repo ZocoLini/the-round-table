@@ -123,6 +123,7 @@ public class MainStageController extends PaneController<MainStageController>
 
         // Loads and set the new instance and then shows it. The instance it calls is not this controller's one.
         stage.setScene(new SceneBuilder(new MainStageController().getParent()).build());
+        stage.setTitle("The Round Table - " + AccountManager.getInstance().getCurrentLoggedAccountName());
         stage.show();
     }
 }

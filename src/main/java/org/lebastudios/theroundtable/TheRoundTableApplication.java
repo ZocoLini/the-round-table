@@ -92,7 +92,7 @@ public class TheRoundTableApplication extends Application
 
         PluginLoader.loadPlugins();
 
-        stage.setTitle("The Round Table");
+        stage.setTitle("The Round Table - " + AccountManager.getInstance().getCurrentLoggedAccountName());
         stage.getIcons().add(ImageLoader.getIcon("the-round-table-logo.png"));
 
         Scene mainScene = new SceneBuilder(new MainStageController().getParent()).build();
