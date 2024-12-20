@@ -102,10 +102,10 @@ public class ConfigStageController extends StageController<ConfigStageController
 
         if (AccountManager.getInstance().isAccountAdmin())
         {
-            generalConfigSection.getChildren().add(
-                    new TreeItem<>(new SettingsItem(LangFileLoader.getTranslation("word.account"),
-                            "user.png", new AccountConfigPaneController()))
-            );
+            // generalConfigSection.getChildren().add(
+            //         new TreeItem<>(new SettingsItem(LangFileLoader.getTranslation("word.account"),
+            //                 "user.png", new AccountConfigPaneController()))
+            // );
 
             generalConfigSection.getChildren().add(
                     new TreeItem<>(new SettingsItem(LangFileLoader.getTranslation("word.users"),
