@@ -17,7 +17,7 @@
         <property name="hibernate.format_sql">true</property>
 
         <!-- Actualizar el esquema de la base de datos al iniciar (puede ser 'update', 'create', 'create-drop', etc.) -->
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">validate</property>
 
         <!-- Configuración específica de HikariCP -->
         <property name="hibernate.hikari.maximumPoolSize">10</property>
