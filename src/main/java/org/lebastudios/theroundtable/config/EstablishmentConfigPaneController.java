@@ -81,24 +81,12 @@ public class EstablishmentConfigPaneController extends SettingsPaneController
     @SneakyThrows
     private void selectImage()
     {
-        var fileChooser = new FileChooser();
-
-        fileChooser.setTitle(LangFileLoader.getTranslation("title.imagechooser"));
-        fileChooser.setInitialDirectory(new File(ImageLoader.SavedImagesDirectory()));
-        fileChooser.setSelectedExtensionFilter(
-                new FileChooser.ExtensionFilter("Image files", "*.png", "*.jpg", "*.jpeg")
-        );
-
-        var imageFile = fileChooser.showOpenDialog(null);
-
-        if (imageFile == null) return;
-
-        var image = new Image(new FileInputStream(imageFile));
-
-        if (image.isError()) return;
-
-        establishmentLogo.setImage(image);
-        this.imageFile = imageFile;
+        var result = ImageLoader.showImageChooser(this.getStage().getOwner());
+        
+        if (result == null) return;
+        
+        establishmentLogo.setImage(result.image());
+        this.imageFile = result.imageFile();
     }
 
     @Override

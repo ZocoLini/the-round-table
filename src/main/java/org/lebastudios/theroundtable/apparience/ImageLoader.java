@@ -1,8 +1,11 @@
 package org.lebastudios.theroundtable.apparience;
 
 import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
+import org.lebastudios.theroundtable.locale.LangFileLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 
 import java.io.File;
@@ -137,4 +140,39 @@ public class ImageLoader
         ICON,
         TEXTURE
     }
+    
+    private static boolean imageChooserIsOpen = false;
+    
+    public synchronized static ImageChooserResult showImageChooser(Window owner)
+    {
+        if (imageChooserIsOpen) return null;
+        
+        var fileChooser = new FileChooser();
+
+        fileChooser.setTitle(LangFileLoader.getTranslation("title.imagechooser"));
+        fileChooser.setInitialDirectory(new File(ImageLoader.SavedImagesDirectory()));
+        fileChooser.setSelectedExtensionFilter(
+                new FileChooser.ExtensionFilter("Image files", "*.png", "*.jpg", "*.jpeg")
+        );
+
+        imageChooserIsOpen = true;
+        var imageFile = fileChooser.showOpenDialog(owner);
+        imageChooserIsOpen = false;
+        
+        if (imageFile == null) return null;
+        
+        try
+        {
+            var image = new Image(new FileInputStream(imageFile));
+            if (image.isError()) return null;
+            
+            return new ImageChooserResult(imageFile, image);
+        }
+        catch (FileNotFoundException e)
+        {
+            return null;
+        }
+    }    
+    
+    public record ImageChooserResult(File imageFile, Image image) { }
 }
