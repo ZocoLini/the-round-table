@@ -6,6 +6,14 @@ import java.io.IOException;
 public class Environment
 {
     private static Boolean isDev = null;
+    private static Boolean isTest = null;
+    
+    public enum EnvironmentType
+    {
+        DEV,
+        TEST,
+        PROD
+    }
     
     public static boolean isDev()
     {
@@ -44,6 +52,22 @@ public class Environment
     
     public static boolean isProd()
     {
-        return !isDev();
+        return !isDev() && !isTest();
+    }
+    
+    public static boolean isTest()
+    {
+        if (isTest != null) return isTest;
+
+        String enviroment = System.getenv("TRT_ENV");
+        isTest = enviroment != null && enviroment.equals("test");
+        return isTest;
+    }
+    
+    public static EnvironmentType getEnvironmentType()
+    {
+        if (isDev()) return EnvironmentType.DEV;
+        if (isTest()) return EnvironmentType.TEST;
+        return EnvironmentType.PROD;
     }
 }
