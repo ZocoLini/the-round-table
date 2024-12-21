@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://lebastudios.org/xml-schemas/txml_schema.xsd">
+    <Metadata author="Borja Castellano" date="21/12/2024" version="1.0.0"
+              description="Default plugin structure for The Round Table"/>
+    <Directory name="plugin-template">
+        <File name="mvnw">
+            #!/bin/sh
+            # ----------------------------------------------------------------------------
+            # Licensed to the Apache Software Foundation (ASF) under one
+            # or more contributor license agreements. See the NOTICE file
+            # distributed with this work for additional information
+            # regarding copyright ownership. The ASF licenses this file
+            # to you under the Apache License, Version 2.0 (the
+            # &quot;License&quot;); you may not use this file except in compliance
+            # with the License. You may obtain a copy of the License at
+            #
+            # https://www.apache.org/licenses/LICENSE-2.0
+            #
+            # Unless required by applicable law or agreed to in writing,
+            # software distributed under the License is distributed on an
+            # &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+            # KIND, either express or implied. See the License for the
+            # specific language governing permissions and limitations
+            # under the License.
+            # ----------------------------------------------------------------------------
+
+            # ----------------------------------------------------------------------------
+            # Maven Start Up Batch script
+            #
+            # Required ENV vars:
+            # ------------------
+            # JAVA_HOME - location of a JDK home dir
+            #
+            # Optional ENV vars
+            # -----------------
+            # M2_HOME - location of maven2&apos;s installed home dir
+            # MAVEN_OPTS - parameters passed to the Java VM when running Maven
+            # e.g. to debug Maven itself, use
+            # set MAVEN_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000
+            # MAVEN_SKIP_RC - flag to disable loading of mavenrc files
+            # ----------------------------------------------------------------------------
+
+            if [ -z &quot;$MAVEN_SKIP_RC&quot; ] ; then
+
+            if [ -f /usr/local/etc/mavenrc ] ; then
+            . /usr/local/etc/mavenrc
+            fi
+
+            if [ -f /etc/mavenrc ] ; then
+            . /etc/mavenrc
+            fi
+
+            if [ -f &quot;$HOME/.mavenrc&quot; ] ; then
+            . &quot;$HOME/.mavenrc&quot;
+            fi
+
+            fi
+
+            # OS specific support. $var _must_ be set to either true or false.
+            cygwin=false;
+            darwin=false;
+            mingw=false
+            case &quot;`uname`&quot; in
+            CYGWIN*) cygwin=true ;;
+            MINGW*) mingw=true;;
+            Darwin*) darwin=true
+            # Use /usr/libexec/java_home if available, otherwise fall back to /Library/Java/Home
+            # See https://developer.apple.com/library/mac/qa/qa1170/_index.html
+            if [ -z &quot;$JAVA_HOME&quot; ]; then
+            if [ -x &quot;/usr/libexec/java_home&quot; ]; then
+            export JAVA_HOME=&quot;`/usr/libexec/java_home`&quot;
+            else
+            export JAVA_HOME=&quot;/Library/Java/Home&quot;
+            fi
+            fi
+            ;;
+            esac
+
+            if [ -z &quot;$JAVA_HOME&quot; ] ; then
+            if [ -r /etc/gentoo-release ] ; then
+            JAVA_HOME=`java-config --jre-home`
+            fi
+            fi
+
+            if [ -z &quot;$M2_HOME&quot; ] ; then
+            ## resolve links - $0 may be a link to maven&apos;s home
+            PRG=&quot;$0&quot;
+
+            # need this for relative symlinks
+            while [ -h &quot;$PRG&quot; ] ; do
+            ls=`ls -ld &quot;$PRG&quot;`
+            link=`expr &quot;$ls&quot; : &apos;.*-&gt; \(.*\)$&apos;`
+            if expr &quot;$link&quot; : &apos;/.*&apos; &gt; /dev/null; then
+            PRG=&quot;$link&quot;
+            else
+            PRG=&quot;`dirname &quot;$PRG&quot;`/$link&quot;
+            fi
+            done
+
+            saveddir=`pwd`
+
+            M2_HOME=`dirname &quot;$PRG&quot;`/..
+
+            # make it fully qualified
+            M2_HOME=`cd &quot;$M2_HOME&quot; &amp;&amp; pwd`
+
+            cd &quot;$saveddir&quot;
+            # echo Using m2 at $M2_HOME
+            fi
+
+            # For Cygwin, ensure paths are in UNIX format before anything is touched
+            if $cygwin ; then
+            [ -n &quot;$M2_HOME&quot; ] &amp;&amp;
+            M2_HOME=`cygpath --unix &quot;$M2_HOME&quot;`
+            [ -n &quot;$JAVA_HOME&quot; ] &amp;&amp;
+            JAVA_HOME=`cygpath --unix &quot;$JAVA_HOME&quot;`
+            [ -n &quot;$CLASSPATH&quot; ] &amp;&amp;
+            CLASSPATH=`cygpath --path --unix &quot;$CLASSPATH&quot;`
+            fi
+
+            # For Mingw, ensure paths are in UNIX format before anything is touched
+            if $mingw ; then
+            [ -n &quot;$M2_HOME&quot; ] &amp;&amp;
+            M2_HOME=&quot;`(cd &quot;$M2_HOME&quot;; pwd)`&quot;
+            [ -n &quot;$JAVA_HOME&quot; ] &amp;&amp;
+            JAVA_HOME=&quot;`(cd &quot;$JAVA_HOME&quot;; pwd)`&quot;
+            fi
+
+            if [ -z &quot;$JAVA_HOME&quot; ]; then
+            javaExecutable=&quot;`which javac`&quot;
+            if [ -n &quot;$javaExecutable&quot; ] &amp;&amp; ! [ &quot;`expr \&quot;$javaExecutable\&quot; : &apos;\([^
+            ]*\)&apos;`&quot; = &quot;no&quot; ]; then
+            # readlink(1) is not available as standard on Solaris 10.
+            readLink=`which readlink`
+            if [ ! `expr &quot;$readLink&quot; : &apos;\([^ ]*\)&apos;` = &quot;no&quot; ]; then
+            if $darwin ; then
+            javaHome=&quot;`dirname \&quot;$javaExecutable\&quot;`&quot;
+            javaExecutable=&quot;`cd \&quot;$javaHome\&quot; &amp;&amp; pwd -P`/javac&quot;
+            else
+            javaExecutable=&quot;`readlink -f \&quot;$javaExecutable\&quot;`&quot;
+            fi
+            javaHome=&quot;`dirname \&quot;$javaExecutable\&quot;`&quot;
+            javaHome=`expr &quot;$javaHome&quot; : &apos;\(.*\)/bin&apos;`
+            JAVA_HOME=&quot;$javaHome&quot;
+            export JAVA_HOME
+            fi
+            fi
+            fi
+
+            if [ -z &quot;$JAVACMD&quot; ] ; then
+            if [ -n &quot;$JAVA_HOME&quot; ] ; then
+            if [ -x &quot;$JAVA_HOME/jre/sh/java&quot; ] ; then
+            # IBM&apos;s JDK on AIX uses strange locations for the executables
+            JAVACMD=&quot;$JAVA_HOME/jre/sh/java&quot;
+            else
+            JAVACMD=&quot;$JAVA_HOME/bin/java&quot;
+            fi
+            else
+            JAVACMD=&quot;`\\unset -f command; \\command -v java`&quot;
+            fi
+            fi
+
+            if [ ! -x &quot;$JAVACMD&quot; ] ; then
+            echo &quot;Error: JAVA_HOME is not defined correctly.&quot; &gt;&amp;2
+            echo &quot; We cannot execute $JAVACMD&quot; &gt;&amp;2
+            exit 1
+            fi
+
+            if [ -z &quot;$JAVA_HOME&quot; ] ; then
+            echo &quot;Warning: JAVA_HOME environment variable is not set.&quot;
+            fi
+
+            CLASSWORLDS_LAUNCHER=org.codehaus.plexus.classworlds.launcher.Launcher
+
+            # traverses directory structure from process work directory to filesystem root
+            # first directory with .mvn subdirectory is considered project base directory
+            find_maven_basedir() {
+
+            if [ -z &quot;$1&quot; ]
+            then
+            echo &quot;Path not specified to find_maven_basedir&quot;
+            return 1
+            fi
+
+            basedir=&quot;$1&quot;
+            wdir=&quot;$1&quot;
+            while [ &quot;$wdir&quot; != &apos;/&apos; ] ; do
+            if [ -d &quot;$wdir&quot;/.mvn ] ; then
+            basedir=$wdir
+            break
+            fi
+            # workaround for JBEAP-8937 (on Solaris 10/Sparc)
+            if [ -d &quot;${wdir}&quot; ]; then
+            wdir=`cd &quot;$wdir/..&quot;; pwd`
+            fi
+            # end of workaround
+            done
+            echo &quot;${basedir}&quot;
+            }
+
+            # concatenates all lines of a file
+            concat_lines() {
+            if [ -f &quot;$1&quot; ]; then
+            echo &quot;$(tr -s &apos;\n&apos; &apos; &apos; &lt; &quot;$1&quot;)&quot;
+            fi
+            }
+
+            BASE_DIR=`find_maven_basedir &quot;$(pwd)&quot;`
+            if [ -z &quot;$BASE_DIR&quot; ]; then
+            exit 1;
+            fi
+
+            ##########################################################################################
+            # Extension to allow automatically downloading the maven-wrapper.jar from Maven-central
+            # This allows using the maven wrapper in projects that prohibit checking in binary data.
+            ##########################################################################################
+            if [ -r &quot;$BASE_DIR/.mvn/wrapper/maven-wrapper.jar&quot; ]; then
+            if [ &quot;$MVNW_VERBOSE&quot; = true ]; then
+            echo &quot;Found .mvn/wrapper/maven-wrapper.jar&quot;
+            fi
+            else
+            if [ &quot;$MVNW_VERBOSE&quot; = true ]; then
+            echo &quot;Couldn&apos;t find .mvn/wrapper/maven-wrapper.jar, downloading it ...&quot;
+            fi
+            if [ -n &quot;$MVNW_REPOURL&quot; ]; then
+            jarUrl=&quot;$MVNW_REPOURL/org/apache/maven/wrapper/maven-wrapper/3.1.0/maven-wrapper-3.1.0.jar&quot;
+            else
+            jarUrl=&quot;https://repo.maven.apache.org/maven2/org/apache/maven/wrapper/maven-wrapper/3.1.0/maven-wrapper-3.1.0.jar&quot;
+            fi
+            while IFS=&quot;=&quot; read key value; do
+            case &quot;$key&quot; in (wrapperUrl) jarUrl=&quot;$value&quot;; break ;;
+            esac
+            done &lt; &quot;$BASE_DIR/.mvn/wrapper/maven-wrapper.properties&quot;
+            if [ &quot;$MVNW_VERBOSE&quot; = true ]; then
+            echo &quot;Downloading from: $jarUrl&quot;
+            fi
+            wrapperJarPath=&quot;$BASE_DIR/.mvn/wrapper/maven-wrapper.jar&quot;
+            if $cygwin; then
+            wrapperJarPath=`cygpath --path --windows &quot;$wrapperJarPath&quot;`
+            fi
+
+            if command -v wget &gt; /dev/null; then
+            if [ &quot;$MVNW_VERBOSE&quot; = true ]; then
+            echo &quot;Found wget ... using wget&quot;
+            fi
+            if [ -z &quot;$MVNW_USERNAME&quot; ] || [ -z &quot;$MVNW_PASSWORD&quot; ]; then
+            wget &quot;$jarUrl&quot; -O &quot;$wrapperJarPath&quot; || rm -f &quot;$wrapperJarPath&quot;
+            else
+            wget --http-user=$MVNW_USERNAME --http-password=$MVNW_PASSWORD &quot;$jarUrl&quot; -O &quot;$wrapperJarPath&quot;
+            || rm -f &quot;$wrapperJarPath&quot;
+            fi
+            elif command -v curl &gt; /dev/null; then
+            if [ &quot;$MVNW_VERBOSE&quot; = true ]; then
+            echo &quot;Found curl ... using curl&quot;
+            fi
+            if [ -z &quot;$MVNW_USERNAME&quot; ] || [ -z &quot;$MVNW_PASSWORD&quot; ]; then
+            curl -o &quot;$wrapperJarPath&quot; &quot;$jarUrl&quot; -f
+            else
+            curl --user $MVNW_USERNAME:$MVNW_PASSWORD -o &quot;$wrapperJarPath&quot; &quot;$jarUrl&quot; -f
+            fi
+
+            else
+            if [ &quot;$MVNW_VERBOSE&quot; = true ]; then
+            echo &quot;Falling back to using Java to download&quot;
+            fi
+            javaClass=&quot;$BASE_DIR/.mvn/wrapper/MavenWrapperDownloader.java&quot;
+            # For Cygwin, switch paths to Windows format before running javac
+            if $cygwin; then
+            javaClass=`cygpath --path --windows &quot;$javaClass&quot;`
+            fi
+            if [ -e &quot;$javaClass&quot; ]; then
+            if [ ! -e &quot;$BASE_DIR/.mvn/wrapper/MavenWrapperDownloader.class&quot; ]; then
+            if [ &quot;$MVNW_VERBOSE&quot; = true ]; then
+            echo &quot; - Compiling MavenWrapperDownloader.java ...&quot;
+            fi
+            # Compiling the Java class
+            (&quot;$JAVA_HOME/bin/javac&quot; &quot;$javaClass&quot;)
+            fi
+            if [ -e &quot;$BASE_DIR/.mvn/wrapper/MavenWrapperDownloader.class&quot; ]; then
+            # Running the downloader
+            if [ &quot;$MVNW_VERBOSE&quot; = true ]; then
+            echo &quot; - Running MavenWrapperDownloader.java ...&quot;
+            fi
+            (&quot;$JAVA_HOME/bin/java&quot; -cp .mvn/wrapper MavenWrapperDownloader &quot;$MAVEN_PROJECTBASEDIR&quot;)
+            fi
+            fi
+            fi
+            fi
+            ##########################################################################################
+            # End of extension
+            ##########################################################################################
+
+            export MAVEN_PROJECTBASEDIR=${MAVEN_BASEDIR:-&quot;$BASE_DIR&quot;}
+            if [ &quot;$MVNW_VERBOSE&quot; = true ]; then
+            echo $MAVEN_PROJECTBASEDIR
+            fi
+            MAVEN_OPTS=&quot;$(concat_lines &quot;$MAVEN_PROJECTBASEDIR/.mvn/jvm.config&quot;) $MAVEN_OPTS&quot;
+
+            # For Cygwin, switch paths to Windows format before running java
+            if $cygwin; then
+            [ -n &quot;$M2_HOME&quot; ] &amp;&amp;
+            M2_HOME=`cygpath --path --windows &quot;$M2_HOME&quot;`
+            [ -n &quot;$JAVA_HOME&quot; ] &amp;&amp;
+            JAVA_HOME=`cygpath --path --windows &quot;$JAVA_HOME&quot;`
+            [ -n &quot;$CLASSPATH&quot; ] &amp;&amp;
+            CLASSPATH=`cygpath --path --windows &quot;$CLASSPATH&quot;`
+            [ -n &quot;$MAVEN_PROJECTBASEDIR&quot; ] &amp;&amp;
+            MAVEN_PROJECTBASEDIR=`cygpath --path --windows &quot;$MAVEN_PROJECTBASEDIR&quot;`
+            fi
+
+            # Provide a &quot;standardized&quot; way to retrieve the CLI args that will
+            # work with both Windows and non-Windows executions.
+            MAVEN_CMD_LINE_ARGS=&quot;$MAVEN_CONFIG $@&quot;
+            export MAVEN_CMD_LINE_ARGS
+
+            WRAPPER_LAUNCHER=org.apache.maven.wrapper.MavenWrapperMain
+
+            exec &quot;$JAVACMD&quot; \
+            $MAVEN_OPTS \
+            $MAVEN_DEBUG_OPTS \
+            -classpath &quot;$MAVEN_PROJECTBASEDIR/.mvn/wrapper/maven-wrapper.jar&quot; \
+            &quot;-Dmaven.home=${M2_HOME}&quot; \
+            &quot;-Dmaven.multiModuleProjectDirectory=${MAVEN_PROJECTBASEDIR}&quot; \
+            ${WRAPPER_LAUNCHER} $MAVEN_CONFIG &quot;$@&quot;
+
+        </File>
+        <File name="pom" extension="xml">
+            &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+            &lt;project xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+            xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+            xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+            &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+            &lt;groupId&gt;org.lebastudios.theroundtable&lt;/groupId&gt;
+            &lt;artifactId&gt;plugin-template&lt;/artifactId&gt;
+            &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+            &lt;name&gt;plugin-template&lt;/name&gt;
+            &lt;packaging&gt;jar&lt;/packaging&gt;
+
+            &lt;properties&gt;
+            &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+            &lt;junit.version&gt;5.10.0&lt;/junit.version&gt;
+            &lt;maven.compiler.source&gt;22&lt;/maven.compiler.source&gt;
+            &lt;maven.compiler.target&gt;22&lt;/maven.compiler.target&gt;
+            &lt;/properties&gt;
+
+            &lt;dependencies&gt;
+            &lt;dependency&gt;
+            &lt;groupId&gt;org.lebastudios.theroundtable&lt;/groupId&gt;
+            &lt;artifactId&gt;desktop-app&lt;/artifactId&gt;
+            &lt;version&gt;2.0.2&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;/dependencies&gt;
+
+            &lt;build&gt;
+            &lt;plugins&gt;
+            &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
+            &lt;version&gt;3.2.0&lt;/version&gt;
+            &lt;configuration&gt;
+            &lt;outputDirectory&gt;../desktop-app/plugins&lt;/outputDirectory&gt;
+            &lt;finalName&gt;${project.artifactId}-${project.version}&lt;/finalName&gt;
+            &lt;/configuration&gt;
+            &lt;/plugin&gt;
+            &lt;/plugins&gt;
+            &lt;/build&gt;
+            &lt;/project&gt;
+        </File>
+        <File name="mvnw" extension="cmd">
+            @REM ----------------------------------------------------------------------------
+            @REM Licensed to the Apache Software Foundation (ASF) under one
+            @REM or more contributor license agreements. See the NOTICE file
+            @REM distributed with this work for additional information
+            @REM regarding copyright ownership. The ASF licenses this file
+            @REM to you under the Apache License, Version 2.0 (the
+            @REM &quot;License&quot;); you may not use this file except in compliance
+            @REM with the License. You may obtain a copy of the License at
+            @REM
+            @REM https://www.apache.org/licenses/LICENSE-2.0
+            @REM
+            @REM Unless required by applicable law or agreed to in writing,
+            @REM software distributed under the License is distributed on an
+            @REM &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+            @REM KIND, either express or implied. See the License for the
+            @REM specific language governing permissions and limitations
+            @REM under the License.
+            @REM ----------------------------------------------------------------------------
+
+            @REM ----------------------------------------------------------------------------
+            @REM Maven Start Up Batch script
+            @REM
+            @REM Required ENV vars:
+            @REM JAVA_HOME - location of a JDK home dir
+            @REM
+            @REM Optional ENV vars
+            @REM M2_HOME - location of maven2&apos;s installed home dir
+            @REM MAVEN_BATCH_ECHO - set to &apos;on&apos; to enable the echoing of the batch commands
+            @REM MAVEN_BATCH_PAUSE - set to &apos;on&apos; to wait for a keystroke before ending
+            @REM MAVEN_OPTS - parameters passed to the Java VM when running Maven
+            @REM e.g. to debug Maven itself, use
+            @REM set MAVEN_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000
+            @REM MAVEN_SKIP_RC - flag to disable loading of mavenrc files
+            @REM ----------------------------------------------------------------------------
+
+            @REM Begin all REM lines with &apos;@&apos; in case MAVEN_BATCH_ECHO is &apos;on&apos;
+            @echo off
+            @REM set title of command window
+            title %0
+            @REM enable echoing by setting MAVEN_BATCH_ECHO to &apos;on&apos;
+            @if &quot;%MAVEN_BATCH_ECHO%&quot; == &quot;on&quot; echo %MAVEN_BATCH_ECHO%
+
+            @REM set %HOME% to equivalent of $HOME
+            if &quot;%HOME%&quot; == &quot;&quot; (set &quot;HOME=%HOMEDRIVE%%HOMEPATH%&quot;)
+
+            @REM Execute a user defined script before this one
+            if not &quot;%MAVEN_SKIP_RC%&quot; == &quot;&quot; goto skipRcPre
+            @REM check for pre script, once with legacy .bat ending and once with .cmd ending
+            if exist &quot;%USERPROFILE%\mavenrc_pre.bat&quot; call &quot;%USERPROFILE%\mavenrc_pre.bat&quot; %*
+            if exist &quot;%USERPROFILE%\mavenrc_pre.cmd&quot; call &quot;%USERPROFILE%\mavenrc_pre.cmd&quot; %*
+            :skipRcPre
+
+            @setlocal
+
+            set ERROR_CODE=0
+
+            @REM To isolate internal variables from possible post scripts, we use another setlocal
+            @setlocal
+
+            @REM ==== START VALIDATION ====
+            if not &quot;%JAVA_HOME%&quot; == &quot;&quot; goto OkJHome
+
+            echo.
+            echo Error: JAVA_HOME not found in your environment. &gt;&amp;2
+            echo Please set the JAVA_HOME variable in your environment to match the &gt;&amp;2
+            echo location of your Java installation. &gt;&amp;2
+            echo.
+            goto error
+
+            :OkJHome
+            if exist &quot;%JAVA_HOME%\bin\java.exe&quot; goto init
+
+            echo.
+            echo Error: JAVA_HOME is set to an invalid directory. &gt;&amp;2
+            echo JAVA_HOME = &quot;%JAVA_HOME%&quot; &gt;&amp;2
+            echo Please set the JAVA_HOME variable in your environment to match the &gt;&amp;2
+            echo location of your Java installation. &gt;&amp;2
+            echo.
+            goto error
+
+            @REM ==== END VALIDATION ====
+
+            :init
+
+            @REM Find the project base dir, i.e. the directory that contains the folder &quot;.mvn&quot;.
+            @REM Fallback to current working directory if not found.
+
+            set MAVEN_PROJECTBASEDIR=%MAVEN_BASEDIR%
+            IF NOT &quot;%MAVEN_PROJECTBASEDIR%&quot;==&quot;&quot; goto endDetectBaseDir
+
+            set EXEC_DIR=%CD%
+            set WDIR=%EXEC_DIR%
+            :findBaseDir
+            IF EXIST &quot;%WDIR%&quot;\.mvn goto baseDirFound
+            cd ..
+            IF &quot;%WDIR%&quot;==&quot;%CD%&quot; goto baseDirNotFound
+            set WDIR=%CD%
+            goto findBaseDir
+
+            :baseDirFound
+            set MAVEN_PROJECTBASEDIR=%WDIR%
+            cd &quot;%EXEC_DIR%&quot;
+            goto endDetectBaseDir
+
+            :baseDirNotFound
+            set MAVEN_PROJECTBASEDIR=%EXEC_DIR%
+            cd &quot;%EXEC_DIR%&quot;
+
+            :endDetectBaseDir
+
+            IF NOT EXIST &quot;%MAVEN_PROJECTBASEDIR%\.mvn\jvm.config&quot; goto endReadAdditionalConfig
+
+            @setlocal EnableExtensions EnableDelayedExpansion
+            for /F &quot;usebackq delims=&quot; %%a in (&quot;%MAVEN_PROJECTBASEDIR%\.mvn\jvm.config&quot;) do set
+            JVM_CONFIG_MAVEN_PROPS=!JVM_CONFIG_MAVEN_PROPS! %%a
+            @endlocal &amp; set JVM_CONFIG_MAVEN_PROPS=%JVM_CONFIG_MAVEN_PROPS%
+
+            :endReadAdditionalConfig
+
+            SET MAVEN_JAVA_EXE=&quot;%JAVA_HOME%\bin\java.exe&quot;
+            set WRAPPER_JAR=&quot;%MAVEN_PROJECTBASEDIR%\.mvn\wrapper\maven-wrapper.jar&quot;
+            set WRAPPER_LAUNCHER=org.apache.maven.wrapper.MavenWrapperMain
+
+            set DOWNLOAD_URL=&quot;https://repo.maven.apache.org/maven2/org/apache/maven/wrapper/maven-wrapper/3.1.0/maven-wrapper-3.1.0.jar&quot;
+
+            FOR /F &quot;usebackq tokens=1,2 delims==&quot; %%A IN (&quot;%MAVEN_PROJECTBASEDIR%\.mvn\wrapper\maven-wrapper.properties&quot;)
+            DO (
+            IF &quot;%%A&quot;==&quot;wrapperUrl&quot; SET DOWNLOAD_URL=%%B
+            )
+
+            @REM Extension to allow automatically downloading the maven-wrapper.jar from Maven-central
+            @REM This allows using the maven wrapper in projects that prohibit checking in binary data.
+            if exist %WRAPPER_JAR% (
+            if &quot;%MVNW_VERBOSE%&quot; == &quot;true&quot; (
+            echo Found %WRAPPER_JAR%
+            )
+            ) else (
+            if not &quot;%MVNW_REPOURL%&quot; == &quot;&quot; (
+            SET DOWNLOAD_URL=&quot;%MVNW_REPOURL%/org/apache/maven/wrapper/maven-wrapper/3.1.0/maven-wrapper-3.1.0.jar&quot;
+            )
+            if &quot;%MVNW_VERBOSE%&quot; == &quot;true&quot; (
+            echo Couldn&apos;t find %WRAPPER_JAR%, downloading it ...
+            echo Downloading from: %DOWNLOAD_URL%
+            )
+
+            powershell -Command &quot;&amp;{&quot;^
+            &quot;$webclient = new-object System.Net.WebClient;&quot;^
+            &quot;if (-not ([string]::IsNullOrEmpty(&apos;%MVNW_USERNAME%&apos;) -and [string]::IsNullOrEmpty(&apos;%MVNW_PASSWORD%&apos;)))
+            {&quot;^
+            &quot;$webclient.Credentials = new-object System.Net.NetworkCredential(&apos;%MVNW_USERNAME%&apos;, &apos;%MVNW_PASSWORD%&apos;);&quot;^
+            &quot;}&quot;^
+            &quot;[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+            $webclient.DownloadFile(&apos;%DOWNLOAD_URL%&apos;, &apos;%WRAPPER_JAR%&apos;)&quot;^
+            &quot;}&quot;
+            if &quot;%MVNW_VERBOSE%&quot; == &quot;true&quot; (
+            echo Finished downloading %WRAPPER_JAR%
+            )
+            )
+            @REM End of extension
+
+            @REM Provide a &quot;standardized&quot; way to retrieve the CLI args that will
+            @REM work with both Windows and non-Windows executions.
+            set MAVEN_CMD_LINE_ARGS=%*
+
+            %MAVEN_JAVA_EXE% ^
+            %JVM_CONFIG_MAVEN_PROPS% ^
+            %MAVEN_OPTS% ^
+            %MAVEN_DEBUG_OPTS% ^
+            -classpath %WRAPPER_JAR% ^
+            &quot;-Dmaven.multiModuleProjectDirectory=%MAVEN_PROJECTBASEDIR%&quot; ^
+            %WRAPPER_LAUNCHER% %MAVEN_CONFIG% %*
+            if ERRORLEVEL 1 goto error
+            goto end
+
+            :error
+            set ERROR_CODE=1
+
+            :end
+            @endlocal &amp; set ERROR_CODE=%ERROR_CODE%
+
+            if not &quot;%MAVEN_SKIP_RC%&quot;==&quot;&quot; goto skipRcPost
+            @REM check for post script, once with legacy .bat ending and once with .cmd ending
+            if exist &quot;%USERPROFILE%\mavenrc_post.bat&quot; call &quot;%USERPROFILE%\mavenrc_post.bat&quot;
+            if exist &quot;%USERPROFILE%\mavenrc_post.cmd&quot; call &quot;%USERPROFILE%\mavenrc_post.cmd&quot;
+            :skipRcPost
+
+            @REM pause the script if MAVEN_BATCH_PAUSE is set to &apos;on&apos;
+            if &quot;%MAVEN_BATCH_PAUSE%&quot;==&quot;on&quot; pause
+
+            if &quot;%MAVEN_TERMINATE_CMD%&quot;==&quot;on&quot; exit %ERROR_CODE%
+
+            cmd /C exit /B %ERROR_CODE%
+
+        </File>
+        <Directory name="src">
+            <Directory name="main">
+                <Directory name="resources">
+                    <Directory name="org">
+                        <Directory name="lebastudios">
+                            <Directory name="theroundtable">
+                                <Directory name="plugintemplate">
+                                    <File name="lang_en" extension="properties">
+
+                                    </File>
+                                    <File name="languagesData" extension="csv">
+                                        textKey,en_EN,es_ES
+
+                                    </File>
+                                    <File name="pluginData" extension="json">
+                                        {
+                                        &quot;pluginName&quot;: &quot;Plugin Template&quot;,
+                                        &quot;pluginId&quot;: &quot;plugin-template&quot;,
+                                        &quot;pluginIcon&quot;: &quot;plugin.png&quot;,
+                                        &quot;pluginDescription&quot;: &quot;&quot;,
+                                        &quot;pluginVersion&quot;: &quot;1.0-SNAPSHOT&quot;,
+                                        &quot;pluginVendor&quot;: &quot;Leba Studios - Software Solutions&quot;,
+                                        &quot;pluginVendorUrl&quot;: &quot;https://lebastudios.org&quot;,
+                                        &quot;pluginRequiredCoreVersion&quot;: &quot;1.0-SNAPSHOT&quot;,
+                                        &quot;pluginDependencies&quot;: []
+                                        }
+                                    </File>
+                                    <File name="lang_es" extension="properties">
+
+                                    </File>
+                                    <Directory name="textures">
+                                    </Directory>
+                                    <Directory name="icons">
+                                    </Directory>
+                                </Directory>
+                            </Directory>
+                        </Directory>
+                    </Directory>
+                    <Directory name="META-INF">
+                        <Directory name="services">
+                            <File name="org.lebastudios.theroundtable.plugins" extension="IPlugin">
+                                org.lebastudios.theroundtable.plugintest.PluginMainClass
+                            </File>
+                        </Directory>
+                    </Directory>
+                </Directory>
+                <Directory name="java">
+                    <Directory name="org">
+                        <Directory name="lebastudios">
+                            <Directory name="theroundtable">
+                                <Directory name="plugintemplate">
+                                    <File name="PluginMainClass" extension="java">
+                                        package org.lebastudios.theroundtable.plugintemplate;
+
+                                        import org.lebastudios.theroundtable.plugins.IPlugin;
+
+                                        public class PluginMainClass implements IPlugin
+                                        {
+                                        @Override
+                                        public void initialize()
+                                        {
+                                        System.out.println(&quot;PluginTest initialized&quot;);
+                                        }
+                                        }
+
+                                    </File>
+                                </Directory>
+                            </Directory>
+                        </Directory>
+                    </Directory>
+                </Directory>
+            </Directory>
+        </Directory>
+    </Directory>
+</Root>
