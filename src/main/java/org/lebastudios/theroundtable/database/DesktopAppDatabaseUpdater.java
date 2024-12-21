@@ -1,9 +1,6 @@
 package org.lebastudios.theroundtable.database;
 
-import org.lebastudios.theroundtable.Launcher;
-
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,7 +8,7 @@ import java.sql.Statement;
 class DesktopAppDatabaseUpdater implements IDatabaseUpdater
 {
     private static final int DB_VERSION = 1;
-    private static final String DB_IDENTIFIER = "core";
+    private static final String DB_IDENTIFIER = "desktop-app";
 
     @Override
     public int getDatabaseVersion()
@@ -27,7 +24,7 @@ class DesktopAppDatabaseUpdater implements IDatabaseUpdater
     
     public void version1(Connection conn) throws SQLException, IOException
     {
-        System.out.println("Core: Updating database to version 1");
+        System.out.println("Desktop App: Updating database to version 1");
 
         Statement statement = conn.createStatement();
         
