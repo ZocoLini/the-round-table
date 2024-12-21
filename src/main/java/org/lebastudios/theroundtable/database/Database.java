@@ -14,8 +14,12 @@ import org.lebastudios.theroundtable.database.entities.DatabaseVersion;
 import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 import org.lebastudios.theroundtable.events.DatabaseEvents;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
+import org.sqlite.SQLiteJDBCLoader;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.function.Consumer;
 
 public class Database
@@ -23,10 +27,7 @@ public class Database
     private static Database instance;
     private SessionFactory sessionFactory;
 
-    private Database()
-    {
-        DatabaseEvents.onDatabaseInit.addListener(() -> DatabaseUpdater.getInstance().callToUpdate());
-    }
+    private Database() {}
 
     public static void init()
     {
@@ -37,8 +38,8 @@ public class Database
 
         AppLifeCicleEvents.OnAppClose.addListener((_) ->
         {
-            getInstance().sessionFactory.close();
             DatabaseEvents.onDatabaseClose.invoke();
+            getInstance().sessionFactory.close();
         });
     }
 
@@ -60,8 +61,8 @@ public class Database
 
     public void reloadDatabase()
     {
-        sessionFactory.close();
         DatabaseEvents.onDatabaseClose.invoke();
+        sessionFactory.close();
 
         sessionFactory = buildSessionFactory();
         DatabaseEvents.onDatabaseInit.invoke();
@@ -69,6 +70,8 @@ public class Database
 
     private SessionFactory buildSessionFactory()
     {
+        prepareDatabaseForHibernate();
+        
         try
         {
             var config = new Configuration().configure();
@@ -105,6 +108,25 @@ public class Database
         }
     }
 
+    private void prepareDatabaseForHibernate()
+    {
+        File databaseFile = getDatabaseFile();
+
+        databaseFile.getParentFile().mkdirs();
+
+        try
+        {
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:" + databaseFile.getAbsolutePath());
+            DatabaseUpdater.getInstance().callToUpdate(conn);
+            conn.close();
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+    }
+    
     public void connectTransaction(Consumer<Session> action)
     {
         if (sessionFactory == null) throw new IllegalStateException("Database not initialized");
