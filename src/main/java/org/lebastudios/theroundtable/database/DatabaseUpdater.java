@@ -89,7 +89,7 @@ class DatabaseUpdater
 
                 sql = String.format(
                         exists
-                                ? "update core_database_version set version = %d where plugin_identifier = %s"
+                                ? "update core_database_version set version = %d where plugin_identifier = '%s'"
                                 : "insert into core_database_version (version, plugin_identifier) values (%d, '%s')",
                         newVersion, identifier);
 
