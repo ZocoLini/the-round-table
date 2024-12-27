@@ -7,11 +7,14 @@ import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PrintersConfigData;
 
 import javax.print.PrintService;
+import java.util.HashMap;
 
 @Setter
 @Getter
 public class PrinterManager
 {
+    private HashMap<String, PrintService> printServices = new HashMap<>();
+    
     private static PrinterManager instance;
 
     private PrinterManager() {}
@@ -26,7 +29,16 @@ public class PrinterManager
     public PrintService getDefaultPrintService() throws IllegalArgumentException
     {
         var defaultPrinterName = new JSONFile<>(PrintersConfigData.class).get().defaultPrinter;
-        return PrinterOutputStream.getPrintServiceByName(defaultPrinterName);
+
+        final var key = "default:" + defaultPrinterName;
+        if (printServices.containsKey(key)) 
+        {
+            return printServices.get(key);
+        }
+
+        final var defaultPrintService = PrinterOutputStream.getPrintServiceByName(defaultPrinterName);
+        printServices.put(key, defaultPrintService);
+        return defaultPrintService;
     }
 
     public String[] getAvailablePrinters()
