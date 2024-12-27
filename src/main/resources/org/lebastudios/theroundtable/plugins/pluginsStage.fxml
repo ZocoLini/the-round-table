@@ -21,7 +21,7 @@
             </ScrollPane>
         </Tab>
         <Tab fx:id="availablePluginsTab" text="Search">
-            <ScrollPane fitToWidth="true" fitToHeight="true" pannable="true">
+            <ScrollPane fitToWidth="true" fitToHeight="true" fx:id="availablePluginsScrollPane" pannable="true">
                 <VBox spacing="5" fx:id="availablePlugins">
                     <padding>
                         <Insets top="15"/>

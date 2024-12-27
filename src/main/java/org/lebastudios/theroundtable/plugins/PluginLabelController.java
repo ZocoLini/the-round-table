@@ -2,6 +2,7 @@ package org.lebastudios.theroundtable.plugins;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -14,6 +15,7 @@ import org.lebastudios.theroundtable.controllers.PaneController;
 import org.lebastudios.theroundtable.plugins.pluginData.PluginData;
 import org.lebastudios.theroundtable.ui.IconButton;
 import org.lebastudios.theroundtable.ui.IconView;
+import org.lebastudios.theroundtable.ui.LoadingPaneController;
 
 import java.io.File;
 import java.util.function.Consumer;
@@ -61,8 +63,23 @@ public class PluginLabelController extends PaneController<PluginLabelController>
 
         if (PluginLoader.isPluginInstalled(pluginData))
         {
-            if (ApiRequests.pluginNeedUpdate(pluginData)) {actionButton.setText("Update");}
-            else {root.getChildren().remove(actionButton);}
+            root.getChildren().remove(actionButton);
+            final var loadingNode = new LoadingPaneController().getRoot();
+            
+            root.getChildren().add(loadingNode);
+            
+            new Thread(() ->
+            {
+                if (ApiRequests.pluginNeedUpdate(pluginData)) {
+                    Platform.runLater(() ->
+                    {
+                        root.getChildren().add(actionButton);
+                        actionButton.setText("Update");
+                    });
+                }
+                
+                Platform.runLater(() -> root.getChildren().remove(loadingNode));
+            }).start();
         }
         else
         {

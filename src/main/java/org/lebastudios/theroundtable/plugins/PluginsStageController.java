@@ -2,6 +2,7 @@ package org.lebastudios.theroundtable.plugins;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
@@ -12,10 +13,12 @@ import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.communications.ApiRequests;
 import org.lebastudios.theroundtable.controllers.StageController;
 import org.lebastudios.theroundtable.plugins.pluginData.PluginData;
+import org.lebastudios.theroundtable.ui.LoadingPaneController;
 import org.lebastudios.theroundtable.ui.StageBuilder;
 
 public class PluginsStageController extends StageController<PluginsStageController>
 {
+    @FXML private ScrollPane availablePluginsScrollPane;
     @FXML private TabPane tabPane;
     @FXML private Tab availablePluginsTab;
     @FXML private VBox availablePlugins;
@@ -50,6 +53,8 @@ public class PluginsStageController extends StageController<PluginsStageControll
     protected void initialize()
     {
         this.instantiateInstalledPlugins();
+        
+        availablePluginsTab.setContent(new LoadingPaneController().getRoot());
         new Thread(this::instantiateAvailablePlugins).start();
 
         tabPane.getSelectionModel().selectedItemProperty().addListener((_, _, _) ->
@@ -86,6 +91,8 @@ public class PluginsStageController extends StageController<PluginsStageControll
                                 .getRoot()
                 );
             }
+            
+            availablePluginsTab.setContent(availablePluginsScrollPane);
         });
     }
 
