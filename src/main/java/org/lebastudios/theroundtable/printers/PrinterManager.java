@@ -23,7 +23,7 @@ public class PrinterManager
         return instance;
     }
 
-    public PrintService getDefaultPrintService()
+    public PrintService getDefaultPrintService() throws IllegalArgumentException
     {
         var defaultPrinterName = new JSONFile<>(PrintersConfigData.class).get().defaultPrinter;
         return PrinterOutputStream.getPrintServiceByName(defaultPrinterName);
