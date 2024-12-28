@@ -27,25 +27,26 @@ public class ImageLoader
 
     public static Image getIcon(String iconName)
     {
-        final var reference = loadedIcons.get(iconName);
         Image image;
-        
-        if (reference != null) 
+        synchronized (loadedIcons)
         {
-            image = reference.get();
-
-            if (image != null) return image;
+            image = getImage(iconName, loadedIcons);
         }
+        if (image != null) return image;
 
         image = loadImage(iconName, ImageType.ICON);
 
         if (image == null) return getIcon("icon-not-found.png");
 
-        loadedIcons.put(iconName, new WeakReference<>(image));
+        synchronized (loadedIcons)
+        {
+            loadedIcons.put(iconName, new WeakReference<>(image));
+        }
+        
         return image;
     }
 
-    public static Image getTexture(String textureName)
+    public synchronized static Image getTexture(String textureName)
     {
         Image image = loadedTextures.get(textureName);
 
@@ -61,25 +62,38 @@ public class ImageLoader
 
     public static Image getSavedImage(String filePath)
     {
-        final var reference = loadedSavedImages.get(filePath);
         Image image;
-        
-        if (reference != null)
+        synchronized (loadedSavedImages)
         {
-            image = reference.get();
-            if (image != null) return image;
+            image = getImage(filePath, loadedSavedImages);
         }
+        if (image != null) return image;
 
-        image = loadSavedImage(new File(filePath));
+        try (FileInputStream resource = new FileInputStream(filePath))
+        {
+            image = new Image(resource, 100, 100, true, true);
+        }
+        catch (IOException _) {}
         
         if (image == null) return getIcon("blank-image.png");
 
-        loadedSavedImages.put(filePath, new WeakReference<>(image));
+        synchronized (loadedSavedImages)
+        {
+            loadedSavedImages.put(filePath, new WeakReference<>(image));
+        }
         return image;
     }
 
+    private static Image getImage(String filePath, Map<String, WeakReference<Image>> loadedSavedImages)
+    {
+        final WeakReference<Image> reference = loadedSavedImages.get(filePath);
+
+        if (reference != null) return reference.get();
+        return null;
+    }
+
     @SneakyThrows
-    private static Image loadImage(String iconName, ImageType imageType)
+    private synchronized static Image loadImage(String iconName, ImageType imageType)
     {
         for (var individualClass : PluginLoader.getRessourcesObjects())
         {
@@ -134,18 +148,6 @@ public class ImageLoader
         if (!file.exists()) file.mkdirs();
 
         return dir;
-    }
-
-    private static Image loadSavedImage(File imgFile)
-    {
-        try (FileInputStream resource = new FileInputStream(imgFile))
-        {
-            return new Image(resource, 100, 100, true, true);
-        }
-        catch (IOException e)
-        {
-            return null;
-        }
     }
 
     private enum ImageType
