@@ -1,7 +1,8 @@
 package org.lebastudios.theroundtable.ui;
 
-import javafx.animation.RotateTransition;
+import javafx.animation.*;
 import javafx.fxml.FXML;
+import javafx.scene.CacheHint;
 import javafx.util.Duration;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.controllers.PaneController;
@@ -16,10 +17,15 @@ public class LoadingPaneController extends PaneController<LoadingPaneController>
         loadingIcon.setIconName("loading.png");
         loadingIcon.setIconSize(35);
 
-        RotateTransition rotate = new RotateTransition(Duration.seconds(3), loadingIcon);
-        rotate.setByAngle(360);
-        rotate.setCycleCount(RotateTransition.INDEFINITE);
-        rotate.play();
+        new Thread(() ->
+        {
+            RotateTransition rotate = new RotateTransition(Duration.seconds(3), loadingIcon);
+            rotate.setByAngle(360);
+            rotate.setCycleCount(RotateTransition.INDEFINITE);
+            rotate.setInterpolator(Interpolator.STEPS(60, Interpolator.StepPosition.START)); // Más suave
+            loadingIcon.setCacheHint(CacheHint.SCALE_AND_ROTATE); // Priorizar velocidad
+            rotate.play();
+        }).start();
     }
 
     @Override

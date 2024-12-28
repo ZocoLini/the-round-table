@@ -1,7 +1,9 @@
 package org.lebastudios.theroundtable.apparience;
 
 import javafx.scene.Scene;
+import javafx.stage.WindowEvent;
 import lombok.SneakyThrows;
+import org.lebastudios.theroundtable.Environment;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PreferencesConfigData;
@@ -34,7 +36,7 @@ public class ThemeLoader
         removeRemovedScenes();
 
         scenesInstantiated.add(scene);
-
+        
         var actualTheme = new JSONFile<>(PreferencesConfigData.class).get().theme;
 
         String themeCss = new File(
@@ -46,7 +48,7 @@ public class ThemeLoader
 
     private static void removeRemovedScenes()
     {
-        scenesInstantiated.removeIf(scene -> scene.getWindow() == null);
+        scenesInstantiated.removeIf(scene -> !scene.getWindow().isShowing());
     }
 
     public static File getThemesDir()

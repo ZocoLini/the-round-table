@@ -11,6 +11,7 @@ import org.lebastudios.theroundtable.plugins.PluginLoader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -58,7 +59,7 @@ public class ImageLoader
         if (image != null) return image;
 
         image = loadSavedImage(new File(filePath));
-
+        
         if (image == null) return getIcon("blank-image.png");
 
         loadedSavedImages.put(filePath, image);
@@ -72,11 +73,12 @@ public class ImageLoader
         {
             var folder = imageType == ImageType.ICON ? "icons/" : "textures/";
 
-            var resource = individualClass.getClass().getResourceAsStream(folder + iconName);
+            try (var resource = individualClass.getClass().getResourceAsStream(folder + iconName))
+            {
+                if (resource == null) continue;
 
-            if (resource == null) continue;
-
-            return new Image(resource);
+                return new Image(resource);
+            }
         }
 
         return null;
@@ -84,9 +86,9 @@ public class ImageLoader
 
     public static File saveImageInSpecialFolder(File imgFile)
     {
-        try
+        try (var inputStream = new FileInputStream(imgFile))
         {
-            var image = new Image(new FileInputStream(imgFile));
+            var image = new Image(inputStream);
         }
         catch (Exception e)
         {
@@ -124,12 +126,11 @@ public class ImageLoader
 
     private static Image loadSavedImage(File imgFile)
     {
-        try
+        try (FileInputStream resource = new FileInputStream(imgFile))
         {
-            FileInputStream resource = new FileInputStream(imgFile);
-            return new Image(resource);
+            return new Image(resource, 100, 100, true, true);
         }
-        catch (FileNotFoundException e)
+        catch (IOException e)
         {
             return null;
         }
@@ -161,14 +162,14 @@ public class ImageLoader
         
         if (imageFile == null) return null;
         
-        try
+        try (var inputStream = new FileInputStream(imageFile))
         {
-            var image = new Image(new FileInputStream(imageFile));
+            var image = new Image(inputStream);
             if (image.isError()) return null;
             
             return new ImageChooserResult(imageFile, image);
         }
-        catch (FileNotFoundException e)
+        catch (IOException e)
         {
             return null;
         }
