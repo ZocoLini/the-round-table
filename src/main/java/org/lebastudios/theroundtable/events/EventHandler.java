@@ -1,7 +1,7 @@
 package org.lebastudios.theroundtable.events;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * This class is used for the event system. Defines the methods that all AppEvents must have.
@@ -11,30 +11,35 @@ import java.util.List;
  */
 public abstract class EventHandler<T>
 {
-    protected final List<T> listeners = new ArrayList<>();
+    private final List<T> listeners = new CopyOnWriteArrayList<>();
 
-    public void addListener(T listener)
-    {
-        listeners.add(listener);
+    public synchronized void addListener(T listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("Listener cannot be null");
+        }
+
+        if (!hasListener(listener)) {
+            listeners.add(listener);
+        }
     }
 
-    public void removeListener(T listener)
-    {
+    public synchronized void removeListener(T listener) {
+        if (listener == null) return;
+
         listeners.remove(listener);
     }
 
-    public void clearListeners()
-    {
+    public synchronized void clearListeners() {
         listeners.clear();
     }
 
-    public List<T> getListeners()
-    {
-        return listeners;
+    public boolean hasListener(T listener) {
+        if (listener == null) return false;
+
+        return listeners.contains(listener);
     }
 
-    public boolean hasListener(T listener)
-    {
-        return listeners.contains(listener);
+    protected List<T> getActiveListeners() {
+        return List.copyOf(listeners);
     }
 }

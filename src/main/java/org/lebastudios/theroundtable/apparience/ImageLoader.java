@@ -10,31 +10,38 @@ import org.lebastudios.theroundtable.plugins.PluginLoader;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 public class ImageLoader
 {
-    private static final Map<String, Image> loadedIcons = new HashMap<>();
+    private static final Map<String, WeakReference<Image>> loadedIcons = new WeakHashMap<>();
     private static final Map<String, Image> loadedTextures = new HashMap<>();
-    private static final Map<String, Image> loadedSavedImages = new HashMap<>();
+    private static final Map<String, WeakReference<Image>> loadedSavedImages = new WeakHashMap<>();
 
     public static Image getIcon(String iconName)
     {
-        Image image = loadedIcons.get(iconName);
+        final var reference = loadedIcons.get(iconName);
+        Image image;
+        
+        if (reference != null) 
+        {
+            image = reference.get();
 
-        if (image != null) return image;
+            if (image != null) return image;
+        }
 
         image = loadImage(iconName, ImageType.ICON);
 
         if (image == null) return getIcon("icon-not-found.png");
 
-        loadedIcons.put(iconName, image);
+        loadedIcons.put(iconName, new WeakReference<>(image));
         return image;
     }
 
@@ -54,15 +61,20 @@ public class ImageLoader
 
     public static Image getSavedImage(String filePath)
     {
-        Image image = loadedSavedImages.get(filePath);
-
-        if (image != null) return image;
+        final var reference = loadedSavedImages.get(filePath);
+        Image image;
+        
+        if (reference != null)
+        {
+            image = reference.get();
+            if (image != null) return image;
+        }
 
         image = loadSavedImage(new File(filePath));
         
         if (image == null) return getIcon("blank-image.png");
 
-        loadedSavedImages.put(filePath, image);
+        loadedSavedImages.put(filePath, new WeakReference<>(image));
         return image;
     }
 
