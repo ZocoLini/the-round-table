@@ -27,7 +27,10 @@ public class JSONFile<T extends FileRepresentator>
 
         if (!file.exists()) return clazz.getConstructor().newInstance();
 
-        return new GsonBuilder().create().fromJson(new FileReader(file), clazz);
+        try (var reader = new FileReader(file))
+        {
+            return new GsonBuilder().create().fromJson(reader, clazz);
+        }
     }
 
     public T get()
