@@ -66,6 +66,8 @@ public class BigDecimalField extends HBox
 
     public BigDecimal getValue()
     {
+        if (textField.getText().isEmpty()) return null;
+        
         return new BigDecimal(textField.getText());
     }
     
