@@ -3,11 +3,16 @@ package org.lebastudios.theroundtable.config.data;
 import com.google.gson.GsonBuilder;
 import lombok.SneakyThrows;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JSONFile<T extends FileRepresentator>
 {
+    private static final Map<String, File> filesCache = new HashMap<>();
     private final T data;
 
     public JSONFile(Class<T> clazz)
@@ -19,11 +24,16 @@ public class JSONFile<T extends FileRepresentator>
     {
         this.data = data;
     }
-    
+
     @SneakyThrows
     private <T extends FileRepresentator> T load(Class<T> clazz)
     {
-        var file = clazz.getConstructor().newInstance().getFile();
+        if (!filesCache.containsKey(clazz.getName())) 
+        {
+            filesCache.put(clazz.getName(), clazz.getConstructor().newInstance().getFile());
+        }
+        
+        var file = filesCache.get(clazz.getName());
 
         if (!file.exists()) return clazz.getConstructor().newInstance();
 
