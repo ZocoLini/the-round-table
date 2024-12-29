@@ -6,7 +6,7 @@
 
     <groupId>org.lebastudios.theroundtable</groupId>
     <artifactId>desktop-app</artifactId>
-    <version>2.3.15</version>
+    <version>2.4.0</version>
     <name>desktop-app</name>
     <packaging>jar</packaging>
 
