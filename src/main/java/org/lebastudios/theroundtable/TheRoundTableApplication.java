@@ -1,7 +1,6 @@
 package org.lebastudios.theroundtable;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -9,6 +8,8 @@ import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.accounts.AccountManager;
 import org.lebastudios.theroundtable.accounts.AccountStageController;
 import org.lebastudios.theroundtable.apparience.ImageLoader;
+import org.lebastudios.theroundtable.env.Directories;
+import org.lebastudios.theroundtable.env.Variables;
 import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 import org.lebastudios.theroundtable.locale.AppLocale;
 import org.lebastudios.theroundtable.locale.LangLoader;
@@ -20,7 +21,6 @@ import org.lebastudios.theroundtable.updates.UpdateAppJar;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,7 +30,7 @@ public class TheRoundTableApplication extends Application
 {
     public static String getAppVersion()
     {
-        if (Environment.isDev()) 
+        if (Variables.isDev()) 
         {
             try
             {
@@ -71,7 +71,7 @@ public class TheRoundTableApplication extends Application
 
     public static String getUserDirectory()
     {
-        return Environment.homeDir();
+        return Directories.homeDir();
     }
 
     public static String getAppDirectory()

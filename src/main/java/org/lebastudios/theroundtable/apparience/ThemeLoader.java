@@ -1,9 +1,7 @@
 package org.lebastudios.theroundtable.apparience;
 
 import javafx.scene.Scene;
-import javafx.stage.WindowEvent;
 import lombok.SneakyThrows;
-import org.lebastudios.theroundtable.Environment;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PreferencesConfigData;

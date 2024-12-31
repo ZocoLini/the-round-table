@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import javafx.application.Platform;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.AppTask;
-import org.lebastudios.theroundtable.Environment;
+import org.lebastudios.theroundtable.env.Variables;
 import org.lebastudios.theroundtable.MainStageController;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
 import org.lebastudios.theroundtable.config.data.JSONFile;
@@ -27,11 +27,11 @@ import java.util.HashMap;
 
 public class ApiRequests
 {
-    private static final String BASE_URL = switch (Environment.getEnvironmentType()) 
+    private static final String BASE_URL = switch (Variables.getEnvironmentType()) 
     {
         case TEST -> "http://192.168.3.3:8000/api/v1/theroundtable";
         case PROD, DEV -> "https://lebastudios.org/api/v1/theroundtable";
-        default -> throw new IllegalStateException("Unexpected value: " + Environment.getEnvironmentType());
+        default -> throw new IllegalStateException("Unexpected value: " + Variables.getEnvironmentType());
     };
 
     public static boolean availableUpdate()
