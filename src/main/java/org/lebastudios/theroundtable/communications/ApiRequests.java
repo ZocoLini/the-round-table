@@ -164,6 +164,31 @@ public class ApiRequests
         }
     }
 
+    public static PluginData getServerPluginData(String pluginId)
+    {
+        try (var client = HttpClient.newHttpClient())
+        {
+            var request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/plugins/" + pluginId + ".jar.json"))
+                    .build();
+
+            var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200)
+            {
+                System.err.println("An error ocurred while trying to get the plugin data: " + response.body());
+                return null;
+            }
+
+            return new Gson().fromJson(response.body(), PluginData.class);
+        }
+        catch (Exception e)
+        {
+            System.err.println("An error ocurred while trying to get the plugin data: " + e.getMessage());
+            return null;
+        }
+    }
+    
     public static boolean pluginNeedUpdate(PluginData pluginData)
     {
         try (var client = HttpClient.newHttpClient())

@@ -2,10 +2,10 @@ package org.lebastudios.theroundtable.plugins;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -13,16 +13,14 @@ import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.communications.ApiRequests;
 import org.lebastudios.theroundtable.controllers.StageController;
 import org.lebastudios.theroundtable.plugins.pluginData.PluginData;
+import org.lebastudios.theroundtable.ui.IconView;
+import org.lebastudios.theroundtable.ui.LazyTab;
 import org.lebastudios.theroundtable.ui.LoadingPaneController;
 import org.lebastudios.theroundtable.ui.StageBuilder;
 
 public class PluginsStageController extends StageController<PluginsStageController>
 {
-    @FXML private ScrollPane availablePluginsScrollPane;
     @FXML private TabPane tabPane;
-    @FXML private Tab availablePluginsTab;
-    @FXML private VBox availablePlugins;
-    @FXML private VBox installedPlugins;
 
     @Override
     public Class<?> getBundleClass()
@@ -45,7 +43,8 @@ public class PluginsStageController extends StageController<PluginsStageControll
     @Override
     protected void customizeStageBuilder(StageBuilder stageBuilder)
     {
-        stageBuilder.setModality(Modality.APPLICATION_MODAL);
+        stageBuilder.setModality(Modality.APPLICATION_MODAL)
+                .setResizeable(true);
     }
 
     @FXML
@@ -53,55 +52,87 @@ public class PluginsStageController extends StageController<PluginsStageControll
     protected void initialize()
     {
         this.instantiateInstalledPlugins();
+        this.instantiateAvailablePlugins();
         
-        availablePluginsTab.setContent(new LoadingPaneController().getRoot());
-        new Thread(this::instantiateAvailablePlugins).start();
-
         tabPane.getSelectionModel().selectedItemProperty().addListener((_, _, _) ->
                 tabPane.getScene().getWindow().sizeToScene());
     }
 
     private void instantiateInstalledPlugins()
     {
-        for (var plugin : PluginLoader.getInstalledPlugins())
+        LazyTab lazyTab = new LazyTab("Installed", () ->
         {
-            installedPlugins.getChildren().add(
-                    new PluginLabelController(plugin.getPluginData(), this::showPluginViewer)
-                            .getRoot()
-            );
-        }
+            ScrollPane content = new ScrollPane();
+            content.setPannable(true);
+            content.setFitToHeight(true);
+            content.setFitToWidth(true);
+
+            VBox list = new VBox();
+            list.setSpacing(5);
+            list.setPadding(new Insets(15,0, 0, 0));
+
+            for (var plugin : PluginLoader.getInstalledPlugins())
+            {
+                list.getChildren().add(
+                        new PluginLabelController(plugin.getPluginData(), this::showPluginViewer)
+                                .getRoot()
+                );
+            }
+
+            content.setContent(list);
+
+            return content;
+        });
+
+        lazyTab.setDropNodeOnDeselect(true);
+        
+        tabPane.getTabs().add(lazyTab);
     }
 
     private void instantiateAvailablePlugins()
     {
-        var pluginsData = ApiRequests.getPluginsDataAvailable();
-
-        if (pluginsData == null)
+        LazyTab lazyTab = new LazyTab("Search", () ->
         {
-            Platform.runLater(() -> tabPane.getTabs().remove(availablePluginsTab));
-            return;
-        }
+            ScrollPane content = new ScrollPane();
+            content.setPannable(true);
+            content.setFitToHeight(true);
+            content.setFitToWidth(true);
+            
+            VBox list = new VBox();
+            list.setSpacing(5);
+            list.setPadding(new Insets(15,0, 0, 0));
+            
+            var pluginsData = ApiRequests.getPluginsDataAvailable();
 
-        Platform.runLater(() ->
-        {
+            if (pluginsData == null)
+            {
+                return new IconView("error.png");
+            }
+
             for (var pluginData : pluginsData)
             {
-                availablePlugins.getChildren().add(
+                list.getChildren().add(
                         new PluginLabelController(pluginData, this::showPluginViewer)
                                 .getRoot()
                 );
             }
+
+            content.setContent(list);
             
-            availablePluginsTab.setContent(availablePluginsScrollPane);
+            return content;
         });
+        
+        lazyTab.setDropNodeOnDeselect(true);
+        
+        tabPane.getTabs().add(lazyTab);
     }
 
     private void showPluginViewer(PluginData pluginData)
     {
         final var root = (HBox) getRoot();
-        
+
         if (root.getChildren().size() > 1) root.getChildren().removeLast();
-        
+
         root.getChildren().add(new PluginViewerPaneController(pluginData).getRoot());
         getStage().sizeToScene();
     }

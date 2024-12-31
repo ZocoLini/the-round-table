@@ -3,6 +3,7 @@ package org.lebastudios.theroundtable.ui;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
+import lombok.Setter;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class LazyTab extends Tab
     private final List<Runnable> onSelected = new ArrayList<>();
     private final List<Runnable> onDeselected = new ArrayList<>();
 
+    @Setter private boolean dropNodeOnDeselect = false;
+    
     public LazyTab(String text, INodeGenerator generator)
     {
         super(text);
@@ -45,6 +48,11 @@ public class LazyTab extends Tab
             else
             {
                 this.setContent(null);
+                
+                if (dropNodeOnDeselect) 
+                {
+                    content = new WeakReference<>(null);
+                }
                 
                 onDeselected();
             }

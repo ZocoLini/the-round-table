@@ -585,10 +585,10 @@
                                         &quot;pluginId&quot;: &quot;plugin-template&quot;,
                                         &quot;pluginIcon&quot;: &quot;plugin.png&quot;,
                                         &quot;pluginDescription&quot;: &quot;&quot;,
-                                        &quot;pluginVersion&quot;: &quot;1.0-SNAPSHOT&quot;,
+                                        &quot;pluginVersion&quot;: &quot;1.0.0-SNAPSHOT&quot;,
                                         &quot;pluginVendor&quot;: &quot;Leba Studios - Software Solutions&quot;,
                                         &quot;pluginVendorUrl&quot;: &quot;https://lebastudios.org&quot;,
-                                        &quot;pluginRequiredCoreVersion&quot;: &quot;1.0-SNAPSHOT&quot;,
+                                        &quot;pluginRequiredCoreVersion&quot;: &quot;1.0.0-SNAPSHOT&quot;,
                                         &quot;pluginDependencies&quot;: []
                                         }
                                     </File>
@@ -606,7 +606,7 @@
                     <Directory name="META-INF">
                         <Directory name="services">
                             <File name="org.lebastudios.theroundtable.plugins" extension="IPlugin">
-                                org.lebastudios.theroundtable.plugintest.PluginMainClass
+                                org.lebastudios.theroundtable.plugintemplate.PluginMainClass
                             </File>
                         </Directory>
                     </Directory>

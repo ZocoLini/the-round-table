@@ -2,12 +2,14 @@ package org.lebastudios.theroundtable.plugins;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.MainStageController;
+import org.lebastudios.theroundtable.apparience.ImageLoader;
 import org.lebastudios.theroundtable.communications.ApiRequests;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PluginsConfigData;
@@ -61,9 +63,10 @@ public class PluginLabelController extends PaneController<PluginLabelController>
         pluginName.setText(pluginData.pluginName);
         pluginDescription.setText(pluginData.pluginDescription);
 
+        root.getChildren().remove(actionButton);
+        
         if (PluginLoader.isPluginInstalled(pluginData))
         {
-            root.getChildren().remove(actionButton);
             final var loadingNode = new LoadingPaneController().getRoot();
             
             root.getChildren().add(loadingNode);
@@ -71,10 +74,17 @@ public class PluginLabelController extends PaneController<PluginLabelController>
             new Thread(() ->
             {
                 if (ApiRequests.pluginNeedUpdate(pluginData)) {
+                    
+                    PluginData newVersionData = ApiRequests.getServerPluginData(pluginData.pluginId);
+                    
+                    boolean dependenciesInstalled = PluginUpdater.dependenciesInstalled(newVersionData);
+                    
                     Platform.runLater(() ->
                     {
                         root.getChildren().add(actionButton);
                         actionButton.setText("Update");
+                        
+                        if (!dependenciesInstalled) setNotSatisfiedDependencies();
                     });
                 }
                 
@@ -83,10 +93,26 @@ public class PluginLabelController extends PaneController<PluginLabelController>
         }
         else
         {
+
             root.getChildren().remove(unistallButton);
+
+            root.getChildren().add(actionButton);
             actionButton.setOnAction(_ -> onAction());
             actionButton.setText("Install");
+
+            if (!PluginUpdater.dependenciesInstalled(this.pluginData)) setNotSatisfiedDependencies();
         }
+    }
+    
+    private void setNotSatisfiedDependencies()
+    {
+        final var iconView = new IconView("unavailable.png");
+        iconView.setIconSize(24);
+        actionButton.setGraphic(iconView);
+        actionButton.setDisable(true);
+
+        Tooltip tooltip = new Tooltip("Not all dependencies are satisfied");
+        Tooltip.install(root, tooltip);
     }
     
     @FXML
