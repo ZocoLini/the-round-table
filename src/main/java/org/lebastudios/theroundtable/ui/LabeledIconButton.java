@@ -23,11 +23,13 @@ public class LabeledIconButton extends VBox
         
         label.setWrapText(true);
         
+        icon.setIconSize(80);
+        
         this.setOnMouseClicked(handler);
         this.setSpacing(10);
-        this.setPadding(new Insets(10));
         this.getStyleClass().add("button");
         this.setAlignment(Pos.CENTER);
+        this.setPrefSize(125, 125);
         
         this.getChildren().addAll(this.icon, this.label);
         
