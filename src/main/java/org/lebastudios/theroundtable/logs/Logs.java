@@ -1,6 +1,7 @@
 package org.lebastudios.theroundtable.logs;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 public class Logs
 {
@@ -18,8 +19,8 @@ public class Logs
     
     public void log(LogType type, String message)
     {
-        String date = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("O dd/MM/yyyy HH:mm:ss"));
-        
+        final var date = getDateString();
+
         switch (type)
         {
             case INFO -> System.out.println(date + " [INFO] " + message);
@@ -27,4 +28,18 @@ public class Logs
             case ERROR -> System.err.println(date + " [ERROR] " + message);
         }
     }
+    
+    public void log(String message, Exception e)
+    {
+        final var date = getDateString();
+
+        System.err.println(date + " [EXCEPTION] " + message + " (" + e.getMessage() + ")");
+    }
+
+    private static String getDateString()
+    {
+        return java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("O dd/MM/yyyy HH:mm:ss"));
+    }
+
+
 }
