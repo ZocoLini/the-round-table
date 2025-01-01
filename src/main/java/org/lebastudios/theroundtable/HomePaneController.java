@@ -18,6 +18,12 @@ public class HomePaneController extends PaneController<HomePaneController>
     }
 
     @Override
+    public boolean hasFXMLControllerDefined()
+    {
+        return true;
+    }
+
+    @Override
     public Class<?> getBundleClass()
     {
         return Launcher.class;

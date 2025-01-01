@@ -52,16 +52,16 @@ public class MainStageController extends PaneController<MainStageController>
 
         pluginsButton.setDisable(!AccountManager.getInstance().isAccountAdmin());
         
-        if (!PluginLoader.getHomeButtons().isEmpty()) 
+        leftButtons.getChildren().addAll(PluginLoader.getLeftButtons());
+        rightButtons.getChildren().addAll(PluginLoader.getRightButtons());
+        
+        if (!PluginLoader.getHomeButtons().isEmpty())
         {
             Button homeButton = new IconButton("home.png");
             homeButton.setOnAction(_ -> swapCentralPaneMainNode(new HomePaneController().getRoot()));
-            
+
             rightButtons.getChildren().add(homeButton);
         }
-        
-        leftButtons.getChildren().addAll(PluginLoader.getLeftButtons());
-        rightButtons.getChildren().addAll(PluginLoader.getRightButtons());
     }
 
     @Override
