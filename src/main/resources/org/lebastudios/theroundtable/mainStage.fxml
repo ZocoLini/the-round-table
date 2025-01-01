@@ -26,8 +26,6 @@
                 </padding>
                 <TaskManager/>
                 <IconButton onAction="#closeSession" iconName="close-session.png" />
-                <!--  <IconButton onAction="#openNotificationsPane" mnemonicParsing="false" iconName="notifications.png"/> -->
-                <!--  <IconButton onAction="#openHelpStage" mnemonicParsing="false" iconName="help.png"/> -->
             </VBox>
         </VBox>
     </left>

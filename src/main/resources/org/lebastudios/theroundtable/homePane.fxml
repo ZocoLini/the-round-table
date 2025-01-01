@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea"
+    fx:controller="org.lebastudios.theroundtable.HomePaneController">
+    <FlowPane alignment="CENTER" fx:id="flowPane"/>
+</VBox>

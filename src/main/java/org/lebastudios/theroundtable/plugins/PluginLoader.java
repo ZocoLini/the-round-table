@@ -12,6 +12,7 @@ import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.locale.AppLocale;
 import org.lebastudios.theroundtable.locale.LangLoader;
 import org.lebastudios.theroundtable.plugins.pluginData.PluginData;
+import org.lebastudios.theroundtable.ui.LabeledIconButton;
 
 import java.io.File;
 import java.net.URL;
@@ -132,6 +133,16 @@ public class PluginLoader
         return buttons;
     }
 
+    public static List<LabeledIconButton> getHomeButtons()
+    {
+        List<LabeledIconButton> buttons = new ArrayList<>();
+        for (IPlugin plugin : pluginsLoaded.values())
+        {
+            buttons.addAll(plugin.getHomeButtons());
+        }
+        return buttons;
+    }
+    
     public static List<TreeItem<SettingsItem>> getSettingsTreeViews()
     {
         List<TreeItem<SettingsItem>> items = new ArrayList<>();

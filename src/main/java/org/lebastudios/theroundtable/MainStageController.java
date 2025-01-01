@@ -3,6 +3,7 @@ package org.lebastudios.theroundtable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -23,6 +24,7 @@ import org.lebastudios.theroundtable.locale.LangFileLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 import org.lebastudios.theroundtable.plugins.PluginsStageController;
 import org.lebastudios.theroundtable.ui.IconButton;
+import org.lebastudios.theroundtable.ui.IconView;
 import org.lebastudios.theroundtable.ui.SceneBuilder;
 
 import java.net.URL;
@@ -49,7 +51,15 @@ public class MainStageController extends PaneController<MainStageController>
         if (new JSONFile<>(DatabaseConfigData.class).get().enableBackups) BackupDB.getInstance().initialize();
 
         pluginsButton.setDisable(!AccountManager.getInstance().isAccountAdmin());
-
+        
+        if (!PluginLoader.getHomeButtons().isEmpty()) 
+        {
+            Button homeButton = new IconButton("home.png");
+            homeButton.setOnAction(_ -> swapCentralPaneMainNode(new HomePaneController().getRoot()));
+            
+            rightButtons.getChildren().add(homeButton);
+        }
+        
         leftButtons.getChildren().addAll(PluginLoader.getLeftButtons());
         rightButtons.getChildren().addAll(PluginLoader.getRightButtons());
     }
