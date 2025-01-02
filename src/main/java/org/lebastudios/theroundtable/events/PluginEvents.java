@@ -70,15 +70,23 @@ public final class PluginEvents
     }
 
     /**
-     * @param eventIdentifier A String representing the event you want to get suscribed plugin-id:event-name
-     *
-     * @return The addListener() method is returned.
+     * @param eventIdentifier A String representing the event you want to add a listener to plugin-id:event-name
+     * @param listener The listener object to add to the event
      */
-    public static Method getPluginEventRegisterMethod(String eventIdentifier)
+    public static void addListenerToPluginEvent(String eventIdentifier, Object listener)
     {
-        return getEventReflexionModel(eventIdentifier).registerMethod();
+        try
+        {
+            EventReflexionModel model = getEventReflexionModel(eventIdentifier);
+            
+            model.registerMethod().invoke(model.eventInstanceObject(), listener);
+        }
+        catch (IllegalAccessException | InvocationTargetException e)
+        {
+            throw new EventInvocationException("Failed to add listener to event " + eventIdentifier, e);
+        }
     }
-
+    
     /**
      * @param eventIdentifier A String representing the event you want to invoke plugin-id:event-name
      */
