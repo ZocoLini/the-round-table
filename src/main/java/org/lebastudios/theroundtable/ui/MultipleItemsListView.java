@@ -48,10 +48,10 @@ public class MultipleItemsListView<T, Q> extends VBox
         this.doubleRight = new IconButton("double-right.png");
         doubleRight.setOnAction(_ -> showContent(maxGroup));
 
-        this.doubleLeft.setIconSize(24);
-        this.left.setIconSize(24);
-        this.right.setIconSize(24);
-        this.doubleRight.setIconSize(24);
+        this.doubleLeft.setIconSize(26);
+        this.left.setIconSize(26);
+        this.right.setIconSize(26);
+        this.doubleRight.setIconSize(26);
         
         this.actualItemsLabel = new Label();
         
