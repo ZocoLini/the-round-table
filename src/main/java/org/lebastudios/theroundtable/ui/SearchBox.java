@@ -24,6 +24,7 @@ public class SearchBox extends HBox
         super();
         
         HBox textFieldContainer = new HBox();
+        HBox.setHgrow(textFieldContainer, Priority.ALWAYS);
         textFieldContainer.setAlignment(Pos.CENTER_LEFT);
         textFieldContainer.setSpacing(5);
         
