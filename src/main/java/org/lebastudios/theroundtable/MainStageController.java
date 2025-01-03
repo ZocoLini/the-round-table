@@ -1,13 +1,13 @@
 package org.lebastudios.theroundtable;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.controlsfx.control.Notifications;
@@ -17,14 +17,14 @@ import org.lebastudios.theroundtable.accounts.AccountStageController;
 import org.lebastudios.theroundtable.config.ConfigStageController;
 import org.lebastudios.theroundtable.config.data.DatabaseConfigData;
 import org.lebastudios.theroundtable.config.data.JSONFile;
+import org.lebastudios.theroundtable.controllers.Controller;
 import org.lebastudios.theroundtable.controllers.PaneController;
 import org.lebastudios.theroundtable.database.BackupDB;
-import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 import org.lebastudios.theroundtable.locale.LangFileLoader;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
 import org.lebastudios.theroundtable.plugins.PluginsStageController;
 import org.lebastudios.theroundtable.ui.IconButton;
-import org.lebastudios.theroundtable.ui.IconView;
+import org.lebastudios.theroundtable.ui.LoadingPaneController;
 import org.lebastudios.theroundtable.ui.SceneBuilder;
 
 import java.net.URL;
@@ -35,8 +35,6 @@ public class MainStageController extends PaneController<MainStageController>
     @FXML private IconButton pluginsButton;
     @FXML private VBox leftButtons;
     @FXML private VBox rightButtons;
-    @FXML private SplitPane centralContainer;
-    @Getter private Node centralPaneMainNode;
 
     public MainStageController()
     {
@@ -95,12 +93,42 @@ public class MainStageController extends PaneController<MainStageController>
         new PluginsStageController().instantiate();
     }
 
+    @Deprecated
     public void swapCentralPaneMainNode(Node newNode)
     {
-        centralContainer.getItems().set(centralContainer.getItems().size() - 1, newNode);
-        centralPaneMainNode = newNode;
+        BorderPane root = (BorderPane) getRoot();
+        root.setCenter(newNode);
     }
 
+    @Deprecated
+    public Node getCentralPaneMainNode()
+    {
+        return ((BorderPane) getRoot()).getCenter();
+    }
+
+    public void setCentralNode(Controller<?> controller)
+    {
+        final BorderPane root = (BorderPane) getRoot();
+        root.setCenter(new LoadingPaneController().getRoot());
+        
+        new Thread(() ->
+        {
+            final Node content = controller.getRoot();
+            Platform.runLater(() -> root.setCenter(content));
+        }).start();
+    }
+    
+    public void setCentralNode(Node node)
+    {
+        BorderPane root = (BorderPane) getRoot();
+        root.setCenter(node);
+    }
+    
+    public Node getCentralNode()
+    {
+        return ((BorderPane) getRoot()).getCenter();
+    }
+    
     public void requestRestart()
     {
         showNotification(LangFileLoader.getTranslation("textblock.infrestartneeded"),

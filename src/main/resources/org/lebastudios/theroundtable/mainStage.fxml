@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.*?>
 <?import org.lebastudios.theroundtable.ui.IconButton?>
 <?import org.lebastudios.theroundtable.ui.TaskManager?>
@@ -31,12 +30,7 @@
     </left>
 
     <center>
-        <SplitPane fx:id="centralContainer">
-            <padding>
-                <Insets top="15" right="15" bottom="15" left="15"/>
-            </padding>
-            <fx:include source="defaultCenterPane.fxml"/>
-        </SplitPane>
+        <fx:include source="defaultCenterPane.fxml"/>
     </center>
 
     <right>
