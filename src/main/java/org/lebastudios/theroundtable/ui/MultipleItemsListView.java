@@ -1,14 +1,15 @@
 package org.lebastudios.theroundtable.ui;
 
-import javafx.scene.control.Button;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
 import org.lebastudios.theroundtable.database.Database;
-import org.lebastudios.theroundtable.locale.LangFileLoader;
 
 import java.util.List;
 import java.util.function.Function;
@@ -17,13 +18,14 @@ public class MultipleItemsListView<T, Q> extends VBox
 {
     @Getter private final ListView<T> listView;
     private final Label actualItemsLabel;
-    private final Button doubleLeft;
-    private final Button left;
-    private final Button right;
-    private final Button doubleRight;
+    private final IconButton doubleLeft;
+    private final IconButton left;
+    private final IconButton right;
+    private final IconButton doubleRight;
 
     private int actualGroup = 0;
     private int maxGroup;
+    private Long qty;
 
     private String hql;
     private Class<Q> itemClass;
@@ -35,6 +37,8 @@ public class MultipleItemsListView<T, Q> extends VBox
     {
         this.listView = new ListView<>();
 
+        VBox.setVgrow(listView, Priority.ALWAYS);
+        
         this.doubleLeft = new IconButton("double-left.png");
         doubleLeft.setOnAction(_ -> showContent(0));
         this.left = new IconButton("left.png");
@@ -42,11 +46,23 @@ public class MultipleItemsListView<T, Q> extends VBox
         this.right = new IconButton("right.png");
         right.setOnAction(_ -> showContent(actualGroup + 1));
         this.doubleRight = new IconButton("double-right.png");
-        doubleRight.setOnAction(_ -> showContent(-1));
+        doubleRight.setOnAction(_ -> showContent(maxGroup));
 
+        this.doubleLeft.setIconSize(24);
+        this.left.setIconSize(24);
+        this.right.setIconSize(24);
+        this.doubleRight.setIconSize(24);
+        
         this.actualItemsLabel = new Label();
+        
+        actualItemsLabel.setAlignment(Pos.CENTER);
+        actualItemsLabel.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(actualItemsLabel, Priority.ALWAYS);
 
         HBox footer = new HBox(5, doubleLeft, left, actualItemsLabel, right, doubleRight);
+        footer.setPadding(new Insets(5));
+        footer.setSpacing(5);
+        footer.setAlignment(Pos.CENTER);
 
         this.getChildren().addAll(listView, footer);
     }
@@ -72,7 +88,8 @@ public class MultipleItemsListView<T, Q> extends VBox
     {
         Database.getInstance().connectQuery(session ->
         {
-            Long qty = session.createQuery("select count(*) " + hql, Long.class).uniqueResult();
+            qty = session.createQuery("select count(*) " + hql, Long.class).uniqueResult();
+            if (qty == null) qty = 0L;
             maxGroup = (int) (qty / groupSize);
         });
 
@@ -92,8 +109,9 @@ public class MultipleItemsListView<T, Q> extends VBox
         {
             doubleLeft.setDisable(true);
             left.setDisable(true);
-            right.setDisable(false);
-            doubleRight.setDisable(false);
+
+            right.setDisable(maxGroup == 0);
+            doubleRight.setDisable(maxGroup == 0);
         }
         else
         {
@@ -129,11 +147,6 @@ public class MultipleItemsListView<T, Q> extends VBox
             listView.getItems().setAll(items);
         });
 
-        actualItemsLabel.setText(String.format("%d - %d %s %d",
-                from + 1,
-                to,
-                LangFileLoader.getTranslation("word.of"),
-                listView.getItems().size())
-        );
+        actualItemsLabel.setText(String.format("%d - %d", from + 1, Math.min(to, qty)));
     }
 }
