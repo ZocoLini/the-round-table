@@ -14,7 +14,7 @@ import org.lebastudios.theroundtable.database.Database;
 import java.util.List;
 import java.util.function.Function;
 
-public class MultipleItemsListView<T, Q> extends VBox
+public class MultipleItemsListView<T> extends VBox
 {
     @Getter private final ListView<T> listView;
     private final Label actualItemsLabel;
@@ -27,10 +27,7 @@ public class MultipleItemsListView<T, Q> extends VBox
     private int maxGroup;
     private Long qty;
 
-    private String hql;
-    private Class<Q> itemClass;
-    private Function<Q, T> mapper;
-
+    @Setter private ContentGenerator<T> contentGenerator;
     @Setter private int groupSize = 500;
 
     public MultipleItemsListView()
@@ -38,7 +35,7 @@ public class MultipleItemsListView<T, Q> extends VBox
         this.listView = new ListView<>();
 
         VBox.setVgrow(listView, Priority.ALWAYS);
-        
+
         this.doubleLeft = new IconButton("double-left.png");
         doubleLeft.setOnAction(_ -> showContent(0));
         this.left = new IconButton("left.png");
@@ -52,9 +49,9 @@ public class MultipleItemsListView<T, Q> extends VBox
         this.left.setIconSize(26);
         this.right.setIconSize(26);
         this.doubleRight.setIconSize(26);
-        
+
         this.actualItemsLabel = new Label();
-        
+
         actualItemsLabel.setAlignment(Pos.CENTER);
         actualItemsLabel.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(actualItemsLabel, Priority.ALWAYS);
@@ -67,18 +64,6 @@ public class MultipleItemsListView<T, Q> extends VBox
         this.getChildren().addAll(listView, footer);
     }
 
-    /**
-     * Set the query to get the items to show.
-     *
-     * @param hql The query should start with the from clause
-     */
-    public void setQuery(String hql, Class<Q> clazz, Function<Q, T> mapper)
-    {
-        this.hql = hql;
-        this.itemClass = clazz;
-        this.mapper = mapper;
-    }
-
     public void refresh()
     {
         refreshListView();
@@ -86,13 +71,8 @@ public class MultipleItemsListView<T, Q> extends VBox
 
     private void refreshListView()
     {
-        Database.getInstance().connectQuery(session ->
-        {
-            qty = session.createQuery("select count(*) " + hql, Long.class).uniqueResult();
-            if (qty == null) qty = 0L;
-            maxGroup = (int) (qty / groupSize);
-        });
-
+        this.qty = contentGenerator.count();
+        this.maxGroup = (int) (qty / groupSize);
         showContent(0);
     }
 
@@ -134,19 +114,53 @@ public class MultipleItemsListView<T, Q> extends VBox
         int from = group * groupSize;
         int to = from + groupSize;
 
-        Database.getInstance().connectQuery(session ->
-        {
-            List<T> items = session.createQuery(hql, itemClass)
-                    .setFirstResult(from)
-                    .setMaxResults(to)
-                    .list().stream()
-                    .map(mapper)
-                    .toList();
-
-            listView.getItems().clear();
-            listView.getItems().setAll(items);
-        });
+        listView.getItems().clear();
+        listView.getItems().setAll(contentGenerator.generateContent(from, to));
 
         actualItemsLabel.setText(String.format("%d - %d", from + 1, Math.min(to, qty)));
+    }
+
+    public interface ContentGenerator<T>
+    {
+        List<T> generateContent(int from, int to);
+
+        long count();
+    }
+
+    public static class HQLContentGenerator<T, Q> implements ContentGenerator<T>
+    {
+        private final String hql;
+        private final Class<Q> clazz;
+        private final Function<Q, T> mapper;
+
+        public HQLContentGenerator(String hql, Class<Q> clazz, Function<Q, T> mapper)
+        {
+            this.hql = hql;
+            this.clazz = clazz;
+            this.mapper = mapper;
+        }
+
+        @Override
+        public List<T> generateContent(int from, int to)
+        {
+            return Database.getInstance().connectQuery(session ->
+            {
+                return session.createQuery(hql, clazz)
+                        .setFirstResult(from)
+                        .setMaxResults(to)
+                        .list().stream()
+                        .map(mapper)
+                        .toList();
+            });
+        }
+
+        @Override
+        public long count()
+        {
+            return Database.getInstance().connectQuery(session ->
+            {
+                return session.createQuery("select count(*) " + hql, Long.class).uniqueResult();
+            });
+        }
     }
 }
