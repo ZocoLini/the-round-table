@@ -1,5 +1,6 @@
 package org.lebastudios.theroundtable.ui;
 
+import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -114,8 +115,7 @@ public class MultipleItemsListView<T> extends VBox
         int from = group * groupSize;
         int to = from + groupSize;
 
-        listView.getItems().clear();
-        listView.getItems().setAll(contentGenerator.generateContent(from, to));
+        listView.setItems(new ObservableListWrapper<>(contentGenerator.generateContent(from, to)));
 
         actualItemsLabel.setText(String.format("%d - %d", from + 1, Math.min(to, qty)));
     }
