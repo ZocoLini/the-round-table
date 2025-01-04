@@ -14,13 +14,13 @@ import org.lebastudios.theroundtable.database.entities.DatabaseVersion;
 import org.lebastudios.theroundtable.events.AppLifeCicleEvents;
 import org.lebastudios.theroundtable.events.DatabaseEvents;
 import org.lebastudios.theroundtable.plugins.PluginLoader;
-import org.sqlite.SQLiteJDBCLoader;
 
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class Database
 {
@@ -71,7 +71,7 @@ public class Database
     private SessionFactory buildSessionFactory()
     {
         prepareDatabaseForHibernate();
-        
+
         try
         {
             var config = new Configuration().configure();
@@ -126,7 +126,7 @@ public class Database
         }
 
     }
-    
+
     public void connectTransaction(Consumer<Session> action)
     {
         if (sessionFactory == null) throw new IllegalStateException("Database not initialized");
@@ -161,6 +161,22 @@ public class Database
         catch (Exception e)
         {
             e.printStackTrace();
+        }
+    }
+
+    public <R> R connectQuery(Function<Session, R> action)
+    {
+        if (sessionFactory == null) throw new IllegalStateException("Database not initialized");
+
+        // Ejemplo de uso de la sesión para interactuar con la base de datos
+        try (Session session = sessionFactory.openSession())
+        {
+            return action.apply(session);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
         }
     }
 }
