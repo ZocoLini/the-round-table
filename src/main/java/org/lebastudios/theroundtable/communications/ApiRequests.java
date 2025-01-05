@@ -29,8 +29,8 @@ public class ApiRequests
 {
     private static final String BASE_URL = switch (Variables.getEnvironmentType()) 
     {
-        case TEST -> "http://192.168.3.3:8000/api/v1/theroundtable";
-        case PROD, DEV -> "https://lebastudios.org/api/v1/theroundtable";
+        case TEST, DEV -> "http://192.168.3.3:8000/api/v1/theroundtable";
+        case PROD -> "https://lebastudios.org/api/v1/theroundtable";
         default -> throw new IllegalStateException("Unexpected value: " + Variables.getEnvironmentType());
     };
 
