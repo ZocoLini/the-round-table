@@ -1,6 +1,9 @@
 package org.lebastudios.theroundtable.events;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -12,7 +15,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public abstract class EventHandler<T>
 {
     private final List<T> listeners = new CopyOnWriteArrayList<>();
-
+    private final List<WeakReference<T>> weakListeners = new CopyOnWriteArrayList<>();
+    
     public synchronized void addListener(T listener) {
         if (listener == null) {
             throw new IllegalArgumentException("Listener cannot be null");
@@ -23,10 +27,23 @@ public abstract class EventHandler<T>
         }
     }
 
+    public synchronized void addWeakListener(T listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("Listener cannot be null");
+        }
+
+        if (!hasListener(listener)) {
+            weakListeners.add(new WeakReference<>(listener));
+        }
+    }
+    
     public synchronized void removeListener(T listener) {
         if (listener == null) return;
 
-        listeners.remove(listener);
+        if (!listeners.remove(listener)) 
+        {
+            weakListeners.removeIf(w -> w.get() == listener);
+        };
     }
 
     public synchronized void clearListeners() {
@@ -36,10 +53,16 @@ public abstract class EventHandler<T>
     public boolean hasListener(T listener) {
         if (listener == null) return false;
 
-        return listeners.contains(listener);
+        return listeners.contains(listener) || weakListeners.stream().anyMatch(w -> w.get() == listener);
     }
 
     protected List<T> getActiveListeners() {
-        return List.copyOf(listeners);
+        listeners.removeIf(Objects::isNull);
+        weakListeners.removeIf(w -> w.get() == null);
+        
+        var list = new ArrayList<>(listeners);
+        list.addAll(weakListeners.stream().map(WeakReference::get).toList());
+        
+        return list;
     }
 }
