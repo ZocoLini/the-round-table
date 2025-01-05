@@ -4,7 +4,7 @@ import com.github.anastaciocintra.escpos.Style;
 
 public class Printer80
 {
-    public static final int MAX_IMG_WIDTH = 700;
+    public static final int MAX_IMG_WIDTH = 400;
 
     public static int characterLimitPerLine(Style.FontSize fontSize)
     {
