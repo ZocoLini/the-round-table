@@ -38,10 +38,6 @@ public class IconTextButton extends Button
         iconView.setFitHeight(iconSize);
 
         this.setGraphic(iconView);
-
-        this.setPrefSize(iconSize, iconSize);
-        this.setMinSize(iconSize, iconSize);
-        this.setMaxSize(iconSize, iconSize);
     }
 
     public void setIconSize(int iconSize)
