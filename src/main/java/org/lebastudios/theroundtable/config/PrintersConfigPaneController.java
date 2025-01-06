@@ -1,5 +1,7 @@
 package org.lebastudios.theroundtable.config;
 
+import com.github.anastaciocintra.escpos.EscPos;
+import com.github.anastaciocintra.output.PrinterOutputStream;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -45,9 +47,9 @@ public class PrintersConfigPaneController extends SettingsPaneController
         useOpenCashDrawerDefaultCommand.selectedProperty().addListener((_, _, newValue) ->
         {
             if (newValue == null) return;
-            
+
             openCashDrawerCommand.setDisable(newValue);
-            
+
             if (newValue)
             {
                 openCashDrawerCommand.setText(parseCommand(PrintersConfigData.OPEN_CASH_DRAWER_DEFAULT_COMMAND));
@@ -65,7 +67,7 @@ public class PrintersConfigPaneController extends SettingsPaneController
         printerData.get().defaultPrinter = defaultPrinter.getValue();
         printerData.get().setUseOpenCashDrawerDefaultCommand(useOpenCashDrawerDefaultCommand.isSelected());
         printerData.get().setOpenCashDrawerCommand(parseCommand(openCashDrawerCommand.getText().trim()));
-        
+
         printerData.save();
     }
 
@@ -78,13 +80,13 @@ public class PrintersConfigPaneController extends SettingsPaneController
                     .map(Byte::parseByte)
                     .map(b -> (byte) b.intValue())
                     .toArray(Byte[]::new);
-            
+
             byte[] commandBytes = new byte[commandParsed.length];
-            for (int i = 0; i < commandBytes.length; i++) 
+            for (int i = 0; i < commandBytes.length; i++)
             {
                 commandBytes[i] = commandParsed[i];
             }
-            
+
             return commandBytes;
         }
         catch (Exception exception)
@@ -93,7 +95,7 @@ public class PrintersConfigPaneController extends SettingsPaneController
             return null;
         }
     }
-    
+
     private String parseCommand(byte[] command)
     {
         StringBuilder sb = new StringBuilder();
@@ -101,10 +103,25 @@ public class PrintersConfigPaneController extends SettingsPaneController
         {
             sb.append(element).append(" ");
         }
-        
+
         return sb.toString().trim();
     }
-    
+
+    @FXML
+    private void testDefaultPrinter()
+    {
+        try (EscPos escPos = new EscPos(
+                new PrinterOutputStream(PrinterOutputStream.getPrintServiceByName(defaultPrinter.getValue()))))
+        {
+            escPos.writeLF("Test")
+                    .writeLF("Dolar: $100")
+                    .writeLF("Euro: €100")
+                    .writeLF("Special characters: áéñ#*=¿¡")
+                    .feed(5)
+                    .cut(EscPos.CutMode.PART);
+        } catch (Exception _) { UIEffects.shakeNode(defaultPrinter); }
+    }
+
     @Override
     public Class<?> getBundleClass()
     {
