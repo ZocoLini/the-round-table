@@ -40,6 +40,8 @@ public class Variables
     {
         String enviroment = System.getenv("TRT_ENV");
         
+        if (enviroment == null) return EnvironmentType.PROD;
+        
         return switch (enviroment)
         {
             case "dev" -> EnvironmentType.DEV;

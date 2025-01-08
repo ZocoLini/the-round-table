@@ -1,9 +1,11 @@
 package org.lebastudios.theroundtable.communications;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import javafx.application.Platform;
 import lombok.SneakyThrows;
 import org.lebastudios.theroundtable.AppTask;
+import org.lebastudios.theroundtable.config.data.SettingsData;
 import org.lebastudios.theroundtable.env.Variables;
 import org.lebastudios.theroundtable.MainStageController;
 import org.lebastudios.theroundtable.TheRoundTableApplication;
@@ -15,9 +17,7 @@ import org.lebastudios.theroundtable.ui.TaskManager;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
+import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -36,7 +36,7 @@ public class ApiRequests
 
     public static boolean availableUpdate()
     {
-        try (var client = HttpClient.newHttpClient())
+        try (var client = AppHttpClient.getInstance().newClient())
         {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/update/available?version=" + TheRoundTableApplication.getAppVersion()))
@@ -68,7 +68,23 @@ public class ApiRequests
     private static void downloadFile(String fileURL, String saveDir, String taskTitle)
     {
         URL url = new URI(fileURL).toURL();
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+
+        var proxyConf = new JSONFile<>(SettingsData.class).get().proxyData;
+
+        HttpURLConnection httpConn;
+
+        if (proxyConf != null && proxyConf.usingProxy) 
+        {
+            String proxyAddress = proxyConf.proxyAddress;
+            int proxyPort = proxyConf.proxyPort;
+            
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyAddress, proxyPort));
+            httpConn = (HttpURLConnection) url.openConnection(proxy);
+        }
+        else
+        {
+            httpConn = (HttpURLConnection) url.openConnection();
+        }
 
         // Verifica la respuesta del servidor
         int responseCode = httpConn.getResponseCode();
@@ -140,7 +156,7 @@ public class ApiRequests
 
     public static PluginData[] getPluginsDataAvailable()
     {
-        try (var client = HttpClient.newHttpClient())
+        try (var client = AppHttpClient.getInstance().newClient())
         {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/plugins/pluginsData"))
@@ -166,7 +182,7 @@ public class ApiRequests
 
     public static PluginData getServerPluginData(String pluginId)
     {
-        try (var client = HttpClient.newHttpClient())
+        try (var client = AppHttpClient.getInstance().newClient())
         {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/plugins/" + pluginId + ".jar.json"))
@@ -191,7 +207,7 @@ public class ApiRequests
     
     public static boolean pluginNeedUpdate(PluginData pluginData)
     {
-        try (var client = HttpClient.newHttpClient())
+        try (var client = AppHttpClient.getInstance().newClient())
         {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/plugins/" + pluginData.pluginId + "/updateable?version=" +
@@ -222,7 +238,7 @@ public class ApiRequests
 
     public static Boolean isLicenseValid(String license)
     {
-        try (var client = HttpClient.newHttpClient())
+        try (var client = AppHttpClient.getInstance().newClient())
         {
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/licenses/validate?license_id=" + license))

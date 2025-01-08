@@ -5,11 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import org.lebastudios.theroundtable.Launcher;
 import org.lebastudios.theroundtable.MainStageController;
-import org.lebastudios.theroundtable.apparience.ImageLoader;
 import org.lebastudios.theroundtable.communications.ApiRequests;
 import org.lebastudios.theroundtable.config.data.JSONFile;
 import org.lebastudios.theroundtable.config.data.PluginsConfigData;
@@ -132,7 +130,6 @@ public class PluginLabelController extends PaneController<PluginLabelController>
             
             // TODO: Mark the plugin as installed so the install button doesn't appear before the app restart
         }).start();
-        
     }
 
     @FXML

@@ -66,7 +66,7 @@ public class TheRoundTableApplication extends Application
             catch (Exception _) {}
         }
         
-        return "0";
+        return "2.5.0";
     }
 
     public static String getUserDirectory()

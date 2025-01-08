@@ -56,7 +56,7 @@ public class Version implements Comparable<Version>
         if (!version.matches("\\d+\\.\\d+\\.\\d+(-\\w+)?"))
         {
             throw new IllegalArgumentException(
-                    "Invalid version format. Must be in the format 'major.minor.patch[-weight]'"
+                    "Invalid version format. Must be in the format 'major.minor.patch[-weight]'. Provided: " + version
             );
         }
         
