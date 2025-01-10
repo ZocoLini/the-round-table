@@ -52,4 +52,9 @@ public class LabeledTextField extends HBox
     {
         return textField.getText();
     }
+    
+    public void setText(String text)
+    {
+        textField.setText(text);
+    }
 }
