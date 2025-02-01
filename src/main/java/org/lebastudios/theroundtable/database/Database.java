@@ -127,18 +127,19 @@ public class Database
 
     }
 
-    public void connectTransaction(Consumer<Session> action)
+    public boolean connectTransaction(Consumer<Session> action)
     {
         if (sessionFactory == null) throw new IllegalStateException("Database not initialized");
 
-        // Ejemplo de uso de la sesión para interactuar con la base de datos
-        try (Session session = sessionFactory.openSession())
+        Session session = sessionFactory.openSession();
+                
+        try
         {
             session.getTransaction().begin();
 
             action.accept(session);
 
-            if (session.getTransaction().getStatus() == TransactionStatus.ACTIVE)
+            if (session.getTransaction().isActive())
             {
                 session.getTransaction().commit();
             }
@@ -146,7 +147,18 @@ public class Database
         catch (Exception e)
         {
             e.printStackTrace();
+            if (session.getTransaction().isActive())
+            {
+                session.getTransaction().rollback();
+            }
+            return false;
         }
+        finally
+        {
+            session.close();
+        }
+        
+        return true;
     }
 
     public void connectQuery(Consumer<Session> action)
