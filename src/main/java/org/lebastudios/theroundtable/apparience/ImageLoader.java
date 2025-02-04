@@ -18,6 +18,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ImageLoader
 {
@@ -25,25 +26,29 @@ public class ImageLoader
     private static final Map<String, Image> loadedTextures = new HashMap<>();
     private static final Map<String, WeakReference<Image>> loadedSavedImages = new WeakHashMap<>();
 
+    private static final ConcurrentHashMap<String, Object> lockMap = new ConcurrentHashMap<>();
+    
     public static Image getIcon(String iconName)
     {
-        Image image;
-        synchronized (loadedIcons)
-        {
-            image = getImage(iconName, loadedIcons);
-        }
-        if (image != null) return image;
-
-        image = loadImage(iconName, ImageType.ICON);
-
-        if (image == null) return getIcon("icon-not-found.png");
-
-        synchronized (loadedIcons)
-        {
-            loadedIcons.put(iconName, new WeakReference<>(image));
-        }
+        Object lock = lockMap.computeIfAbsent(iconName, _ -> new Object());
         
-        return image;
+        synchronized (lock)
+        {
+            Image image = getImage(iconName, loadedIcons);
+            
+            if (image != null) return image;
+
+            image = loadImage(iconName, ImageType.ICON);
+
+            if (image == null) image = getIcon("icon-not-found.png");
+
+            synchronized (loadedIcons)
+            {
+                loadedIcons.put(iconName, new WeakReference<>(image));
+            }
+
+            return image;
+        }
     }
 
     public synchronized static Image getTexture(String textureName)
