@@ -90,6 +90,13 @@ public class MultipleItemsListView<T> extends VBox
 
         this.getChildren().addAll(listView, footer);
 
+        listView.getSelectionModel().selectedItemProperty().addListener((_, oldValue, newValue) ->
+        {
+            if (onItemSelected == null || newValue == null || newValue == oldValue) return;
+
+            onItemSelected.accept(newValue);
+        });
+        
         listView.setCellFactory(new Callback<>()
         {
             @Override
@@ -97,17 +104,6 @@ public class MultipleItemsListView<T> extends VBox
             {
                 return new ListCell<>()
                 {
-                    {
-                        this.setOnMouseClicked(e ->
-                        {
-                            if (onItemSelected != null && !e.isConsumed())
-                            {
-                                e.consume();
-                                onItemSelected.accept(getItem());
-                            }
-                        });
-                    }
-
                     @Override
                     protected void updateItem(T item, boolean empty)
                     {
