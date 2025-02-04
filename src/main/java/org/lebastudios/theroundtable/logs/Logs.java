@@ -38,7 +38,7 @@ public class Logs
 
     private static String getDateString()
     {
-        return java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("O dd/MM/yyyy HH:mm:ss"));
+        return java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 
 

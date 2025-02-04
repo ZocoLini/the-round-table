@@ -13,8 +13,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import org.lebastudios.theroundtable.database.Database;
+import org.lebastudios.theroundtable.logs.Logs;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +26,8 @@ import java.util.function.Function;
 
 public class MultipleItemsListView<T> extends VBox
 {
-    private final Map<Node, IGrapahicView> graphicViewsMap = new HashMap<>();
-    
+    private final Map<Node, ICellRecicler<T>> graphicViewsMap = new HashMap<>();
+
     @Getter private final ListView<T> listView;
     private final Label actualItemsLabel;
     private final IconButton doubleLeft;
@@ -39,22 +41,24 @@ public class MultipleItemsListView<T> extends VBox
 
     @Setter private Consumer<T> onItemSelected;
 
-    private ContentGenerator<T> contentGenerator;
-    @Setter private ListCellNodeRecicler<T> listCellNodeRecicler;
-    @Getter private int groupSize;
+    @Setter private ItemsGenerator<T> itemsGenerator;
+    @Setter private Function<MultipleItemsListView<T>, ICellRecicler<T>> cellReciclerGenerator;
+    @Setter @Getter private int groupSize;
 
     /**
-     * Main constructor of the class. It receives the list cell node recicler, the content generator and the group size.
-     * @param listCellNodeRecicler The node recicler defines how to reuse the graphic nodes of the list cells to
-     * avoid loading new ones
-     * @param contentGenerator The content generator defines how to generate the content of the list view
+     * Main constructor of the class. It receives the list cell node recicler, the content generator and the group
+     * size.
+     *
+     * @param cellReciclerGenerator The node recicler defines how to reuse the graphic nodes of the list cells to
+     *         avoid loading new ones
+     * @param itemsGenerator The content generator defines how to generate the content of the list view
      * @param groupSize The max size of the pages
      */
-    public MultipleItemsListView(ListCellNodeRecicler<T> listCellNodeRecicler, ContentGenerator<T> contentGenerator,
+    public MultipleItemsListView(Function<MultipleItemsListView<T>, ICellRecicler<T>> cellReciclerGenerator, ItemsGenerator<T> itemsGenerator,
             int groupSize)
     {
-        this.listCellNodeRecicler = listCellNodeRecicler;
-        this.contentGenerator = contentGenerator;
+        this.cellReciclerGenerator = cellReciclerGenerator;
+        this.itemsGenerator = itemsGenerator;
         this.groupSize = groupSize;
 
         this.listView = new ListView<>();
@@ -96,7 +100,7 @@ public class MultipleItemsListView<T> extends VBox
 
             onItemSelected.accept(newValue);
         });
-        
+
         listView.setCellFactory(new Callback<>()
         {
             @Override
@@ -104,6 +108,12 @@ public class MultipleItemsListView<T> extends VBox
             {
                 return new ListCell<>()
                 {
+                    {
+                        this.setCache(true);
+                        this.setCacheHint(CacheHint.SPEED);
+                        this.setCacheShape(true);
+                    }
+                    
                     @Override
                     protected void updateItem(T item, boolean empty)
                     {
@@ -116,29 +126,33 @@ public class MultipleItemsListView<T> extends VBox
                             return;
                         }
 
-                        IGrapahicView previousGraphic = null;
+                        var cellReciclerGenerator = MultipleItemsListView.this.cellReciclerGenerator;
                         
-                        if (getGraphic() != null)
+                        if (cellReciclerGenerator == null)
                         {
-                            previousGraphic = graphicViewsMap.get(getGraphic());
-                        }
+                            Logs.getInstance().log(Logs.LogType.WARNING, "multipleItemsListView has no " +
+                                    "cellViewGenerator");
 
-                        ListCellContent content = MultipleItemsListView.this.listCellNodeRecicler.updateView(previousGraphic, item);
-                        
-                        setText(content.text);
-
-                        if (content.graphicView == null || content.graphicView.getRoot() == null)
-                        {
                             setGraphic(null);
+                            setText(null);
                             return;
                         }
-                        
-                        if (previousGraphic == null) 
-                        {
-                            graphicViewsMap.put(content.graphicView.getRoot(), content.graphicView);
-                        }
 
-                        setGraphic(content.graphicView().getRoot());
+                        boolean graphicsWasNull = getGraphic() == null;
+                        
+                        ICellRecicler<T> cellRecicler = graphicsWasNull
+                                ? cellReciclerGenerator.apply(MultipleItemsListView.this)
+                                : graphicViewsMap.get(getGraphic());
+
+                        cellRecicler.update(item);
+                        
+                        setText(cellRecicler.getText());
+                        setGraphic(cellRecicler.getGraphic());
+                        
+                        if (graphicsWasNull) 
+                        {
+                            graphicViewsMap.put(cellRecicler.getGraphic(), cellRecicler);
+                        }
                     }
                 };
             }
@@ -147,22 +161,22 @@ public class MultipleItemsListView<T> extends VBox
         refresh();
     }
 
-    public MultipleItemsListView(ListCellNodeRecicler<T> listCellNodeRecicler, ContentGenerator<T> contentGenerator)
+    public MultipleItemsListView(Function<MultipleItemsListView<T>, ICellRecicler<T>> cellReciclerGenerator, ItemsGenerator<T> itemsGenerator)
     {
-        this(listCellNodeRecicler, contentGenerator, 500);
+        this(cellReciclerGenerator, itemsGenerator, 500);
     }
 
-    public MultipleItemsListView(ContentGenerator<T> contentGenerator)
+    public MultipleItemsListView(ItemsGenerator<T> itemsGenerator)
     {
-        this(new ListCellNodeRecicler<>() {}, contentGenerator);
+        this(null, itemsGenerator);
     }
 
     public MultipleItemsListView()
     {
-        this(new ContentGenerator<>()
+        this(new ItemsGenerator<>()
         {
             @Override
-            public List<T> generateContent(int from, int to)
+            public List<T> generateItems(int from, int to)
             {
                 return List.of();
             }
@@ -176,26 +190,6 @@ public class MultipleItemsListView<T> extends VBox
     }
 
     /**
-     * Set the content generator and calls the refresh method automatically
-     * @param contentGenerator the content generator
-     */
-    public void setContentGenerator(ContentGenerator<T> contentGenerator)
-    {
-        this.contentGenerator = contentGenerator;
-        refresh();
-    }
-
-    /**
-     * Set the pagination size and calls the refresh method automatically
-     * @param groupSize the max size of the pages
-     */
-    public void setGroupSize(int groupSize)
-    {
-        this.groupSize = groupSize;
-        refresh();
-    }
-
-    /**
      * Refresh the content of the list view
      */
     public void refresh()
@@ -205,7 +199,7 @@ public class MultipleItemsListView<T> extends VBox
 
     private void refreshListView()
     {
-        this.qty = contentGenerator.count();
+        this.qty = itemsGenerator.count();
         this.maxGroup = (int) (qty / groupSize);
         showContent(0);
     }
@@ -248,27 +242,39 @@ public class MultipleItemsListView<T> extends VBox
         int from = group * groupSize;
         int to = (int) Math.min(from + groupSize, qty);
 
-        listView.setItems(new ObservableListWrapper<>(contentGenerator.generateContent(from, to)));
+        listView.setItems(new ObservableListWrapper<>(itemsGenerator.generateItems(from, to)));
 
         final var toValue = Math.min(to, qty);
         final var fromValue = Math.min(from + 1, toValue);
         actualItemsLabel.setText(String.format("%d - %d", fromValue, toValue));
     }
 
+    public interface ICellRecicler<T>
+    {
+        void update(@NonNull T item);
+
+        Node getGraphic();
+
+        String getText();
+    }
+
     /**
      * Interface to generate the content of the list view.
+     *
      * @param <T> the type of the content defined in the list view
      */
-    public interface ContentGenerator<T>
+    public interface ItemsGenerator<T>
     {
         /**
-         * Generate the content of the list view. The 'from' and the 'to' are inclusive. 
-         * Ex.: For a groupSize of 500, the group 0 with 500 items has to be generated with from = 1 and to = 500.
+         * Generate the content of the list view. The 'from' and the 'to' are inclusive. Ex.: For a groupSize of 500,
+         * the group 0 with 500 items has to be generated with from = 1 and to = 500.
+         *
          * @param from The first item to be generated
          * @param to The last item to be generated
+         *
          * @return The list of items to be shown in the list view
          */
-        List<T> generateContent(int from, int to);
+        List<T> generateItems(int from, int to);
 
         /**
          * This method has to return the total number of items that can be generated.
@@ -276,31 +282,13 @@ public class MultipleItemsListView<T> extends VBox
         long count();
     }
 
-    public interface ListCellNodeRecicler<T>
-    {
-        /**
-         * This method is called in every update of the list view.
-         *
-         * @param oldGraphic The old graphic interface that was shown in the list view. It can be null if the cell was empty.
-         * @param item The item that has to be shown in the list cell
-         *
-         * @return The content of the list cell. It contains the grpahic node and the text to be shown in the cell.
-         */
-        default ListCellContent updateView(IGrapahicView oldGraphic, T item) { return new ListCellContent(oldGraphic, item.toString()); }
-    }
-
-    public record ListCellContent(IGrapahicView graphicView, String text){}
-
-    public interface IGrapahicView
-    { Node getRoot(); }
-    
-    public static class HQLContentGenerator<T, Q> implements ContentGenerator<T>
+    public static class HQLItemsGenerator<T, Q> implements ItemsGenerator<T>
     {
         private final String hql;
         private final Class<Q> clazz;
         private final Function<Q, T> mapper;
 
-        public HQLContentGenerator(String hql, Class<Q> clazz, Function<Q, T> mapper)
+        public HQLItemsGenerator(String hql, Class<Q> clazz, Function<Q, T> mapper)
         {
             this.hql = hql;
             this.clazz = clazz;
@@ -308,7 +296,7 @@ public class MultipleItemsListView<T> extends VBox
         }
 
         @Override
-        public List<T> generateContent(int from, int to)
+        public List<T> generateItems(int from, int to)
         {
             return Database.getInstance().connectQuery(session ->
             {
