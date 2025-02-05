@@ -1,6 +1,5 @@
 package org.lebastudios.theroundtable.ui;
 
-import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
@@ -18,16 +17,12 @@ import lombok.Setter;
 import org.lebastudios.theroundtable.database.Database;
 import org.lebastudios.theroundtable.logs.Logs;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class MultipleItemsListView<T> extends VBox
 {
-    private final Map<Node, ICellRecicler<T>> graphicViewsMap = new HashMap<>();
-
     @Getter private final ListView<T> listView;
     private final Label actualItemsLabel;
     private final IconButton doubleLeft;
@@ -108,7 +103,20 @@ public class MultipleItemsListView<T> extends VBox
             {
                 return new ListCell<>()
                 {
+                    private final ICellRecicler<T> cellRecicler;
+                    
                     {
+                        if (MultipleItemsListView.this.cellReciclerGenerator == null)
+                        {
+                            Logs.getInstance().log(Logs.LogType.WARNING, "multipleItemsListView has no " +
+                                    "cellViewGenerator");
+                            cellRecicler = null;
+                        }
+                        else
+                        {
+                            cellRecicler = MultipleItemsListView.this.cellReciclerGenerator.apply(MultipleItemsListView.this);
+                        }
+                        
                         this.setCache(true);
                         this.setCacheHint(CacheHint.SPEED);
                         this.setCacheShape(true);
@@ -119,40 +127,17 @@ public class MultipleItemsListView<T> extends VBox
                     {
                         super.updateItem(item, empty);
 
-                        if (empty || item == null)
+                        if (empty || item == null || cellRecicler == null)
                         {
                             setGraphic(null);
                             setText(null);
                             return;
                         }
-
-                        var cellReciclerGenerator = MultipleItemsListView.this.cellReciclerGenerator;
-                        
-                        if (cellReciclerGenerator == null)
-                        {
-                            Logs.getInstance().log(Logs.LogType.WARNING, "multipleItemsListView has no " +
-                                    "cellViewGenerator");
-
-                            setGraphic(null);
-                            setText(null);
-                            return;
-                        }
-
-                        boolean graphicsWasNull = getGraphic() == null;
-                        
-                        ICellRecicler<T> cellRecicler = graphicsWasNull
-                                ? cellReciclerGenerator.apply(MultipleItemsListView.this)
-                                : graphicViewsMap.get(getGraphic());
 
                         cellRecicler.update(item);
                         
                         setText(cellRecicler.getText());
                         setGraphic(cellRecicler.getGraphic());
-                        
-                        if (graphicsWasNull) 
-                        {
-                            graphicViewsMap.put(cellRecicler.getGraphic(), cellRecicler);
-                        }
                     }
                 };
             }
@@ -242,8 +227,9 @@ public class MultipleItemsListView<T> extends VBox
         int from = group * groupSize;
         int to = (int) Math.min(from + groupSize, qty);
 
-        listView.setItems(new ObservableListWrapper<>(itemsGenerator.generateItems(from, to)));
-
+        listView.getItems().clear();
+        listView.getItems().addAll(itemsGenerator.generateItems(from, to));
+        
         final var toValue = Math.min(to, qty);
         final var fromValue = Math.min(from + 1, toValue);
         actualItemsLabel.setText(String.format("%d - %d", fromValue, toValue));
