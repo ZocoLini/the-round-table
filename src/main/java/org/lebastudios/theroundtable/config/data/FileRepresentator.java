@@ -10,4 +10,8 @@ public interface FileRepresentator
     {
         new JSONFile<>(this).save();
     }
+    
+    default void load() {
+        
+    }
 }

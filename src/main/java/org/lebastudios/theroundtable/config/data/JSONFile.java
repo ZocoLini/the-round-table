@@ -6,20 +6,22 @@ import lombok.SneakyThrows;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class JSONFile<T extends FileRepresentator>
 {
-    private static final Map<String, File> filesCache = new HashMap<>();
+    private static final Map<Class<?>, File> filesCache = new HashMap<>();
+    private static final Set<Class<?>> noCacheableClasses = new HashSet<>();
     private final T data;
 
     public JSONFile(Class<T> clazz)
     {
         data = load(clazz);
     }
-
+    
     public JSONFile(T data)
     {
         this.data = data;
@@ -28,12 +30,21 @@ public class JSONFile<T extends FileRepresentator>
     @SneakyThrows
     private <T extends FileRepresentator> T load(Class<T> clazz)
     {
-        if (!filesCache.containsKey(clazz.getName())) 
-        {
-            filesCache.put(clazz.getName(), clazz.getConstructor().newInstance().getFile());
-        }
+        File file;
         
-        var file = filesCache.get(clazz.getName());
+        if (noCacheableClasses.contains(clazz)) 
+        {
+            file = clazz.getConstructor().newInstance().getFile();
+        }
+        else
+        {
+            if (!filesCache.containsKey(clazz))
+            {
+                filesCache.put(clazz, clazz.getConstructor().newInstance().getFile());
+            }
+
+            file = filesCache.get(clazz);
+        }
 
         if (!file.exists()) return clazz.getConstructor().newInstance();
 
@@ -42,7 +53,7 @@ public class JSONFile<T extends FileRepresentator>
             return new GsonBuilder().create().fromJson(reader, clazz);
         }
     }
-
+    
     public T get()
     {
         return data;
@@ -62,5 +73,10 @@ public class JSONFile<T extends FileRepresentator>
         {
             writer.write(fileContent);
         }
+    }
+    
+    public static void addNoCacheableClass(Class<?> clazz)
+    {
+        noCacheableClasses.add(clazz);
     }
 }

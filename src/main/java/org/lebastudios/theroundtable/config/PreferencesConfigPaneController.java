@@ -46,18 +46,18 @@ public class PreferencesConfigPaneController extends SettingsPaneController
         var preferences = new JSONFile<>(PreferencesConfigData.class).get();
 
         themeChoiceBox.setValue(transformThemeToDisplayableText(preferences.theme));
-        languageChoiceBox.setValue(transformLanguageToDisplayableText(preferences.langauge));
+        languageChoiceBox.setValue(transformLanguageToDisplayableText(preferences.language));
     }
 
     @Override
     public void apply()
     {
-        var preferencesManager = new JSONFile<>(PreferencesConfigData.class);
+        var preferences = new JSONFile<>(PreferencesConfigData.class);
 
-        preferencesManager.get().langauge = transformLanguageToInternalText(languageChoiceBox.getValue());
-        preferencesManager.get().theme = transformThemeToInternalText(themeChoiceBox.getValue());
+        preferences.get().language = transformLanguageToInternalText(languageChoiceBox.getValue());
+        preferences.get().theme = transformThemeToInternalText(themeChoiceBox.getValue());
 
-        preferencesManager.save();
+        preferences.save();
 
         ThemeLoader.reloadThemes();
     }

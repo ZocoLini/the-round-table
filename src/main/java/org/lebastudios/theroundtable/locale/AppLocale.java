@@ -16,7 +16,7 @@ public class AppLocale
         }
         
         return Locale.of(
-                new JSONFile<>(PreferencesConfigData.class).get().langauge,
+                new JSONFile<>(PreferencesConfigData.class).get().language,
                 System.getProperty("user.country")
         );
     }

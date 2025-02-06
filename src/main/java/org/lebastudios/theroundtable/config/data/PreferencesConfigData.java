@@ -7,8 +7,12 @@ import java.util.Locale;
 
 public class PreferencesConfigData implements FileRepresentator
 {
+    static {
+        JSONFile.addNoCacheableClass(PreferencesConfigData.class);
+    }
+    
     public String theme = "cupertino-light";
-    public String langauge = Locale.getDefault().getLanguage();
+    public String language = Locale.getDefault().getLanguage();
 
     @Override
     public File getFile()

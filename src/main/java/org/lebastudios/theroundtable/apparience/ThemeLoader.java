@@ -19,7 +19,7 @@ public class ThemeLoader
         UserEvents.OnAccountLogIn.addListener(a -> reloadThemes());
     }
     
-    public static void reloadThemes()
+    public synchronized static void reloadThemes()
     {
         for (var scene : scenesInstantiated)
         {

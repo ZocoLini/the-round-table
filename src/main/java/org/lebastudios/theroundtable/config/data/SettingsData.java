@@ -9,6 +9,7 @@ public class SettingsData implements FileRepresentator
 {
     public boolean setupComplete = false;
     public ProxyData proxyData = new ProxyData();
+    public ProxyData localProxyData = new ProxyData();
 
     @Override
     public File getFile()
